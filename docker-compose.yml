@@ -1,0 +1,17 @@
+version: "0"
+name: metric-ui
+services:
+  frontend:
+    image: metric-ui
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: metric-ui
+    volumes:
+      - .:/app
+      - ./src:/app
+      - ./public:/app
+      - ./server:/app
+      - ./node_modules:/app
+    ports:
+      - "5600:5173"
