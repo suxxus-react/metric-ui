@@ -1,3 +1,6 @@
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Pie } from "react-chartjs-2";
+
 function MetricModal() {
   return (
     <section className="absolute h-full  w-full">
@@ -58,27 +61,44 @@ function MetricOptionsSelector(): JSX.Element {
 }
 
 function MetricTypeDisplay(): JSX.Element {
+  ChartJS.register(ArcElement, Tooltip, Legend);
+  // fake data
+  const data = {
+    // labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+    labels: [],
+    datasets: [
+      {
+        label: "# of Votes",
+        data: [12, 19, 3, 5, 2, 3],
+        backgroundColor: [
+          "rgba(255, 99, 132, 0.2)",
+          "rgba(54, 162, 235, 0.2)",
+          "rgba(255, 206, 86, 0.2)",
+          "rgba(75, 192, 192, 0.2)",
+          "rgba(153, 102, 255, 0.2)",
+          "rgba(255, 159, 64, 0.2)",
+        ],
+        borderColor: [
+          "rgba(255, 99, 132, 1)",
+          "rgba(54, 162, 235, 1)",
+          "rgba(255, 206, 86, 1)",
+          "rgba(75, 192, 192, 1)",
+          "rgba(153, 102, 255, 1)",
+          "rgba(255, 159, 64, 1)",
+        ],
+        borderWidth: 1,
+      },
+    ],
+  };
+
   return (
     <div className="metric-ui__show-chart">
       <ul>
         <li>
-          <img
-            src="https://landing.moqups.com/img/content/charts-graphs/area-charts/simple-stacked-area-chart/simple-stacked-area-chart-1600.png"
-            alt="area"
-          />
+          <Pie data={data} />
         </li>
-        <li>
-          <img
-            src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.clipartkey.com%2Fmpngs%2Fm%2F225-2250017_pie-chart-cliparts-20-buy-clip-art-circle.png&f=1&nofb=1&ipt=5eee5de401e20d09224432e123221eda6763c00f86168e441be4bbb23192751c&ipo=images"
-            alt="pie"
-          />
-        </li>
-        <li>
-          <img
-            src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fimg.favpng.com%2F4%2F0%2F24%2Fline-chart-market-graph-of-a-function-png-favpng-YFWMX89r3pXcYraLZci3W6gqE.jpg&f=1&nofb=1&ipt=386589c302b1b71f4cfdb1d69d4249f1ed233c53a7c118bee3e623b05f40c817&ipo=images"
-            alt="line"
-          />
-        </li>
+        <li></li>
+        <li></li>
       </ul>
     </div>
   );
