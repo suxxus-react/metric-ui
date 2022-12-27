@@ -1,41 +1,86 @@
-/* #root { */
-/*   max-width: 1280px; */
-/*   margin: 0 auto; */
-/*   padding: 2rem; */
-/*   text-align: center; */
-/* } */
-/*  */
-/* .logo { */
-/*   height: 6em; */
-/*   padding: 1.5em; */
-/*   will-change: filter; */
-/* } */
-/* .logo:hover { */
-/*   filter: drop-shadow(0 0 2em #646cffaa); */
-/* } */
-/* .logo.react:hover { */
-/*   filter: drop-shadow(0 0 2em #61dafbaa); */
-/* } */
-/*  */
-/* @keyframes logo-spin { */
-/*   from { */
-/*     transform: rotate(0deg); */
-/*   } */
-/*   to { */
-/*     transform: rotate(360deg); */
-/*   } */
-/* } */
-/*  */
-/* @media (prefers-reduced-motion: no-preference) { */
-/*   a:nth-of-type(2) .logo { */
-/*     animation: logo-spin infinite 20s linear; */
-/*   } */
-/* } */
-/*  */
-/* .card { */
-/*   padding: 2em; */
-/* } */
-/*  */
-/* .read-the-docs { */
-/*   color: #888; */
-/* } */
+:root {
+  --metric-ui-border: lightgray;
+
+  --button-background: #280528;
+  --button-color: white;
+
+  --dropdown-open-background: #f0f0f0;
+  --dropdown-options-background: #f9f9f9;
+  --dropdown-highlight: lightgray;
+
+  background-color: darkgray;
+}
+
+.metric-ui {
+  font-size: 0.9rem;
+
+  /* frame */
+  background-color: white;
+  position: relative;
+  border: 1px solid;
+  border-color: var(--metric-ui-border);
+
+  button {
+    color: var(--button-color);
+    background-color: var(--button-background);
+    padding: 0.3rem 0.9rem;
+    border-radius: 0.3rem;
+  }
+
+  &__select-chart-option {
+    height: 150px;
+    margin-top: 2rem;
+    border-top: 1px solid;
+    border-color: var(--metric-ui-border);
+
+    summary {
+      padding: 10px;
+      padding-left: 20px;
+      list-style: none;
+    }
+
+    &[open] > summary {
+      background-color: var(--dropdown-open-background);
+    }
+
+    ul {
+      background-color: var(--dropdown-options-background);
+      border-bottom: 1px solid var(--metric-ui-border);
+
+      a {
+        display: inline-block;
+        padding: 5px;
+        padding-left: 20px;
+        width: 100%;
+
+        &:hover {
+          background-color: var(--dropdown-highlight);
+        }
+
+        span {
+          margin-left: 0.5rem;
+        }
+      }
+    }
+  }
+
+  &__show-chart {
+    border: 1px solid;
+    border-color: var(--metric-ui-border);
+    height: 12rem;
+    overflow: hidden;
+
+    ul {
+      height: inherit;
+
+      li {
+        height: inherit;
+
+        img {
+          margin: 0 auto;
+          height: inherit;
+        }
+      }
+    }
+  }
+}
