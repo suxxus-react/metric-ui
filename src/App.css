@@ -11,6 +11,13 @@
   /* background-color: darkgray; */
 }
 
+button {
+  color: var(--button-color);
+  background-color: var(--button-background);
+  padding: 0.3rem 0.9rem;
+  border-radius: 0.3rem;
+}
+
 .metric-ui {
   font-size: 0.9rem;
 
@@ -19,13 +26,6 @@
   position: relative;
   border: 7px solid;
   border-color: var(--metric-ui-border);
-
-  button {
-    color: var(--button-color);
-    background-color: var(--button-background);
-    padding: 0.3rem 0.9rem;
-    border-radius: 0.3rem;
-  }
 
   &__select-chart-option {
     height: 150px;
