@@ -38,19 +38,19 @@ function MetricOptionsSelector(): JSX.Element {
       </summary>
       <ul>
         <li>
-          <a href="#">
+          <a href="#" className="hover:bg-zinc-200 dark:hover:bg-zinc-500">
             <i className="fa fa-pie-chart"></i>
             <span>Pie</span>
           </a>
         </li>
         <li>
-          <a href="#">
+          <a href="#" className="hover:bg-zinc-200 dark:hover:bg-zinc-500">
             <i className="fa fa-line-chart"></i>
             <span>Line</span>
           </a>
         </li>
         <li>
-          <a href="#">
+          <a href="#" className="hover:bg-zinc-200 dark:hover:bg-zinc-500">
             <i className="fa fa-area-chart"></i>
             <span>Area</span>
           </a>
@@ -133,7 +133,7 @@ export default function Metric(): JSX.Element {
         {/* end display metric type */}
         <div className="mt-2 flex justify-end invisible">
           <button className="mr-4">cancel</button>
-          <button className="">save</button>
+          <button>save</button>
         </div>
         {/* end save button */}
         <ul className="text-xs font-bold mt-5">

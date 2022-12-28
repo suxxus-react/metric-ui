@@ -3,9 +3,12 @@ import Metric from "./components/Metric-ui";
 
 function App() {
   return (
-    <div className="metrics">
-      <header className="mb-6">
+    <div className="metrics bg-white dark:bg-slate-800 dark:text-white">
+      <header className="mb-6 flex justify-between">
         <h1 className="metrics__logo">fun-metrics</h1>
+        <button>
+          <i className="fa fa-sun-o"></i>
+        </button>
       </header>
       <div className="max-w-xs md:max-w-screen-sm lg:max-w-screen-lg mx-auto">
         <section>
@@ -23,9 +26,7 @@ function App() {
                     role="switch"
                     id="flexSwitchCheckDefault"
                   />
-                  <label className="form-check-label inline-block text-gray-800 font-black">
-                    edit
-                  </label>
+                  <label className="form-check-label inline-block">edit</label>
                 </div>
               </div>
             </div>

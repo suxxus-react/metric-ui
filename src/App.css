@@ -6,17 +6,15 @@
 
   --dropdown-open-background: #f0f0f0;
   --dropdown-options-background: #f9f9f9;
-  --dropdown-highlight: lightgray;
-
-  /* background-color: darkgray; */
+  --dropdown-highlight: #353534;
 }
 
-button {
-  color: var(--button-color);
-  background-color: var(--button-background);
-  padding: 0.3rem 0.9rem;
-  border-radius: 0.3rem;
-}
+/* button { */
+/*   color: var(--button-color); */
+/*   background-color: var(--button-background); */
+/*   padding: 0.3rem 0.9rem; */
+/*   border-radius: 0.3rem; */
+/* } */
 
 .form-check-input:checked {
   background-color: var(--button-background);
@@ -24,7 +22,6 @@ button {
 }
 
 .metrics {
-  background-color: white;
   padding: 3rem;
 
   &__logo {
@@ -43,7 +40,6 @@ button {
   font-size: 0.9rem;
 
   /* frame */
-  background-color: white;
   position: relative;
   border: 7px solid;
   border-color: var(--metric-ui-border);
@@ -58,14 +54,13 @@ button {
       padding: 10px;
       padding-left: 20px;
       list-style: none;
-    }
 
-    &[open] > summary {
-      background-color: var(--dropdown-open-background);
+      p {
+        font-weight: 800;
+      }
     }
 
     ul {
-      background-color: var(--dropdown-options-background);
       border-bottom: 1px solid var(--metric-ui-border);
 
       a {
@@ -73,10 +68,6 @@ button {
         padding: 5px;
         padding-left: 20px;
         width: 100%;
-
-        &:hover {
-          background-color: var(--dropdown-highlight);
-        }
 
         span {
           margin-left: 0.5rem;
