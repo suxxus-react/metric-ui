@@ -1,7 +1,7 @@
 export default function LoggedHeader(): JSX.Element {
   return (
-    <div className="flex flex-col space-y-4 mb-5">
-      <div className="flex justify-between ">
+    <div className="flex flex-col space-y-4">
+      <div className="flex justify-between">
         <div>
           <span className="mr-3">user name</span>
           <i className="fa fa-user fa-2x"></i>
