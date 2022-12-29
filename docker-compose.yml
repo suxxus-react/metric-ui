@@ -14,4 +14,16 @@ services:
       - ./server:/app
       - ./node_modules:/app
     ports:
-      - "5600:5173"
+      - 5600:5173
+  storybook:
+    image: metric-ui_storybook
+    build:
+      context: .
+      dockerfile: sb.Dockerfile
+    container_name: metric-ui_storybook
+    volumes:
+      - .:/app
+      - ./src:/app
+      - ./node_modules:/app
+    ports:
+      - 5700:6006
