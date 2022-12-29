@@ -1,10 +1,7 @@
-// import { useState } from "react";
-import Metric from "./components/Metric-editor";
+import MainContainer from "./components/Page-app-container";
 
 function App() {
-  return (
-    <div className="metrics bg-white dark:bg-slate-800 dark:text-white"></div>
-  );
+  return <MainContainer />;
 }
 
 export default App;
