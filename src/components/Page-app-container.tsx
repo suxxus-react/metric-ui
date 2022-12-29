@@ -1,11 +1,12 @@
 import Header from "./Header";
 import LoginWithAccount from "./Login-with-social-account";
 import PageEditMetrics from "./Page-edit-metrics";
+import Footer from "./Footer";
 
 type Props = { logged: boolean };
 export default function MainContainer({ logged }: Props): JSX.Element {
   const OuterContainer = "metrics bg-white dark:bg-slate-800 dark:text-white";
-  const InnerConatainer = "h-5/6";
+  const InnerConatainer = "h-5/6 mb-2";
   return (
     <div className={OuterContainer}>
       <Header />
@@ -18,6 +19,7 @@ export default function MainContainer({ logged }: Props): JSX.Element {
           </div>
         )}
       </div>
+      <Footer />
     </div>
   );
 }
