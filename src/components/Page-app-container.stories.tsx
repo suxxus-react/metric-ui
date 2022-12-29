@@ -6,6 +6,11 @@ export default {
   component: MainContainer,
 } as ComponentMeta<typeof MainContainer>;
 //
-const Template: ComponentStory<typeof MainContainer> = () => <MainContainer />;
+const Template: ComponentStory<typeof MainContainer> = (args) => (
+  <MainContainer {...args} />
+);
 
-export const PageMainContainerLogin = Template.bind({});
+export const Login = Template.bind({});
+Login.args = { logged: false };
+export const UserLogged = Template.bind({});
+UserLogged.args = { logged: true };
