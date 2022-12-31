@@ -1,7 +1,23 @@
+import { MetricUi, DispatchMsg } from "../metricfun.types";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Pie } from "react-chartjs-2";
 
-function MetricModal() {
+type MetricModal = {
+  id: string;
+  handleClick: DispatchMsg;
+};
+
+// helpers
+// =======
+//
+const eventHandlerHelper =
+  (isEditable: boolean) =>
+  (fn: DispatchMsg): DispatchMsg =>
+    isEditable ? fn : () => ({ type: "None" });
+
+// component
+// =========
+function MetricModal({ id, handleClick }: MetricModal): JSX.Element {
   return (
     <section className="absolute h-full  w-full">
       <div className="absolute h-full w-full bg-indigo-500 opacity-50"></div>
@@ -13,12 +29,24 @@ function MetricModal() {
             </p>
             <button
               type="button"
+              onClick={() => {
+                handleClick({
+                  type: "DeleteMetric",
+                  id,
+                });
+              }}
               className="inline-block px-6 py-2.5 bg-zinc-400 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
             >
               Yes
             </button>
             <button
               type="button"
+              onClick={() => {
+                handleClick({
+                  type: "ToggleShowWarning",
+                  id,
+                });
+              }}
               className="ml-5 inline-block px-6 py-2.5 bg-zinc-400 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
             >
               No
@@ -104,27 +132,79 @@ function MetricTypeDisplay(): JSX.Element {
   );
 }
 
-export default function Metric(): JSX.Element {
+export default function Metric({
+  id,
+  name,
+  isEditable,
+  isMetricNameEditable,
+  showWarning,
+  metadata,
+  handleClick,
+  handleOnChange,
+}: MetricUi): JSX.Element {
+  const eventHandler = eventHandlerHelper(isEditable);
   return (
     <div className="metric-ui">
+      {showWarning && (
+        <MetricModal {...{ id, handleClick: eventHandler(handleClick) }} />
+      )}
       <div className="p-4">
         <div className="flex justify-between">
           <div className="flex justify-between w-56">
-            <div className="hidden">
-              <input
-                readOnly
-                value=""
-                placeholder="metric name"
-                className="w-40 mr-2"
-              />
-              <i className="cursor-pointer fa fa-check-square fa-lg"></i>
-            </div>
-            <div>
-              <span className="mr-2">metric name</span>
-              <i className="cursor-pointer fa fa-pencil-square-o fa-lg"></i>
-            </div>
+            {isMetricNameEditable ? (
+              <>
+                <input
+                  value={name}
+                  placeholder="metric name"
+                  className="w-40 mr-2"
+                  onChange={(evt) => {
+                    evt.preventDefault();
+
+                    eventHandler(handleOnChange)({
+                      type: "UpdateMetricName",
+                      id,
+                      value: evt.target?.value || "",
+                    });
+                  }}
+                />
+                <button
+                  onClick={() => {
+                    eventHandler(handleClick)({
+                      type: "RenameMetric",
+                      id,
+                    });
+                  }}
+                >
+                  <i className="cursor-pointer fa fa-check-square fa-lg"></i>
+                </button>
+              </>
+            ) : (
+              <>
+                <span className="mr-2">{name}</span>
+                <button
+                  onClick={() => {
+                    eventHandler(handleClick)({
+                      type: "EditMetricName",
+                      id,
+                    });
+                  }}
+                >
+                  <i className="fa fa-pencil-square-o fa-lg"></i>
+                </button>
+              </>
+            )}
           </div>
-          <button className="font-extrabold">x</button>
+          <button
+            onClick={() => {
+              eventHandler(handleClick)({
+                type: "ToggleShowWarning",
+                id,
+              });
+            }}
+            className="font-extrabold"
+          >
+            x
+          </button>
         </div>
         {/* end metric name */}
         <MetricOptionsSelector />
@@ -137,9 +217,9 @@ export default function Metric(): JSX.Element {
         </div>
         {/* end save button */}
         <ul className="text-xs font-bold mt-5">
-          <li>limit x riched</li>
-          <li>162 updates</li>
-          <li>monthly resolution</li>
+          {Object.values(metadata).map((data, idx) => (
+            <li key={`${idx}_${data}`}>{data}</li>
+          ))}
         </ul>
         {/* end display metadata */}
       </div>

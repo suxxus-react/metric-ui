@@ -6,32 +6,42 @@ export default {
   title: "Metric-fun/Metric_editor",
   component: Metric,
   argTypes: {
-    // backgroundColor: { control: "color" },
+    handleClick: { action: "msg" },
+    handleOnChange: { action: "msg" },
   },
 } as ComponentMeta<typeof Metric>;
 
-const Template: ComponentStory<typeof Metric> = (args) => <Metric />;
+const props = {
+  isEditable: true,
+  name: "metric name",
+  id: "01",
+
+  metadata: {
+    resolution: "monthly",
+    update: "update ...",
+    limit: "limit x",
+  },
+};
+const Template: ComponentStory<typeof Metric> = (args) => <Metric {...args} />;
 //
-export const Edit = Template.bind({});
-// // More on args: https://storybook.js.org/docs/react/writing-stories/args
-// Primary.args = {
-//   primary: true,
-//   label: "Button",
-// };
-//
-// export const Secondary = Template.bind({});
-// Secondary.args = {
-//   label: "Button",
-// };
-//
-// export const Large = Template.bind({});
-// Large.args = {
-//   size: "large",
-//   label: "Button",
-// };
-//
-// export const Small = Template.bind({});
-// Small.args = {
-//   size: "small",
-//   label: "Button",
-// };
+export const StatusNotEditable = Template.bind({});
+StatusNotEditable.args = {
+  ...props,
+  isEditable: false,
+};
+export const NameNonEditable = Template.bind({});
+NameNonEditable.args = {
+  ...props,
+};
+
+export const NameEditable = Template.bind({});
+NameEditable.args = {
+  ...props,
+  isMetricNameEditable: true,
+};
+
+export const WarnBeforeDelete = Template.bind({});
+WarnBeforeDelete.args = {
+  ...props,
+  showWarning: true,
+};

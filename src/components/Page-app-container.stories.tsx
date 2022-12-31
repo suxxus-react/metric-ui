@@ -11,6 +11,6 @@ const Template: ComponentStory<typeof MainContainer> = (args) => (
 );
 
 export const Login = Template.bind({});
-Login.args = { logged: false };
+Login.args = { isLogged: false };
 export const UserLogged = Template.bind({});
-UserLogged.args = { logged: true };
+UserLogged.args = { isLogged: true };

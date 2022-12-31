@@ -1,9 +1,14 @@
-export default function LoggedHeader(): JSX.Element {
+import { State } from "../metricfun.types";
+export default function LoggedHeader({
+  userName,
+  toggleEditable,
+  createNewMetric,
+}: State): JSX.Element {
   return (
     <div className="flex flex-col space-y-4">
       <div className="flex justify-between">
         <div>
-          <span className="mr-3">user name</span>
+          <span className="mr-3">{userName}</span>
           <i className="fa fa-user fa-2x"></i>
         </div>
         <div className="py-3">
@@ -13,12 +18,15 @@ export default function LoggedHeader(): JSX.Element {
               type="checkbox"
               role="switch"
               id="flexSwitchCheckDefault"
+              onChange={toggleEditable}
             />
             <label className="form-check-label inline-block">edit</label>
           </div>
         </div>
       </div>
-      <button className="md:w-40">new metric</button>
+      <button className="md:w-40" onClick={createNewMetric}>
+        new metric
+      </button>
     </div>
   );
 }

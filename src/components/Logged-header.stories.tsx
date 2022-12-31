@@ -6,12 +6,14 @@ export default {
   title: "Metric-fun/LoggedHeader_editor",
   component: LoggedHeader,
   argTypes: {
-    // backgroundColor: { control: "color" },
+    toggleEditable: { action: "switched" },
+    createNewMetric: { action: "create new metric" },
   },
 } as ComponentMeta<typeof LoggedHeader>;
 
 const Template: ComponentStory<typeof LoggedHeader> = (args) => (
-  <LoggedHeader />
+  <LoggedHeader {...args} />
 );
 //
 export const UserLogged = Template.bind({});
+UserLogged.args = { userName: "John Doe" };
