@@ -1,10 +1,19 @@
-import { MetricUi, DispatchMsg } from "../metricfun.types";
+import { MetricUi, DispatchMsg, ChartType } from "../metricfun.types";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Pie } from "react-chartjs-2";
 
 type MetricModal = {
   id: string;
   handleClick: DispatchMsg;
+};
+
+type MetricSelectType = {
+  handleClick: DispatchMsg;
+  id: string;
+};
+
+type MetricChartTypeSelected = {
+  chartTypeSelected: ChartType;
 };
 
 // helpers
@@ -19,7 +28,7 @@ const eventHandlerHelper =
 // =========
 function MetricModal({ id, handleClick }: MetricModal): JSX.Element {
   return (
-    <section className="absolute h-full  w-full">
+    <section className="absolute z-10 h-full w-full">
       <div className="absolute h-full w-full bg-indigo-500 opacity-50"></div>
       <div className="content absolute p-5 mt-40 shadow">
         <div className="flex justify-center  inline-block align-middle">
@@ -58,7 +67,10 @@ function MetricModal({ id, handleClick }: MetricModal): JSX.Element {
   );
 }
 
-function MetricOptionsSelector(): JSX.Element {
+function MetricOptionsSelector({
+  handleClick,
+  id,
+}: MetricSelectType): JSX.Element {
   return (
     <details className="metric-ui__select-chart-option">
       <summary role="button">
@@ -66,29 +78,54 @@ function MetricOptionsSelector(): JSX.Element {
       </summary>
       <ul>
         <li>
-          <a href="#" className="hover:bg-zinc-200 dark:hover:bg-zinc-500">
+          <button
+            onClick={() => {
+              handleClick({
+                type: "SelectChartType",
+                id,
+                chartType: "Pie",
+              });
+            }}
+            className="hover:bg-zinc-200 dark:hover:bg-zinc-500"
+          >
             <i className="fa fa-pie-chart"></i>
             <span>Pie</span>
-          </a>
+          </button>
         </li>
         <li>
-          <a href="#" className="hover:bg-zinc-200 dark:hover:bg-zinc-500">
+          <button
+            onClick={() => {
+              handleClick({
+                type: "SelectChartType",
+                id,
+                chartType: "Line",
+              });
+            }}
+            className="hover:bg-zinc-200 dark:hover:bg-zinc-500"
+          >
             <i className="fa fa-line-chart"></i>
             <span>Line</span>
-          </a>
+          </button>
         </li>
         <li>
-          <a href="#" className="hover:bg-zinc-200 dark:hover:bg-zinc-500">
+          <button
+            onClick={() => {
+              handleClick({ type: "SelectChartType", id, chartType: "Area" });
+            }}
+            className="hover:bg-zinc-200 dark:hover:bg-zinc-500"
+          >
             <i className="fa fa-area-chart"></i>
             <span>Area</span>
-          </a>
+          </button>
         </li>
       </ul>
     </details>
   );
 }
 
-function MetricTypeDisplay(): JSX.Element {
+function MetricTypeDisplay({
+  chartTypeSelected,
+}: MetricChartTypeSelected): JSX.Element {
   ChartJS.register(ArcElement, Tooltip, Legend);
   // fake data
   const data = {
@@ -119,14 +156,25 @@ function MetricTypeDisplay(): JSX.Element {
     ],
   };
 
+  // <Pie data={data} />
+  const classShowChart = () => {
+    console.log("chart selected ", chartTypeSelected);
+    switch (chartTypeSelected) {
+      case "Pie":
+        return "metric-ui__show-chart__pie";
+      case "Line":
+        return "metric-ui__show-chart__line";
+      case "Area":
+        return "metric-ui__show-chart__area";
+    }
+  };
+  console.log(classShowChart());
   return (
     <div className="metric-ui__show-chart">
-      <ul>
-        <li>
-          <Pie data={data} />
-        </li>
-        <li></li>
-        <li></li>
+      <ul className={classShowChart()}>
+        <li>Pie</li>
+        <li> line</li>
+        <li>Area</li>
       </ul>
     </div>
   );
@@ -141,6 +189,7 @@ export default function Metric({
   metadata,
   handleClick,
   handleOnChange,
+  chartTypeSelected,
 }: MetricUi): JSX.Element {
   const eventHandler = eventHandlerHelper(isEditable);
   return (
@@ -207,9 +256,11 @@ export default function Metric({
           </button>
         </div>
         {/* end metric name */}
-        <MetricOptionsSelector />
+        <MetricOptionsSelector
+          {...{ id, handleClick: eventHandler(handleClick) }}
+        />
         {/*end chart selector */}
-        <MetricTypeDisplay />
+        <MetricTypeDisplay {...{ chartTypeSelected }} />
         {/* end display metric type */}
         <div className="mt-2 flex justify-end invisible">
           <button className="mr-4">cancel</button>

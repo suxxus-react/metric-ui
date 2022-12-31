@@ -22,12 +22,34 @@ type RenameMetric = {
   id: string;
 };
 
+export type ChartType = "Pie" | "Line" | "Area";
+type SelectChartType = {
+  type: "SelectChartType";
+  id: string;
+  chartType: ChartType;
+};
+
+// -- ---
+
 type ToggleDarkMode = {
   type: "ToggleDarkMode";
 };
 
+type LoginWithSocialNetwork = {
+  type: "LoginWithSocialNetwork";
+  value: string;
+};
+
 type Logged = {
   type: "IsLogged";
+};
+
+type ToggleEditable = {
+  type: "ToggleEditable";
+};
+
+type CreateNewMetric = {
+  type: "CreateNewMetric";
 };
 
 type None = {
@@ -36,10 +58,14 @@ type None = {
 export type DispatchMsg = (msg: Msg) => Msg;
 
 export type Msg =
+  | LoginWithSocialNetwork
   | Logged
   | ToggleDarkMode
+  | ToggleEditable
+  | CreateNewMetric
   | DeleteMetric
   | ShowWarning
+  | SelectChartType
   | EditMetricName
   | UpdateMetricName
   | RenameMetric
@@ -57,19 +83,20 @@ export type MetricUi = {
   isDeleted: boolean;
   isEditable: boolean;
   showWarning: boolean;
+  chartTypeSelected: ChartType;
   metadata: Metadata;
   handleClick: DispatchMsg;
   handleOnChange: DispatchMsg;
 };
 
-export type State = {
+export interface IState {
   isDark: boolean;
   isLogged: boolean;
   userName: string;
   isEditable: boolean;
-  //
+}
+
+export interface IProps extends IState {
   handleClick: DispatchMsg;
-  // toggleEditable: () => void;
-  // createNewMetric: () => void;
-  // loginWithAccount: () => void;
-};
+  handleOnChange: DispatchMsg;
+}

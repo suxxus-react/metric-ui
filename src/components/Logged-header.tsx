@@ -1,9 +1,8 @@
-import { State } from "../metricfun.types";
+import { IProps } from "../metricfun.types";
 export default function LoggedHeader({
   userName,
-  toggleEditable,
-  createNewMetric,
-}: State): JSX.Element {
+  handleOnChange,
+}: IProps): JSX.Element {
   return (
     <div className="flex flex-col space-y-4">
       <div className="flex justify-between">
@@ -18,13 +17,22 @@ export default function LoggedHeader({
               type="checkbox"
               role="switch"
               id="flexSwitchCheckDefault"
-              onChange={toggleEditable}
+              onChange={() => {
+                handleOnChange({
+                  type: "ToggleEditable",
+                });
+              }}
             />
             <label className="form-check-label inline-block">edit</label>
           </div>
         </div>
       </div>
-      <button className="md:w-40" onClick={createNewMetric}>
+      <button
+        className="md:w-40"
+        onClick={() => {
+          handleOnChange({ type: "CreateNewMetric" });
+        }}
+      >
         new metric
       </button>
     </div>

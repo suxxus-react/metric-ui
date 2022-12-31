@@ -1,5 +1,5 @@
-import { State } from "../metricfun.types";
-export default function Header({ isDark, handleClick }: State): JSX.Element {
+import { IProps } from "../metricfun.types";
+export default function Header({ isDark, handleClick }: IProps): JSX.Element {
   const sun = <i className="fa fa-sun-o"></i>;
   const moon = <i className="fa fa-moon-o"></i>;
   return (

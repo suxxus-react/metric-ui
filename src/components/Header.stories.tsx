@@ -5,7 +5,7 @@ import MetricsHeader from "./Header";
 export default {
   title: "Metric-fun/Metrics_main-header",
   component: MetricsHeader,
-  argTypes: { handleClick: { action: "click" } },
+  argTypes: { handleClick: { action: "msg" } },
 } as ComponentMeta<typeof MetricsHeader>;
 
 const Template: ComponentStory<typeof MetricsHeader> = (args) => (

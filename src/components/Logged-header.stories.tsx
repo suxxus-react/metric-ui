@@ -6,8 +6,7 @@ export default {
   title: "Metric-fun/LoggedHeader_editor",
   component: LoggedHeader,
   argTypes: {
-    toggleEditable: { action: "switched" },
-    createNewMetric: { action: "create new metric" },
+    handleOnChange: { action: "msg" },
   },
 } as ComponentMeta<typeof LoggedHeader>;
 

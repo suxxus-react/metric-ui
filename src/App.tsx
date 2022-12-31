@@ -1,17 +1,7 @@
 import { useState } from "react";
 import MainContainer from "./components/Page-app-container";
-import { State, Msg, DispatchMsg } from "./metricfun.types";
+import { IState, Msg, IProps } from "./metricfun.types";
 
-interface IState {
-  isDark: boolean;
-  isLogged: boolean;
-  userName: string;
-  isEditable: boolean;
-}
-
-interface IProps extends IState {
-  handleClick: DispatchMsg;
-}
 const updateState = (msg: Msg, state: IState): IState => {
   console.log("msg -> ", msg);
   switch (msg.type) {
