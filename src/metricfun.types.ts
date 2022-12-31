@@ -26,12 +26,17 @@ type ToggleDarkMode = {
   type: "ToggleDarkMode";
 };
 
+type Logged = {
+  type: "IsLogged";
+};
+
 type None = {
   type: "None";
 };
 export type DispatchMsg = (msg: Msg) => Msg;
 
 export type Msg =
+  | Logged
   | ToggleDarkMode
   | DeleteMetric
   | ShowWarning
@@ -64,7 +69,7 @@ export type State = {
   isEditable: boolean;
   //
   handleClick: DispatchMsg;
-  toggleEditable: () => void;
-  createNewMetric: () => void;
-  loginWithAccount: () => void;
+  // toggleEditable: () => void;
+  // createNewMetric: () => void;
+  // loginWithAccount: () => void;
 };
