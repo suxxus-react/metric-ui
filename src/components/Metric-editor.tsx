@@ -10,6 +10,7 @@ type MetricModal = {
 
 type MetricSelectType = {
   handleClick: DispatchMsg;
+  isSavingChanges: boolean;
   id: string;
 };
 
@@ -20,10 +21,12 @@ type MetricChartTypeSelected = {
 // helpers
 // =======
 //
+type EventHandlerHelperProps = { isSavingChanges: boolean };
+
 const eventHandlerHelper =
-  (isEditable: boolean) =>
+  ({ isSavingChanges }: EventHandlerHelperProps) =>
   (fn: DispatchMsg): DispatchMsg =>
-    isEditable ? fn : () => ({ type: "None" });
+    isSavingChanges ? () => ({ type: "None" }) : fn;
 
 // component
 // =========
@@ -70,11 +73,16 @@ function MetricModal({ id, handleClick }: MetricModal): JSX.Element {
 
 function MetricOptionsSelector({
   handleClick,
+  isSavingChanges,
   id,
 }: MetricSelectType): JSX.Element {
+  const PointerEvents: string = isSavingChanges
+    ? "pointer-events-none"
+    : "pointer-events-auto";
+
   return (
     <details className="metric-ui__select-chart-option">
-      <summary role="button">
+      <summary className={PointerEvents} role="button">
         <p>Select Chart Type</p>
       </summary>
       <ul>
@@ -197,7 +205,7 @@ export default function Metric({
   chartTypeSelected,
 }: MetricUi): JSX.Element {
   //
-  const eventHandler = eventHandlerHelper(isEditable);
+  const eventHandler = eventHandlerHelper({ isSavingChanges });
 
   return (
     <div className="metric-ui">
@@ -273,7 +281,7 @@ export default function Metric({
         {/* end metric name */}
         {isEditable && (
           <MetricOptionsSelector
-            {...{ id, handleClick: eventHandler(handleClick) }}
+            {...{ id, isSavingChanges, handleClick: eventHandler(handleClick) }}
           />
         )}
         {/*end chart selector */}

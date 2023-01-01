@@ -69,4 +69,8 @@ WarnBeforeDelete.args = {
 };
 
 export const isSavingChanges = Template.bind({});
-isSavingChanges.args = { ...props, isSavingChanges: true };
+isSavingChanges.args = {
+  ...props,
+  isSavingChanges: true,
+  isMetricNameEditable: false,
+};
