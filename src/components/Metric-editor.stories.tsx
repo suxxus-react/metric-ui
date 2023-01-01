@@ -36,6 +36,11 @@ StatusNotEditable.args = {
   isEditable: false,
   chartTypeSelected: "Pie",
 };
+
+export const StatusEditable = Template.bind({});
+StatusEditable.args = {
+  ...props,
+};
 export const NameNonEditable = Template.bind({});
 NameNonEditable.args = {
   ...props,
