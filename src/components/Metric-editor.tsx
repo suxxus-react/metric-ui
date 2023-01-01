@@ -187,7 +187,7 @@ export default function Metric({
   name,
   isEditable,
   isMetricNameEditable,
-  showSave,
+  showUpdateMetricChanges,
   showWarning,
   metadata,
   handleClick,
@@ -273,7 +273,7 @@ export default function Metric({
         {/*end chart selector */}
         <MetricTypeDisplay {...{ chartTypeSelected }} />
         {/* end display metric type */}
-        {isEditable && showSave && (
+        {isEditable && showUpdateMetricChanges && (
           <div className="mt-2 flex justify-end">
             <button
               onClick={() => {

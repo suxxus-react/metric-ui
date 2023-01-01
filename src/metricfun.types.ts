@@ -60,6 +60,7 @@ type UpdateMetric = {
 type None = {
   type: "None";
 };
+
 export type DispatchMsg = (msg: Msg) => Msg;
 
 export type Msg =
@@ -76,6 +77,7 @@ export type Msg =
   | UpdateMetric
   | RenameMetric
   | None;
+
 type Metadata = {
   update: string;
   limit: string;
@@ -86,10 +88,9 @@ export type MetricUi = {
   id: string;
   name: string;
   isMetricNameEditable: boolean;
-  showSave: boolean;
-  isDeleted: boolean;
   isEditable: boolean;
   showWarning: boolean;
+  showUpdateMetricChanges: boolean;
   chartTypeSelected: ChartTypeSelected;
   metadata: Metadata;
   handleClick: DispatchMsg;

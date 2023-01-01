@@ -16,9 +16,8 @@ const props: Omit<MetricUi, "handleClick" | "handleOnChange"> = {
   id: "01",
   name: "metric name",
   isMetricNameEditable: false,
-  isDeleted: false,
   isEditable: true,
-  showSave: false,
+  showUpdateMetricChanges: false,
   showWarning: false,
   chartTypeSelected: "None",
   metadata: {
@@ -27,6 +26,7 @@ const props: Omit<MetricUi, "handleClick" | "handleOnChange"> = {
     limit: "limit x",
   },
 };
+
 const Template: ComponentStory<typeof Metric> = (args) => <Metric {...args} />;
 //
 export const StatusNotEditable = Template.bind({});
@@ -45,17 +45,22 @@ NameEditable.args = {
   ...props,
   isMetricNameEditable: true,
 };
+
 export const ShowPieChart = Template.bind({});
 ShowPieChart.args = { ...props, chartTypeSelected: "Pie" };
+
 export const ShowLineChart = Template.bind({});
 ShowLineChart.args = { ...props, chartTypeSelected: "Line" };
+
 export const ShowAreaChart = Template.bind({});
 ShowAreaChart.args = { ...props, chartTypeSelected: "Area" };
-export const ShowSaveMetricOptions = Template.bind({});
-ShowSaveMetricOptions.args = {
+
+export const ShowSaveMetricControls = Template.bind({});
+ShowSaveMetricControls.args = {
   ...props,
-  showSave: true,
+  showUpdateMetricChanges: true,
 };
+
 export const WarnBeforeDelete = Template.bind({});
 WarnBeforeDelete.args = {
   ...props,
