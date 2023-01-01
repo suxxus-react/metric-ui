@@ -5,7 +5,7 @@ import Footer from "./Footer";
 import { IProps } from "../metricfun.types";
 
 export default function MainContainer(props: IProps): JSX.Element {
-  const { isLogged, handleClick } = props;
+  const { isLogged } = props;
 
   const OuterContainer = "metrics bg-white dark:bg-slate-800 dark:text-white";
   const InnerConatainer = "h-5/6 mb-2";
@@ -22,15 +22,6 @@ export default function MainContainer(props: IProps): JSX.Element {
         )}
       </div>
       <Footer />
-      <button
-        onClick={() => {
-          handleClick({
-            type: "IsLogged",
-          });
-        }}
-      >
-        test
-      </button>
     </div>
   );
 }
