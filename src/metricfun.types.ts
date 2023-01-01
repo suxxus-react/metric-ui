@@ -40,6 +40,10 @@ type Logged = {
   type: "IsLogged";
 };
 
+type Logout = {
+  type: "Logout";
+};
+
 type ToggleEditable = {
   type: "ToggleEditable";
 };
@@ -62,6 +66,7 @@ export type DispatchMsg = (msg: Msg) => Msg;
 export type Msg =
   | LoginWithSocialNetwork
   | Logged
+  | Logout
   | ToggleDarkMode
   | ToggleEditable
   | CreateNewMetric

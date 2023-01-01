@@ -7,6 +7,7 @@ export default {
   component: LoggedHeader,
   argTypes: {
     handleOnChange: { action: "msg" },
+    handleClick: { action: "msg" },
   },
 } as ComponentMeta<typeof LoggedHeader>;
 

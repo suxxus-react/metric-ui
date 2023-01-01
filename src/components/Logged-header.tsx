@@ -1,14 +1,27 @@
 import { IProps } from "../metricfun.types";
 export default function LoggedHeader({
   userName,
+  handleClick,
   handleOnChange,
 }: IProps): JSX.Element {
   return (
     <div className="flex flex-col space-y-4">
       <div className="flex justify-between">
         <div>
-          <span className="mr-3">{userName}</span>
-          <i className="fa fa-user fa-2x"></i>
+          <div className="mb-4">
+            <span className="mr-3">{userName}</span>
+            <i className="fa fa-user fa-2x"></i>
+          </div>
+          <button
+            onClick={() => {
+              handleClick({
+                type: "Logout",
+              });
+            }}
+          >
+            <span className="mr-3">logout</span>
+            <i className="fa fa-circle-o-notch fa"></i>
+          </button>
         </div>
         <div className="py-3">
           <div className="form-check form-switch">
