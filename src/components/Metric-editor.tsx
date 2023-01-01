@@ -1,5 +1,6 @@
 import { MetricUi, DispatchMsg, ChartTypeSelected } from "../metricfun.types";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { ThreeCircles } from "react-loader-spinner";
 import { Pie } from "react-chartjs-2";
 
 type MetricModal = {
@@ -187,6 +188,7 @@ export default function Metric({
   name,
   isEditable,
   isMetricNameEditable,
+  isSavingChanges,
   showUpdateMetricChanges,
   showWarning,
   metadata,
@@ -199,6 +201,20 @@ export default function Metric({
 
   return (
     <div className="metric-ui">
+      {isSavingChanges && (
+        <ThreeCircles
+          height="100"
+          width="100"
+          color="#4fa94d"
+          wrapperStyle={{}}
+          wrapperClass="metric-ui__show-saving-spinner"
+          visible={true}
+          ariaLabel="three-circles-rotating"
+          outerCircleColor=""
+          innerCircleColor=""
+          middleCircleColor=""
+        />
+      )}
       {showWarning && (
         <MetricModal {...{ id, handleClick: eventHandler(handleClick) }} />
       )}
@@ -221,16 +237,6 @@ export default function Metric({
                     });
                   }}
                 />
-                <button
-                  onClick={() => {
-                    eventHandler(handleClick)({
-                      type: "RenameMetric",
-                      id,
-                    });
-                  }}
-                >
-                  <i className="cursor-pointer fa fa-check-square fa-lg"></i>
-                </button>
               </>
             ) : (
               <>

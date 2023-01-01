@@ -17,10 +17,6 @@ type UpdateMetricName = {
   id: string;
   value: string;
 };
-type RenameMetric = {
-  type: "RenameMetric";
-  id: string;
-};
 
 export type ChartTypeSelected = "Pie" | "Line" | "Area" | "None";
 type SelectChartType = {
@@ -75,7 +71,6 @@ export type Msg =
   | EditMetricName
   | UpdateMetricName
   | UpdateMetric
-  | RenameMetric
   | None;
 
 type Metadata = {
@@ -89,6 +84,7 @@ export type MetricUi = {
   name: string;
   isMetricNameEditable: boolean;
   isEditable: boolean;
+  isSavingChanges: boolean;
   showWarning: boolean;
   showUpdateMetricChanges: boolean;
   chartTypeSelected: ChartTypeSelected;

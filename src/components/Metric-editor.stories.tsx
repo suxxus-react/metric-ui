@@ -17,6 +17,7 @@ const props: Omit<MetricUi, "handleClick" | "handleOnChange"> = {
   name: "metric name",
   isMetricNameEditable: false,
   isEditable: true,
+  isSavingChanges: false,
   showUpdateMetricChanges: false,
   showWarning: false,
   chartTypeSelected: "None",
@@ -66,3 +67,6 @@ WarnBeforeDelete.args = {
   ...props,
   showWarning: true,
 };
+
+export const isSavingChanges = Template.bind({});
+isSavingChanges.args = { ...props, isSavingChanges: true };
