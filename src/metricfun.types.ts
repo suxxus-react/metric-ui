@@ -31,9 +31,10 @@ type ToggleDarkMode = {
   type: "ToggleDarkMode";
 };
 
+type SocialNetwork = "Github"; // | Facebook ...
 type LoginWithSocialNetwork = {
   type: "LoginWithSocialNetwork";
-  value: string;
+  value: SocialNetwork;
 };
 
 type Logged = {

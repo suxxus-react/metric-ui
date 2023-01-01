@@ -5,7 +5,7 @@ export default function LoginWithAccount({ handleClick }: IProps): JSX.Element {
   return (
     <button
       onClick={() => {
-        handleClick({ type: "LoginWithSocialNetwork", value: "github" });
+        handleClick({ type: "LoginWithSocialNetwork", value: "Github" });
       }}
       className={Button}
     >
