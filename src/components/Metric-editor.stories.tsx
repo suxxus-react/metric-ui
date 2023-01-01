@@ -18,8 +18,9 @@ const props: Omit<MetricUi, "handleClick" | "handleOnChange"> = {
   isMetricNameEditable: false,
   isDeleted: false,
   isEditable: true,
+  showSave: false,
   showWarning: false,
-  chartTypeSelected: "Pie",
+  chartTypeSelected: "None",
   metadata: {
     resolution: "monthly",
     update: "update ...",
@@ -32,6 +33,7 @@ export const StatusNotEditable = Template.bind({});
 StatusNotEditable.args = {
   ...props,
   isEditable: false,
+  chartTypeSelected: "Pie",
 };
 export const NameNonEditable = Template.bind({});
 NameNonEditable.args = {
@@ -49,6 +51,11 @@ export const ShowLineChart = Template.bind({});
 ShowLineChart.args = { ...props, chartTypeSelected: "Line" };
 export const ShowAreaChart = Template.bind({});
 ShowAreaChart.args = { ...props, chartTypeSelected: "Area" };
+export const ShowSaveMetricOptions = Template.bind({});
+ShowSaveMetricOptions.args = {
+  ...props,
+  showSave: true,
+};
 export const WarnBeforeDelete = Template.bind({});
 WarnBeforeDelete.args = {
   ...props,

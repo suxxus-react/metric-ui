@@ -1,4 +1,4 @@
-import { MetricUi, DispatchMsg, ChartType } from "../metricfun.types";
+import { MetricUi, DispatchMsg, ChartTypeSelected } from "../metricfun.types";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Pie } from "react-chartjs-2";
 
@@ -13,7 +13,7 @@ type MetricSelectType = {
 };
 
 type MetricChartTypeSelected = {
-  chartTypeSelected: ChartType;
+  chartTypeSelected: ChartTypeSelected;
 };
 
 // helpers
@@ -157,8 +157,7 @@ function MetricTypeDisplay({
   };
 
   // <Pie data={data} />
-  const classShowChart = () => {
-    console.log("chart selected ", chartTypeSelected);
+  const classShowChart = (): string => {
     switch (chartTypeSelected) {
       case "Pie":
         return "metric-ui__show-chart__pie";
@@ -166,12 +165,15 @@ function MetricTypeDisplay({
         return "metric-ui__show-chart__line";
       case "Area":
         return "metric-ui__show-chart__area";
+      case "None":
+        return "metric-ui__show-chart__default";
     }
   };
-  console.log(classShowChart());
+
   return (
     <div className="metric-ui__show-chart">
       <ul className={classShowChart()}>
+        <li>None</li>
         <li>Pie</li>
         <li> line</li>
         <li>Area</li>
@@ -185,13 +187,16 @@ export default function Metric({
   name,
   isEditable,
   isMetricNameEditable,
+  showSave,
   showWarning,
   metadata,
   handleClick,
   handleOnChange,
   chartTypeSelected,
 }: MetricUi): JSX.Element {
+  //
   const eventHandler = eventHandlerHelper(isEditable);
+
   return (
     <div className="metric-ui">
       {showWarning && (
@@ -238,34 +243,61 @@ export default function Metric({
                     });
                   }}
                 >
-                  <i className="fa fa-pencil-square-o fa-lg"></i>
+                  {isEditable && (
+                    <i className="fa fa-pencil-square-o fa-lg"></i>
+                  )}
                 </button>
               </>
             )}
           </div>
-          <button
-            onClick={() => {
-              eventHandler(handleClick)({
-                type: "ToggleShowWarning",
-                id,
-              });
-            }}
-            className="font-extrabold"
-          >
-            x
-          </button>
+          {isEditable && (
+            <button
+              onClick={() => {
+                eventHandler(handleClick)({
+                  type: "ToggleShowWarning",
+                  id,
+                });
+              }}
+              className="font-extrabold"
+            >
+              delete metric
+            </button>
+          )}
         </div>
         {/* end metric name */}
-        <MetricOptionsSelector
-          {...{ id, handleClick: eventHandler(handleClick) }}
-        />
+        {isEditable && (
+          <MetricOptionsSelector
+            {...{ id, handleClick: eventHandler(handleClick) }}
+          />
+        )}
         {/*end chart selector */}
         <MetricTypeDisplay {...{ chartTypeSelected }} />
         {/* end display metric type */}
-        <div className="mt-2 flex justify-end invisible">
-          <button className="mr-4">cancel</button>
-          <button>save</button>
-        </div>
+        {isEditable && showSave && (
+          <div className="mt-2 flex justify-end">
+            <button
+              onClick={() => {
+                handleClick({
+                  type: "UpdateMetric",
+                  value: false,
+                });
+              }}
+              className="mr-4"
+            >
+              cancel
+            </button>
+            <button
+              onClick={() => {
+                handleClick({
+                  type: "UpdateMetric",
+                  value: true,
+                });
+              }}
+            >
+              save
+            </button>
+          </div>
+        )}
         {/* end save button */}
         <ul className="text-xs font-bold mt-5">
           {Object.values(metadata).map((data, idx) => (
