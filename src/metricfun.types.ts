@@ -22,11 +22,11 @@ type RenameMetric = {
   id: string;
 };
 
-export type ChartType = "Pie" | "Line" | "Area";
+export type ChartTypeSelected = "Pie" | "Line" | "Area" | "None";
 type SelectChartType = {
   type: "SelectChartType";
   id: string;
-  chartType: ChartType;
+  chartType: ChartTypeSelected;
 };
 
 // -- ---
@@ -52,6 +52,11 @@ type CreateNewMetric = {
   type: "CreateNewMetric";
 };
 
+type UpdateMetric = {
+  type: "UpdateMetric";
+  value: boolean;
+};
+
 type None = {
   type: "None";
 };
@@ -68,6 +73,7 @@ export type Msg =
   | SelectChartType
   | EditMetricName
   | UpdateMetricName
+  | UpdateMetric
   | RenameMetric
   | None;
 type Metadata = {
@@ -80,10 +86,11 @@ export type MetricUi = {
   id: string;
   name: string;
   isMetricNameEditable: boolean;
+  showSave: boolean;
   isDeleted: boolean;
   isEditable: boolean;
   showWarning: boolean;
-  chartTypeSelected: ChartType;
+  chartTypeSelected: ChartTypeSelected;
   metadata: Metadata;
   handleClick: DispatchMsg;
   handleOnChange: DispatchMsg;
