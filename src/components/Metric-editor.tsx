@@ -2,7 +2,7 @@ import {
   MetricUi,
   DispatchMsg,
   ChartTypeSelected,
-  ChartData,
+  ChartsData,
 } from "../metricfun.types";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { ThreeCircles } from "react-loader-spinner";
@@ -21,7 +21,7 @@ type MetricSelectType = {
 
 type MetricChartTypeSelected = {
   chartTypeSelected: ChartTypeSelected;
-  chartData: ChartData;
+  chartsData: ChartsData;
 };
 
 // helpers
@@ -140,10 +140,11 @@ function MetricOptionsSelector({
 
 function MetricTypeDisplay({
   chartTypeSelected,
-  chartData,
+  chartsData,
 }: MetricChartTypeSelected): JSX.Element {
   ChartJS.register(ArcElement, Tooltip, Legend);
   // fake data
+  const { pie, area, line } = chartsData;
 
   const classShowChart = (): string => {
     switch (chartTypeSelected) {
@@ -163,7 +164,7 @@ function MetricTypeDisplay({
       <ul className={classShowChart()}>
         <li>None</li>
         <li>
-          <Pie data={chartData} />
+          <Pie data={pie} />
         </li>
         <li> line</li>
         <li>Area</li>
@@ -182,7 +183,7 @@ export default function Metric({
   showUpdateMetricChanges,
   hasOnSaveErrors,
   chartTypeSelected,
-  chartData,
+  chartsData,
   metadata,
   handleClick,
   handleOnChange,
@@ -190,7 +191,7 @@ export default function Metric({
   //
   const eventHandler = eventHandlerHelper({ isSavingChanges });
 
-  console.log("1 chartdata: ", chartData);
+  console.log("1 chartdata: ", chartsData);
   return (
     <div className="metric-ui">
       {isSavingChanges && (
@@ -270,7 +271,7 @@ export default function Metric({
           />
         )}
         {/*end chart selector */}
-        <MetricTypeDisplay {...{ chartTypeSelected, chartData }} />
+        <MetricTypeDisplay {...{ chartTypeSelected, chartsData }} />
         {/* end display metric type */}
         {isEditable && showUpdateMetricChanges && (
           <div className="mt-2 flex justify-end">

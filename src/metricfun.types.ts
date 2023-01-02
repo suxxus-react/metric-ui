@@ -79,7 +79,7 @@ export type Msg =
   | UpdateMetric
   | None;
 
-type ChartDataSets = {
+type PieChartDataSets = {
   label: string;
   data: number[];
   backgroundColor: string[];
@@ -87,9 +87,24 @@ type ChartDataSets = {
   borderWidth: number;
 };
 
+type AreaChartDatasets = {
+  fill: boolean;
+  label: string;
+  data: number[];
+  borderColor: string;
+  backgroundColor: string;
+};
+
+type ChartDataSets = PieChartDataSets | AreaChartDatasets;
 export type ChartData = {
   labels: string[];
   datasets: ChartDataSets[];
+};
+
+export type ChartsData = {
+  area: ChartData;
+  line: ChartData;
+  pie: ChartData;
 };
 
 type Metadata = {
@@ -109,7 +124,7 @@ export type MetricUi = {
   showUpdateMetricChanges: boolean;
   hasOnSaveErrors: boolean;
   chartTypeSelected: ChartTypeSelected;
-  chartData: ChartData;
+  chartsData: ChartsData;
   metadata: Metadata;
   handleClick: DispatchMsg;
   handleOnChange: DispatchMsg;
