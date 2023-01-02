@@ -18,6 +18,7 @@ const Template: ComponentStory<typeof MainContainer> = (args) => (
 const props: Omit<IProps, "handleClick" | "handleOnChange"> = {
   ...metricsState,
   userName: "Alice",
+  isDark: true,
 };
 
 export const Login = Template.bind({});
