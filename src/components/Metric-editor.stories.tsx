@@ -14,12 +14,13 @@ export default {
 
 const props: Omit<MetricUi, "handleClick" | "handleOnChange"> = {
   id: "01",
-  name: "metric name",
+  name: "zz top",
   isMetricNameEditable: false,
   isEditable: true,
   isSavingChanges: false,
-  showUpdateMetricChanges: false,
   showWarning: false,
+  showUpdateMetricChanges: false,
+  hasOnSaveErrors: false,
   chartTypeSelected: "None",
   metadata: {
     resolution: "monthly",
@@ -61,6 +62,14 @@ export const ShowSaveMetricControls = Template.bind({});
 ShowSaveMetricControls.args = {
   ...props,
   showUpdateMetricChanges: true,
+};
+
+export const OnSaveErrors = Template.bind({});
+OnSaveErrors.args = {
+  ...props,
+  name: "",
+  isMetricNameEditable: true,
+  hasOnSaveErrors: true,
 };
 
 export const WarnBeforeDelete = Template.bind({});

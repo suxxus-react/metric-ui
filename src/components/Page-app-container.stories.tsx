@@ -17,11 +17,12 @@ const Template: ComponentStory<typeof MainContainer> = (args) => (
 
 const metricUiProps: MetricUi = {
   id: "01",
-  name: "metric name",
+  name: "My super metric",
   isMetricNameEditable: false,
-  isEditable: true,
+  isEditable: false,
   isSavingChanges: false,
   showUpdateMetricChanges: false,
+  hasOnSaveErrors: false,
   showWarning: false,
   chartTypeSelected: "None",
   metadata: {
@@ -37,7 +38,7 @@ const props: Omit<IProps, "handleClick" | "handleOnChange"> = {
   isDark: false,
   isLogged: false,
   isEditable: false,
-  userName: "",
+  userName: "Alice",
   metrics: [],
 };
 

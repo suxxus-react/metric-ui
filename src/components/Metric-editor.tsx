@@ -197,12 +197,13 @@ export default function Metric({
   isEditable,
   isMetricNameEditable,
   isSavingChanges,
-  showUpdateMetricChanges,
   showWarning,
+  showUpdateMetricChanges,
+  hasOnSaveErrors,
+  chartTypeSelected,
   metadata,
   handleClick,
   handleOnChange,
-  chartTypeSelected,
 }: MetricUi): JSX.Element {
   //
   const eventHandler = eventHandlerHelper({ isSavingChanges });
@@ -245,6 +246,7 @@ export default function Metric({
                     });
                   }}
                 />
+                {hasOnSaveErrors && <p>At least 3 characters</p>}
               </>
             ) : (
               <>

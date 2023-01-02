@@ -94,6 +94,7 @@ export type MetricUi = {
   isSavingChanges: boolean;
   showWarning: boolean;
   showUpdateMetricChanges: boolean;
+  hasOnSubmitErrors: boolean;
   chartTypeSelected: ChartTypeSelected;
   metadata: Metadata;
   handleClick: DispatchMsg;

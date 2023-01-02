@@ -17,10 +17,11 @@ const metricUiProps: MetricUi = {
   id: "01",
   name: "metric name",
   isMetricNameEditable: false,
-  isEditable: true,
+  isEditable: false,
   isSavingChanges: false,
   showUpdateMetricChanges: false,
   showWarning: false,
+  hasOnSaveErrors: false,
   chartTypeSelected: "None",
   metadata: {
     resolution: "monthly",
@@ -35,7 +36,7 @@ const props: Omit<IProps, "handleClick" | "handleOnChange"> = {
   isDark: false,
   isLogged: false,
   isEditable: false,
-  userName: "",
+  userName: "Martha",
   metrics: [],
 };
 
@@ -46,8 +47,18 @@ const Template: ComponentStory<typeof PageEditMetrics> = (args) => (
 export const WithOutMetricData = Template.bind({});
 WithOutMetricData.args = { ...props };
 
-export const WithStoredMetricData = Template.bind({});
-WithStoredMetricData.args = {
+export const WithMetricsNonEditable = Template.bind({});
+WithMetricsNonEditable.args = {
   ...props,
   metrics: [...Array(6)].fill({ ...metricUiProps }),
+};
+
+export const WithMetricsEditable = Template.bind({});
+WithMetricsEditable.args = {
+  ...props,
+  isEditable: true,
+  metrics: [...Array(6)].fill({ ...metricUiProps }).map((metricUiProps) => ({
+    ...metricUiProps,
+    isEditable: true,
+  })),
 };
