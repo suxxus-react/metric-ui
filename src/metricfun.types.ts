@@ -85,6 +85,7 @@ type Metadata = {
   resolution: string;
 };
 
+//
 export type MetricUi = {
   id: string;
   name: string;
@@ -104,6 +105,7 @@ export interface IState {
   isLogged: boolean;
   userName: string;
   isEditable: boolean;
+  metrics: MetricUi[];
 }
 
 export interface IProps extends IState {
