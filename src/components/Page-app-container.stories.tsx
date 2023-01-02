@@ -17,7 +17,6 @@ const Template: ComponentStory<typeof MainContainer> = (args) => (
 
 const props: Omit<IProps, "handleClick" | "handleOnChange"> = {
   ...metricsState,
-  userName: "Alice",
   isDark: true,
 };
 
@@ -28,6 +27,7 @@ export const UserLogged = Template.bind({});
 UserLogged.args = {
   ...props,
   isLogged: true,
+  userName: "Alice",
   metrics: [...Array(4)].fill({ ...metricProps }).map((metricProps) => ({
     ...metricProps,
     isEditable: false,
