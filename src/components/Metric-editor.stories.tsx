@@ -44,6 +44,9 @@ ShowLineChart.args = { ...metricProps, chartTypeSelected: "Line" };
 export const ShowAreaChart = Template.bind({});
 ShowAreaChart.args = { ...metricProps, chartTypeSelected: "Area" };
 
+export const ShowNone = Template.bind({});
+ShowNone.args = { ...metricProps };
+
 export const ShowSaveMetricControls = Template.bind({});
 ShowSaveMetricControls.args = {
   ...metricProps,
