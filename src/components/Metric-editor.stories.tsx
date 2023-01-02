@@ -2,7 +2,7 @@ import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import Metric from "../components/Metric-editor";
 import { MetricUi } from "../metricfun.types";
-import { chartsData } from "./Fixtures";
+import { metricProps } from "./Fixtures";
 
 export default {
   title: "Metric-fun/Metric_editor",
@@ -13,76 +13,64 @@ export default {
   },
 } as ComponentMeta<typeof Metric>;
 
-const props: Omit<MetricUi, "handleClick" | "handleOnChange"> = {
-  id: "01",
-  name: "zz top",
-  isMetricNameEditable: false,
-  isEditable: true,
-  isSavingChanges: false,
-  showWarning: false,
-  showUpdateMetricChanges: false,
-  hasOnSaveErrors: false,
-  chartTypeSelected: "None",
-  chartsData,
-  metadata: {
-    resolution: "monthly",
-    update: "update ...",
-    limit: "limit x",
-  },
-};
-
 const Template: ComponentStory<typeof Metric> = (args) => <Metric {...args} />;
 //
 export const StatusNotEditable = Template.bind({});
 StatusNotEditable.args = {
-  ...props,
+  ...metricProps,
   isEditable: false,
   chartTypeSelected: "Pie",
 };
 
 export const StatusEditable = Template.bind({});
 StatusEditable.args = {
-  ...props,
+  ...metricProps,
+  chartTypeSelected: "Pie",
 };
 
 export const NameEditable = Template.bind({});
 NameEditable.args = {
-  ...props,
+  ...metricProps,
   isMetricNameEditable: true,
+  chartTypeSelected: "Pie",
 };
 
 export const ShowPieChart = Template.bind({});
-ShowPieChart.args = { ...props, chartTypeSelected: "Pie" };
+ShowPieChart.args = { ...metricProps, chartTypeSelected: "Pie" };
 
 export const ShowLineChart = Template.bind({});
-ShowLineChart.args = { ...props, chartTypeSelected: "Line" };
+ShowLineChart.args = { ...metricProps, chartTypeSelected: "Line" };
 
 export const ShowAreaChart = Template.bind({});
-ShowAreaChart.args = { ...props, chartTypeSelected: "Area" };
+ShowAreaChart.args = { ...metricProps, chartTypeSelected: "Area" };
 
 export const ShowSaveMetricControls = Template.bind({});
 ShowSaveMetricControls.args = {
-  ...props,
+  ...metricProps,
   showUpdateMetricChanges: true,
+  chartTypeSelected: "Pie",
 };
 
 export const OnSaveErrors = Template.bind({});
 OnSaveErrors.args = {
-  ...props,
+  ...metricProps,
   name: "",
+  chartTypeSelected: "Pie",
   isMetricNameEditable: true,
   hasOnSaveErrors: true,
 };
 
 export const WarnBeforeDelete = Template.bind({});
 WarnBeforeDelete.args = {
-  ...props,
+  ...metricProps,
   showWarning: true,
+  chartTypeSelected: "Pie",
 };
 
 export const isSavingChanges = Template.bind({});
 isSavingChanges.args = {
-  ...props,
+  ...metricProps,
+  chartTypeSelected: "Pie",
   isSavingChanges: true,
   isMetricNameEditable: false,
 };

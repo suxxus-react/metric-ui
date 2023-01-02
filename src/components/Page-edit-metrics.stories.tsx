@@ -3,7 +3,7 @@ import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { IProps } from "../metricfun.types";
 import PageEditMetrics from "./Page-edit-metrics";
 import { MetricUi } from "../metricfun.types";
-import { chartData } from "./Fixtures";
+import { metricProps } from "./Fixtures";
 
 export default {
   title: "Metric-fun/Page-edit-metrics",
@@ -13,26 +13,6 @@ export default {
     handleOnChange: { action: "msg" },
   },
 } as ComponentMeta<typeof PageEditMetrics>;
-
-const metricUiProps: MetricUi = {
-  id: "01",
-  name: "metric name",
-  isMetricNameEditable: false,
-  isEditable: false,
-  isSavingChanges: false,
-  showUpdateMetricChanges: false,
-  showWarning: false,
-  hasOnSaveErrors: false,
-  chartTypeSelected: "None",
-  chartData,
-  metadata: {
-    resolution: "monthly",
-    update: "update ...",
-    limit: "limit x",
-  },
-  handleOnChange: () => ({ type: "None" }),
-  handleClick: () => ({ type: "None" }),
-};
 
 const props: Omit<IProps, "handleClick" | "handleOnChange"> = {
   isDark: false,
@@ -52,15 +32,22 @@ WithOutMetricData.args = { ...props };
 export const WithMetricsNonEditable = Template.bind({});
 WithMetricsNonEditable.args = {
   ...props,
-  metrics: [...Array(6)].fill({ ...metricUiProps }),
+  metrics: [...Array(6)].fill({ ...metricProps }).map((metricProps) => ({
+    ...metricProps,
+    isEditable: false,
+    name: "Arcadia",
+    chartTypeSelected: "Area",
+  })),
 };
 
 export const WithMetricsEditable = Template.bind({});
 WithMetricsEditable.args = {
   ...props,
   isEditable: true,
-  metrics: [...Array(6)].fill({ ...metricUiProps }).map((metricUiProps) => ({
-    ...metricUiProps,
+  metrics: [...Array(6)].fill({ ...metricProps }).map((metricProps) => ({
+    ...metricProps,
     isEditable: true,
+    name: "Arcadia",
+    chartTypeSelected: "Line",
   })),
 };

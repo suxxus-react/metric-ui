@@ -1,7 +1,8 @@
-import { ChartData, ChartsData } from "../metricfun.types";
+import { ChartData, ChartsData, MetricUi } from "../metricfun.types";
+
+const labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"];
 
 const pie: ChartData = {
-  // labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
   labels: [],
   datasets: [
     {
@@ -28,7 +29,6 @@ const pie: ChartData = {
   ],
 };
 
-const labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"];
 const area: ChartData = {
   labels,
   datasets: [
@@ -68,4 +68,22 @@ export const chartsData: ChartsData = {
   pie,
   area,
   line,
+};
+
+export const metricProps: Omit<MetricUi, "handleClick" | "handleOnChange"> = {
+  id: "01",
+  name: "zz top",
+  isMetricNameEditable: false,
+  isEditable: true,
+  isSavingChanges: false,
+  showWarning: false,
+  showUpdateMetricChanges: false,
+  hasOnSaveErrors: false,
+  chartTypeSelected: "None",
+  chartsData,
+  metadata: {
+    resolution: "monthly",
+    update: "update ...",
+    limit: "limit x",
+  },
 };
