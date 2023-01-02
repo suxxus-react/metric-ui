@@ -3,6 +3,7 @@ import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { IProps } from "../metricfun.types";
 import PageEditMetrics from "./Page-edit-metrics";
 import { MetricUi } from "../metricfun.types";
+import { chartData } from "./Fixtures";
 
 export default {
   title: "Metric-fun/Page-edit-metrics",
@@ -23,6 +24,7 @@ const metricUiProps: MetricUi = {
   showWarning: false,
   hasOnSaveErrors: false,
   chartTypeSelected: "None",
+  chartData,
   metadata: {
     resolution: "monthly",
     update: "update ...",

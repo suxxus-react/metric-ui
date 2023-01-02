@@ -2,6 +2,7 @@ import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import Metric from "../components/Metric-editor";
 import { MetricUi } from "../metricfun.types";
+import { chartData } from "./Fixtures";
 
 export default {
   title: "Metric-fun/Metric_editor",
@@ -22,6 +23,7 @@ const props: Omit<MetricUi, "handleClick" | "handleOnChange"> = {
   showUpdateMetricChanges: false,
   hasOnSaveErrors: false,
   chartTypeSelected: "None",
+  chartData,
   metadata: {
     resolution: "monthly",
     update: "update ...",

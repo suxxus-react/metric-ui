@@ -79,6 +79,19 @@ export type Msg =
   | UpdateMetric
   | None;
 
+type ChartDataSets = {
+  label: string;
+  data: number[];
+  backgroundColor: string[];
+  borderColor: string[];
+  borderWidth: number;
+};
+
+export type ChartData = {
+  labels: string[];
+  datasets: ChartDataSets[];
+};
+
 type Metadata = {
   update: string;
   limit: string;
@@ -96,6 +109,7 @@ export type MetricUi = {
   showUpdateMetricChanges: boolean;
   hasOnSaveErrors: boolean;
   chartTypeSelected: ChartTypeSelected;
+  chartData: ChartData;
   metadata: Metadata;
   handleClick: DispatchMsg;
   handleOnChange: DispatchMsg;
