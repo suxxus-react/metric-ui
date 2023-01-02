@@ -87,7 +87,7 @@ type PieChartDataSets = {
   borderWidth: number;
 };
 
-type AreaChartDatasets = {
+type LineChartDataSet = {
   fill: boolean;
   label: string;
   data: number[];
@@ -95,7 +95,7 @@ type AreaChartDatasets = {
   backgroundColor: string;
 };
 
-type ChartDataSets = PieChartDataSets | AreaChartDatasets;
+type ChartDataSets = PieChartDataSets | LineChartDataSet;
 export type ChartData = {
   labels: string[];
   datasets: ChartDataSets[];
