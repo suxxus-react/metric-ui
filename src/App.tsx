@@ -1,54 +1,39 @@
-// import { useState } from "react";
-import Metric from "./components/Metric-ui";
+import { useState } from "react";
+import MainContainer from "./components/Page-app-container";
+import { IState, Msg, IProps } from "./metricfun.types";
+
+const updateState = (msg: Msg, state: IState): IState => {
+  console.log("msg -> ", msg);
+  switch (msg.type) {
+    case "IsLogged":
+      return { ...state, isLogged: true };
+    case "None":
+      return { ...state };
+    default:
+      return { ...state };
+  }
+
+  // return { ...state };
+};
 
 function App() {
-  return (
-    <div className="metrics bg-white dark:bg-slate-800 dark:text-white">
-      <header className="mb-6 flex justify-between">
-        <h1 className="metrics__logo">fun-metrics</h1>
-        <button>
-          <i className="fa fa-sun-o"></i>
-        </button>
-      </header>
-      <div className="max-w-xs md:max-w-screen-sm lg:max-w-screen-lg mx-auto">
-        <section>
-          <div className="flex flex-col space-y-4 mb-5">
-            <div className="flex justify-between ">
-              <div>
-                <span className="mr-3">user name</span>
-                <i className="fa fa-user fa-2x"></i>
-              </div>
-              <div className="py-3">
-                <div className="form-check form-switch">
-                  <input
-                    className="form-check-input appearance-none w-9 -ml-10 rounded-full float-left h-5 align-top bg-white bg-no-repeat bg-contain bg-gray-300 focus:outline-none cursor-pointer shadow-sm"
-                    type="checkbox"
-                    role="switch"
-                    id="flexSwitchCheckDefault"
-                  />
-                  <label className="form-check-label inline-block">edit</label>
-                </div>
-              </div>
-            </div>
-            <button className="md:w-40">new metric</button>
-          </div>
-        </section>
-        <section>
-          <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-            <Metric />
-            <Metric />
-            <Metric />
-            <Metric />
-            <Metric />
-            <Metric />
-            <Metric />
-            <Metric />
-            <Metric />
-          </div>
-        </section>
-      </div>
-    </div>
-  );
+  const [state, setState] = useState<IState>({
+    isDark: false,
+    isLogged: false,
+    userName: "pepe",
+    isEditable: false,
+    metrics: [],
+  });
+
+  const props: IProps = {
+    ...state,
+    dispatchMsg: (msg: Msg) => {
+      setState(updateState(msg, { ...state }));
+      return msg;
+    },
+  };
+
+  return <MainContainer {...props} />;
 }
 
 export default App;

@@ -1,0 +1,12 @@
+<script>
+  window.addEventListener("DOMContentLoaded", (event) => {
+    console.log("DOM fully loaded and parsed");
+    const script = document.createElement("script");
+    script.setAttribute(
+      "src",
+      "https://cdn.jsdelivr.net/npm/tw-elements/dist/js/index.min.js"
+    );
+    const body = window.document.getElementsByTagName("body")[0];
+    body.appendChild(script);
+  });
+</script>
