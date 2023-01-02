@@ -3,7 +3,7 @@ import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { IProps } from "../metricfun.types";
 import PageEditMetrics from "./Page-edit-metrics";
 import { MetricUi } from "../metricfun.types";
-import { metricProps } from "./Fixtures";
+import { metricsState, metricProps } from "./Fixtures";
 
 export default {
   title: "Metric-fun/Page-edit-metrics",
@@ -15,19 +15,29 @@ export default {
 } as ComponentMeta<typeof PageEditMetrics>;
 
 const props: Omit<IProps, "handleClick" | "handleOnChange"> = {
-  isDark: false,
-  isLogged: false,
-  isEditable: false,
+  ...metricsState,
   userName: "Martha",
-  metrics: [],
 };
 
 const Template: ComponentStory<typeof PageEditMetrics> = (args) => (
   <PageEditMetrics {...args} />
 );
 
-export const WithOutMetricData = Template.bind({});
-WithOutMetricData.args = { ...props };
+export const WithOutMetricsData = Template.bind({});
+WithOutMetricsData.args = { ...props, isEditable: true };
+
+export const CreateNewMetric = Template.bind({});
+CreateNewMetric.args = {
+  ...props,
+  isEditable: true,
+  metrics: [...Array(1)].fill({ ...metricProps }).map((metricProps) => ({
+    ...metricProps,
+    isEditable: true,
+    name: "",
+    isMetricNameEditable: true,
+    chartTypeSelected: "None",
+  })),
+};
 
 export const WithMetricsNonEditable = Template.bind({});
 WithMetricsNonEditable.args = {

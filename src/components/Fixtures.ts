@@ -1,4 +1,4 @@
-import { ChartData, ChartsData, MetricUi } from "../metricfun.types";
+import { IState, ChartData, ChartsData, MetricUi } from "../metricfun.types";
 
 const labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"];
 
@@ -86,4 +86,12 @@ export const metricProps: Omit<MetricUi, "handleClick" | "handleOnChange"> = {
     update: "update ...",
     limit: "limit x",
   },
+};
+
+export const metricsState: IState = {
+  isDark: false,
+  isLogged: false,
+  userName: "",
+  isEditable: false,
+  metrics: [],
 };

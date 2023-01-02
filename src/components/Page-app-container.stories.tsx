@@ -1,7 +1,7 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import MainContainer from "./Page-app-container";
 import { IProps, MetricUi } from "../metricfun.types";
-import { metricProps } from "./Fixtures";
+import { metricsState, metricProps } from "./Fixtures";
 export default {
   title: "Metric-fun/Main-container",
   component: MainContainer,
@@ -16,11 +16,8 @@ const Template: ComponentStory<typeof MainContainer> = (args) => (
 );
 
 const props: Omit<IProps, "handleClick" | "handleOnChange"> = {
-  isDark: false,
-  isLogged: false,
-  isEditable: false,
+  ...metricsState,
   userName: "Alice",
-  metrics: [],
 };
 
 export const Login = Template.bind({});
@@ -30,7 +27,7 @@ export const UserLogged = Template.bind({});
 UserLogged.args = {
   ...props,
   isLogged: true,
-  metrics: [...Array(3)].fill({ ...metricProps }).map((metricProps) => ({
+  metrics: [...Array(4)].fill({ ...metricProps }).map((metricProps) => ({
     ...metricProps,
     isEditable: false,
     name: "Siouxie",

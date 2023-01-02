@@ -3,6 +3,7 @@ export default function LoggedHeader({
   userName,
   handleClick,
   handleOnChange,
+  isEditable,
 }: IProps): JSX.Element {
   return (
     <div className="flex flex-col space-y-4">
@@ -40,14 +41,16 @@ export default function LoggedHeader({
           </div>
         </div>
       </div>
-      <button
-        className="md:w-40"
-        onClick={() => {
-          handleOnChange({ type: "CreateNewMetric" });
-        }}
-      >
-        new metric
-      </button>
+      {isEditable && (
+        <button
+          className="md:w-40"
+          onClick={() => {
+            handleClick({ type: "CreateNewMetric" });
+          }}
+        >
+          new metric
+        </button>
+      )}
     </div>
   );
 }
