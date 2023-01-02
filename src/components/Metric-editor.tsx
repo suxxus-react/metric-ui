@@ -4,9 +4,21 @@ import {
   ChartTypeSelected,
   ChartsData,
 } from "../metricfun.types";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import {
+  Chart as ChartJS,
+  ArcElement,
+  Legend,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Filler,
+} from "chart.js";
 import { ThreeCircles } from "react-loader-spinner";
 import { Pie } from "react-chartjs-2";
+import { Line } from "react-chartjs-2";
 
 type MetricModal = {
   id: string;
@@ -142,8 +154,18 @@ function MetricTypeDisplay({
   chartTypeSelected,
   chartsData,
 }: MetricChartTypeSelected): JSX.Element {
-  ChartJS.register(ArcElement, Tooltip, Legend);
-  // fake data
+  ChartJS.register(
+    ArcElement,
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Filler,
+    Legend
+  );
+
   const { pie, area, line } = chartsData;
 
   const classShowChart = (): string => {
@@ -159,15 +181,46 @@ function MetricTypeDisplay({
     }
   };
 
+  const getChartText = (): string => {
+    const text = "Fun Charts ";
+    switch (chartTypeSelected) {
+      case "Pie":
+        return `${text}"Pie"`;
+      case "Area":
+        return `${text}"Area"`;
+      case "Line":
+        return `${text}"Line"`;
+      case "None":
+        return "";
+    }
+  };
+
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: "top" as const,
+      },
+      title: {
+        display: true,
+        text: getChartText(),
+      },
+    },
+  };
+
   return (
     <div className="metric-ui__show-chart">
       <ul className={classShowChart()}>
         <li>None</li>
         <li>
-          <Pie data={pie} />
+          <Pie options={options} data={pie} />
         </li>
-        <li> line</li>
-        <li>Area</li>
+        <li>
+          <Line options={options} data={line} />
+        </li>
+        <li>
+          <Line options={options} data={area} />
+        </li>
       </ul>
     </div>
   );

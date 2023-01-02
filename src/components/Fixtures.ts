@@ -28,80 +28,44 @@ const pie: ChartData = {
   ],
 };
 
-const noData = { labels: [], datasets: [] };
+const labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"];
+const area: ChartData = {
+  labels,
+  datasets: [
+    {
+      fill: true,
+      label: "Dataset 2",
+      data: [12, 19, 3, 5, 2, 3],
+      borderColor: "rgb(53, 162, 235)",
+      backgroundColor: "rgba(53, 162, 235, 0.5)",
+    },
+  ],
+};
+
+const line: ChartData = {
+  labels,
+  datasets: [
+    {
+      fill: false,
+      label: "Dataset 1",
+      data: [23, 12, 7, 9, 20, 9],
+      borderColor: "rgb(255, 99, 132)",
+      backgroundColor: "rgba(255, 99, 132, 0.5)",
+    },
+    {
+      fill: false,
+      label: "Dataset 2",
+      data: [12, 19, 3, 5, 2, 3],
+      borderColor: "rgb(53, 162, 235)",
+      backgroundColor: "rgba(53, 162, 235, 0.5)",
+    },
+  ],
+};
+
+// const noData = { labels: [], datasets: [] };
 
 export const chartsData: ChartsData = {
   pie,
-  area: noData,
-  line: noData,
+  area,
+  line,
 };
-
-// const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July
-// export const data = {
-//   labels,
-//   datasets: [
-//     {
-//       fill: true,
-//       label: 'Dataset 2',
-//       data: labels.map(() =>
-//       faker.datatype.number({ min: 0, max: 1000 })),
-//       borderColor: 'rgb(53, 162, 235)',
-//       backgroundColor: 'rgba(53, 162, 235, 0.5)',
-//     },
-//   ],
-// };
-
-// import React from 'react';
-// import {
-//   Chart as ChartJS,
-//   CategoryScale,
-//   LinearScale,
-//   PointElement,
-//   LineElement,
-//   Title,
-//   Tooltip,
-//   Filler,
-//   Legend,
-// } from 'chart.js';
-// import { Line } from 'react-chartjs-2';
-// import faker from 'faker';
-//
-// ChartJS.register(
-//   CategoryScale,
-//   LinearScale,
-//   PointElement,
-//   LineElement,
-//   Title,
-//   Tooltip,
-//   Filler,
-//   Legend
-// );
-//
-// export const options = {
-//   responsive: true,
-//   plugins: {
-//     legend: {
-//       position: 'top' as const,
-//     },
-//     title: {
-//       display: true,
-//       text: 'Chart.js Line Chart',
-//     },
-//   },
-// };
-//
-// const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-//
-// export const data = {
-//   labels,
-//   datasets: [
-//     {
-//       fill: true,
-//       label: 'Dataset 2',
-//       data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
-//       borderColor: 'rgb(53, 162, 235)',
-//       backgroundColor: 'rgba(53, 162, 235, 0.5)',
-//     },
-//   ],
-// };
-//
