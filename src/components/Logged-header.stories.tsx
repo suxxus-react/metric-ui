@@ -7,8 +7,7 @@ export default {
   title: "Metric-fun/LoggedHeader_editor",
   component: LoggedHeader,
   argTypes: {
-    handleOnChange: { action: "msg" },
-    handleClick: { action: "msg" },
+    dispatchMsg: { action: "msg" },
   },
 } as ComponentMeta<typeof LoggedHeader>;
 

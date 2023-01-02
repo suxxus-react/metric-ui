@@ -1,5 +1,5 @@
 import { IProps } from "../metricfun.types";
-export default function Header({ isDark, handleClick }: IProps): JSX.Element {
+export default function Header({ isDark, dispatchMsg }: IProps): JSX.Element {
   const sun = <i className="fa fa-sun-o"></i>;
   const moon = <i className="fa fa-moon-o"></i>;
   return (
@@ -7,7 +7,7 @@ export default function Header({ isDark, handleClick }: IProps): JSX.Element {
       <h1 className="metrics__logo">fun-metrics</h1>
       <button
         onClick={() => {
-          handleClick({
+          dispatchMsg({
             type: "ToggleDarkMode",
           });
         }}

@@ -22,11 +22,12 @@ function App() {
     isLogged: false,
     userName: "pepe",
     isEditable: false,
+    metrics: [],
   });
 
   const props: IProps = {
     ...state,
-    handleClick: (msg: Msg) => {
+    dispatchMsg: (msg: Msg) => {
       setState(updateState(msg, { ...state }));
       return msg;
     },

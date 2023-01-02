@@ -8,8 +8,7 @@ export default {
   title: "Metric-fun/Metric_editor",
   component: Metric,
   argTypes: {
-    handleClick: { action: "msg" },
-    handleOnChange: { action: "msg" },
+    dispatchMsg: { action: "msg" },
   },
 } as ComponentMeta<typeof Metric>;
 

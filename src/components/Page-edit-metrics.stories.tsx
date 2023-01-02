@@ -9,12 +9,11 @@ export default {
   title: "Metric-fun/Page-edit-metrics",
   component: PageEditMetrics,
   argTypes: {
-    handleClick: { action: "msg" },
-    handleOnChange: { action: "msg" },
+    dispatchMsg: { action: "msg" },
   },
 } as ComponentMeta<typeof PageEditMetrics>;
 
-const props: Omit<IProps, "handleClick" | "handleOnChange"> = {
+const props: Omit<IProps, "dispatchMsg" | "dispatchMsg"> = {
   ...metricsState,
   userName: "Martha",
 };

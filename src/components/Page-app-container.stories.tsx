@@ -6,8 +6,7 @@ export default {
   title: "Metric-fun/Main-container",
   component: MainContainer,
   argTypes: {
-    handleClick: { action: "msg" },
-    handleOnChange: { action: "msg" },
+    dispatchMsg: { action: "msg" },
   },
 } as ComponentMeta<typeof MainContainer>;
 //
@@ -15,7 +14,7 @@ const Template: ComponentStory<typeof MainContainer> = (args) => (
   <MainContainer {...args} />
 );
 
-const props: Omit<IProps, "handleClick" | "handleOnChange"> = {
+const props: Omit<IProps, "dispatchMsg" | "dispatchMsg"> = {
   ...metricsState,
   isDark: true,
 };

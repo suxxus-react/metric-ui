@@ -1,8 +1,7 @@
 import { IProps } from "../metricfun.types";
 export default function LoggedHeader({
   userName,
-  handleClick,
-  handleOnChange,
+  dispatchMsg,
   isEditable,
 }: IProps): JSX.Element {
   return (
@@ -15,7 +14,7 @@ export default function LoggedHeader({
           </div>
           <button
             onClick={() => {
-              handleClick({
+              dispatchMsg({
                 type: "Logout",
               });
             }}
@@ -32,7 +31,7 @@ export default function LoggedHeader({
               role="switch"
               id="flexSwitchCheckDefault"
               onChange={() => {
-                handleOnChange({
+                dispatchMsg({
                   type: "ToggleEditable",
                 });
               }}
@@ -45,7 +44,7 @@ export default function LoggedHeader({
         <button
           className="md:w-40"
           onClick={() => {
-            handleClick({ type: "CreateNewMetric" });
+            dispatchMsg({ type: "CreateNewMetric" });
           }}
         >
           new metric

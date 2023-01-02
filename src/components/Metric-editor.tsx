@@ -22,11 +22,11 @@ import { Line } from "react-chartjs-2";
 
 type MetricModal = {
   id: string;
-  handleClick: DispatchMsg;
+  dispatchMsg: DispatchMsg;
 };
 
 type MetricSelectType = {
-  handleClick: DispatchMsg;
+  dispatchMsg: DispatchMsg;
   isSavingChanges: boolean;
   id: string;
 };
@@ -48,7 +48,7 @@ const eventHandlerHelper =
 
 // component
 // =========
-function MetricModal({ id, handleClick }: MetricModal): JSX.Element {
+function MetricModal({ id, dispatchMsg }: MetricModal): JSX.Element {
   return (
     <section className="absolute z-10 h-full w-full">
       <div className="absolute h-full w-full bg-indigo-500 opacity-50"></div>
@@ -61,7 +61,7 @@ function MetricModal({ id, handleClick }: MetricModal): JSX.Element {
             <button
               type="button"
               onClick={() => {
-                handleClick({
+                dispatchMsg({
                   type: "DeleteMetric",
                   id,
                 });
@@ -73,7 +73,7 @@ function MetricModal({ id, handleClick }: MetricModal): JSX.Element {
             <button
               type="button"
               onClick={() => {
-                handleClick({
+                dispatchMsg({
                   type: "ToggleShowWarning",
                   id,
                 });
@@ -90,7 +90,7 @@ function MetricModal({ id, handleClick }: MetricModal): JSX.Element {
 }
 
 function MetricOptionsSelector({
-  handleClick,
+  dispatchMsg,
   isSavingChanges,
   id,
 }: MetricSelectType): JSX.Element {
@@ -107,7 +107,7 @@ function MetricOptionsSelector({
         <li>
           <button
             onClick={() => {
-              handleClick({
+              dispatchMsg({
                 type: "SelectChartType",
                 id,
                 value: "Pie",
@@ -122,7 +122,7 @@ function MetricOptionsSelector({
         <li>
           <button
             onClick={() => {
-              handleClick({
+              dispatchMsg({
                 type: "SelectChartType",
                 id,
                 value: "Line",
@@ -137,7 +137,7 @@ function MetricOptionsSelector({
         <li>
           <button
             onClick={() => {
-              handleClick({ type: "SelectChartType", id, value: "Area" });
+              dispatchMsg({ type: "SelectChartType", id, value: "Area" });
             }}
             className="hover:bg-zinc-200 dark:hover:bg-zinc-500"
           >
@@ -238,8 +238,7 @@ export default function Metric({
   chartTypeSelected,
   chartsData,
   metadata,
-  handleClick,
-  handleOnChange,
+  dispatchMsg,
 }: MetricUi): JSX.Element {
   //
   const eventHandler = eventHandlerHelper({ isSavingChanges });
@@ -262,7 +261,7 @@ export default function Metric({
         />
       )}
       {showWarning && (
-        <MetricModal {...{ id, handleClick: eventHandler(handleClick) }} />
+        <MetricModal {...{ id, dispatchMsg: eventHandler(dispatchMsg) }} />
       )}
       <div className="p-4">
         <div className="flex justify-between">
@@ -276,7 +275,7 @@ export default function Metric({
                   onChange={(evt) => {
                     evt.preventDefault();
 
-                    eventHandler(handleOnChange)({
+                    eventHandler(dispatchMsg)({
                       type: "UpdateMetricName",
                       id,
                       value: evt.target?.value || "",
@@ -290,7 +289,7 @@ export default function Metric({
                 <span className="mr-2">{name}</span>
                 <button
                   onClick={() => {
-                    eventHandler(handleClick)({
+                    eventHandler(dispatchMsg)({
                       type: "EditMetricName",
                       id,
                     });
@@ -306,7 +305,7 @@ export default function Metric({
           {isEditable && (
             <button
               onClick={() => {
-                eventHandler(handleClick)({
+                eventHandler(dispatchMsg)({
                   type: "ToggleShowWarning",
                   id,
                 });
@@ -320,7 +319,7 @@ export default function Metric({
         {/* end metric name */}
         {isEditable && (
           <MetricOptionsSelector
-            {...{ id, isSavingChanges, handleClick: eventHandler(handleClick) }}
+            {...{ id, isSavingChanges, dispatchMsg: eventHandler(dispatchMsg) }}
           />
         )}
         {/*end chart selector */}
@@ -330,7 +329,7 @@ export default function Metric({
           <div className="mt-2 flex justify-end">
             <button
               onClick={() => {
-                handleClick({
+                dispatchMsg({
                   type: "UpdateMetric",
                   value: false,
                 });
@@ -341,7 +340,7 @@ export default function Metric({
             </button>
             <button
               onClick={() => {
-                handleClick({
+                dispatchMsg({
                   type: "UpdateMetric",
                   value: true,
                 });

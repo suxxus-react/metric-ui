@@ -126,8 +126,7 @@ export type MetricUi = {
   chartTypeSelected: ChartTypeSelected;
   chartsData: ChartsData;
   metadata: Metadata;
-  handleClick: DispatchMsg;
-  handleOnChange: DispatchMsg;
+  dispatchMsg: DispatchMsg;
 };
 
 export interface IState {
@@ -139,6 +138,5 @@ export interface IState {
 }
 
 export interface IProps extends IState {
-  handleClick: DispatchMsg;
-  handleOnChange: DispatchMsg;
+  dispatchMsg: DispatchMsg;
 }
