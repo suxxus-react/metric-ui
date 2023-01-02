@@ -92,7 +92,7 @@ function MetricOptionsSelector({
               handleClick({
                 type: "SelectChartType",
                 id,
-                chartType: "Pie",
+                value: "Pie",
               });
             }}
             className="hover:bg-zinc-200 dark:hover:bg-zinc-500"
@@ -107,7 +107,7 @@ function MetricOptionsSelector({
               handleClick({
                 type: "SelectChartType",
                 id,
-                chartType: "Line",
+                value: "Line",
               });
             }}
             className="hover:bg-zinc-200 dark:hover:bg-zinc-500"
@@ -119,7 +119,7 @@ function MetricOptionsSelector({
         <li>
           <button
             onClick={() => {
-              handleClick({ type: "SelectChartType", id, chartType: "Area" });
+              handleClick({ type: "SelectChartType", id, value: "Area" });
             }}
             className="hover:bg-zinc-200 dark:hover:bg-zinc-500"
           >

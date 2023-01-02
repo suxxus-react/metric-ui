@@ -22,7 +22,7 @@ export type ChartTypeSelected = "Pie" | "Line" | "Area" | "None";
 type SelectChartType = {
   type: "SelectChartType";
   id: string;
-  chartType: ChartTypeSelected;
+  value: ChartTypeSelected;
 };
 
 // -- ---
@@ -94,7 +94,7 @@ export type MetricUi = {
   isSavingChanges: boolean;
   showWarning: boolean;
   showUpdateMetricChanges: boolean;
-  hasOnSubmitErrors: boolean;
+  hasOnSaveErrors: boolean;
   chartTypeSelected: ChartTypeSelected;
   metadata: Metadata;
   handleClick: DispatchMsg;
