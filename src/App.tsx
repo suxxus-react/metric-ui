@@ -20,7 +20,7 @@ function App() {
   const [state, setState] = useState<IState>({
     isDark: false,
     isLogged: false,
-    userName: "pepe",
+    userName: "",
     isEditable: false,
     metrics: [],
   });
