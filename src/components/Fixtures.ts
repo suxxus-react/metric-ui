@@ -70,7 +70,7 @@ export const chartsData: ChartsData = {
   line,
 };
 
-export const metricProps: Omit<MetricUi, "handleClick" | "handleOnChange"> = {
+export const metricProps: Omit<MetricUi, "dispatchMsg"> = {
   id: "01",
   name: "zz top",
   isMetricNameEditable: false,
@@ -89,6 +89,7 @@ export const metricProps: Omit<MetricUi, "handleClick" | "handleOnChange"> = {
 };
 
 export const metricsState: IState = {
+  id: 0,
   isDark: false,
   isLogged: false,
   userName: "",
