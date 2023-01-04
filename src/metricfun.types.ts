@@ -25,6 +25,12 @@ type SelectChartType = {
   value: ChartTypeSelected;
 };
 
+type SaveMetricChanges = {
+  type: "SaveMetricChanges";
+  id: string;
+  value: boolean;
+};
+
 // -- ---
 
 type ToggleDarkMode = {
@@ -45,17 +51,16 @@ type Logout = {
   type: "Logout";
 };
 
+type UpdateMetrics = {
+  type: "UpdateMetrics";
+  value: MetricUi[];
+};
 type ToggleEditable = {
   type: "ToggleEditable";
 };
 
 type CreateNewMetric = {
   type: "CreateNewMetric";
-};
-
-type UpdateMetric = {
-  type: "UpdateMetric";
-  value: boolean;
 };
 
 type None = {
@@ -76,10 +81,11 @@ export type Msg =
   | SelectChartType
   | EditMetricName
   | UpdateMetricName
-  | UpdateMetric
+  | SaveMetricChanges
+  | UpdateMetrics
   | None;
 
-type PieChartDataSets = {
+export type PieChartDataSets = {
   label: string;
   data: number[];
   backgroundColor: string[];
@@ -87,7 +93,7 @@ type PieChartDataSets = {
   borderWidth: number;
 };
 
-type LineChartDataSet = {
+export type LineChartDataSet = {
   fill: boolean;
   label: string;
   data: number[];
@@ -95,9 +101,9 @@ type LineChartDataSet = {
   backgroundColor: string;
 };
 
-type ChartDataSets = PieChartDataSets | LineChartDataSet;
+export type ChartDataSets = PieChartDataSets | LineChartDataSet;
 export type ChartData = {
-  labels: string[];
+  labels?: string[];
   datasets: ChartDataSets[];
 };
 
@@ -133,6 +139,7 @@ export interface IState {
   isDark: boolean;
   isLogged: boolean;
   userName: string;
+  id: number;
   isEditable: boolean;
   metrics: MetricUi[];
 }
