@@ -330,7 +330,8 @@ export default function Metric({
             <button
               onClick={() => {
                 dispatchMsg({
-                  type: "UpdateMetric",
+                  type: "SaveMetricChanges",
+                  id,
                   value: false,
                 });
               }}
@@ -341,7 +342,8 @@ export default function Metric({
             <button
               onClick={() => {
                 dispatchMsg({
-                  type: "UpdateMetric",
+                  type: "SaveMetricChanges",
+                  id,
                   value: true,
                 });
               }}
