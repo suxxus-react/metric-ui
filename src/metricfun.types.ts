@@ -19,6 +19,7 @@ type UpdateMetricName = {
 };
 
 export type ChartTypeSelected = "Pie" | "Line" | "Area" | "None";
+
 type SelectChartType = {
   type: "SelectChartType";
   id: string;
@@ -51,9 +52,9 @@ type Logout = {
   type: "Logout";
 };
 
-type DecodedUserData = {
-  type: "DecodedUserData";
-  value: { id: number; metrics: MetricData };
+type UpdateMetrics = {
+  type: "UpdateMetrics";
+  value: MetricUi[];
 };
 
 type ToggleEditable = {
@@ -83,18 +84,37 @@ export type Msg =
   | EditMetricName
   | UpdateMetricName
   | SaveMetricChanges
-  | DecodedUserData
+  | UpdateMetrics
   | None;
 
 // ========================
+//
+export type MetricDataSet = {
+  label: string;
+  data: number[];
+};
+
+export type MetricDataChart = {
+  datasets: MetricDataSet[];
+  labels?: string[];
+};
+
 export type MetricData = {
   id: string;
   name: string;
   chartType: string;
-  chartsData: ChartData;
+  chartData: MetricDataChart;
   metadata?: Metadata;
 };
 
+export type UserDataDecoded = {
+  id: number;
+  metrics: MetricData[];
+};
+
+// end of types used to decode json userData
+// -------------------------------------------------
+//
 export type PieChartDataSets = {
   label: string;
   data: number[];
@@ -112,8 +132,9 @@ export type LineChartDataSet = {
 };
 
 export type ChartDataSets = PieChartDataSets | LineChartDataSet;
+
 export type ChartData = {
-  labels?: string[];
+  labels: string[];
   datasets: ChartDataSets[];
 };
 
@@ -128,7 +149,6 @@ export type Metadata = {
   limit: string;
   resolution: string;
 };
-
 //
 export type MetricUi = {
   id: string;
