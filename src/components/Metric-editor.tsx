@@ -243,7 +243,6 @@ export default function Metric({
   //
   const eventHandler = eventHandlerHelper({ isSavingChanges });
 
-  console.log("1 chartdata: ", chartsData);
   return (
     <div className="metric-ui">
       {isSavingChanges && (
