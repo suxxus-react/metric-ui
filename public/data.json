@@ -34,6 +34,11 @@
     {
       "id": "0234",
       "name": "name",
+      "metadata": {
+        "resolution": "monthly",
+        "update": "update ...",
+        "limit": "limit x"
+      },
       "chartType": "line",
       "chartsData": {
         "labels": ["jan", "feb", "mar"],

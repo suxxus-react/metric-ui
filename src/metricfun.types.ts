@@ -51,10 +51,11 @@ type Logout = {
   type: "Logout";
 };
 
-type UpdateMetrics = {
-  type: "UpdateMetrics";
-  value: MetricUi[];
+type DecodedUserData = {
+  type: "DecodedUserData";
+  value: { id: number; metrics: MetricData };
 };
+
 type ToggleEditable = {
   type: "ToggleEditable";
 };
@@ -82,8 +83,17 @@ export type Msg =
   | EditMetricName
   | UpdateMetricName
   | SaveMetricChanges
-  | UpdateMetrics
+  | DecodedUserData
   | None;
+
+// ========================
+export type MetricData = {
+  id: string;
+  name: string;
+  chartType: string;
+  chartsData: ChartData;
+  metadata?: Metadata;
+};
 
 export type PieChartDataSets = {
   label: string;
@@ -113,7 +123,7 @@ export type ChartsData = {
   pie: ChartData;
 };
 
-type Metadata = {
+export type Metadata = {
   update: string;
   limit: string;
   resolution: string;

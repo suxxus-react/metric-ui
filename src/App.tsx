@@ -6,18 +6,14 @@ import {
   IState,
   Msg,
   IProps,
+  MetricData,
+  Metadata,
   ChartData,
   ChartDataSets,
   PieChartDataSets,
   LineChartDataSet,
 } from "./metricfun.types";
 
-type MetricData = {
-  id: string;
-  name: string;
-  chartType: string;
-  chartsData: ChartData;
-};
 type UserData = {
   id: number;
   metrics?: unknown;
@@ -33,7 +29,7 @@ function updateStateData(
       case "IsLogged":
         updatedState = { ...state, isLogged: true };
         break;
-      case "UpdateMetrics":
+      case "DecodedUserData":
         updatedState = {
           ...state,
           // metrics: msg.value,
@@ -94,11 +90,18 @@ function userDataDecoder(data: unknown): UserData {
     datasets: ChartDataSetsDecoder,
   });
 
+  const metadataDecoder = D.objectDecoder<Metadata>({
+    update: D.stringDecoder,
+    limit: D.stringDecoder,
+    resolution: D.stringDecoder,
+  });
+
   const userMetricsDecoder = D.objectDecoder<MetricData>({
     id: D.stringDecoder,
     name: D.stringDecoder,
     chartType: chartTypeDecoder,
     chartsData: chartDataDecoder,
+    metadata: D.oneOfDecoders(metadataDecoder, D.undefinedDecoder),
   });
 
   const dataDecoder = D.objectDecoder<UserData>({
@@ -130,6 +133,11 @@ function userDataDecoder(data: unknown): UserData {
 
       const metrics = resultCopy.metrics
         .map((obj: MetricData) => {
+          obj.metadata = obj.metadata || {
+            update: "",
+            limit: "",
+            resolution: "",
+          };
           obj.chartsData.labels = obj.chartsData.labels || [];
           return obj;
         })
@@ -178,7 +186,7 @@ function App() {
 
           updateState(
             {
-              type: "UpdateMetrics",
+              type: "DecodedUserData",
               value: [],
             },
             { ...state }
