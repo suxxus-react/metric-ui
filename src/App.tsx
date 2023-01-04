@@ -6,12 +6,16 @@ import {
   IState,
   Msg,
   IProps,
-  MetricData,
-  Metadata,
-  ChartData,
-  ChartDataSets,
+  UserDataDecoded,
+  ChartTypeSelected,
   PieChartDataSets,
   LineChartDataSet,
+  MetricData,
+  MetricUi,
+  Metadata,
+  MetricDataChart,
+  MetricDataSet,
+  DispatchMsg,
 } from "./metricfun.types";
 
 type UserData = {
@@ -19,20 +23,120 @@ type UserData = {
   metrics?: unknown;
 };
 
+function getChartTypeSelected(chartType: string): ChartTypeSelected {
+  switch (chartType.toUpperCase()) {
+    case "PIE":
+      return "Pie";
+    case "AREA":
+      return "Area";
+    case "LINE":
+      return "Line";
+    default:
+      return "None";
+  }
+}
+
+function getPieChartData({
+  label,
+  data,
+}: MetricDataSet): PieChartDataSets {
+  //
+  const backgroundColor = [
+    "rgba(255, 99, 132, 0.2)",
+    "rgba(54, 162, 235, 0.2)",
+    "rgba(255, 206, 86, 0.2)",
+    "rgba(75, 192, 192, 0.2)",
+    "rgba(153, 102, 255, 0.2)",
+    "rgba(255, 159, 64, 0.2)",
+  ];
+
+  const borderColor = [
+    "rgba(255, 99, 132, 1)",
+    "rgba(54, 162, 235, 1)",
+    "rgba(255, 206, 86, 1)",
+    "rgba(75, 192, 192, 1)",
+    "rgba(153, 102, 255, 1)",
+    "rgba(255, 159, 64, 1)",
+  ];
+
+  return {
+    label,
+    data,
+    backgroundColor,
+    borderColor,
+    borderWidth: 1,
+  };
+}
+
+function getLineChartData(fill: boolean) {
+  return ({ label, data }: MetricDataSet): LineChartDataSet => {
+    return {
+      fill,
+      label,
+      data,
+      borderColor: "rgb(53, 162, 235)",
+      backgroundColor: "rgba(53, 162, 235, 0.5)",
+    };
+  };
+}
+
+function getDefaultMetricUi(dispatchMsg: DispatchMsg) {
+  return (metricData: MetricData): MetricUi => {
+    //
+    const labels = metricData.chartData.labels || [];
+
+    const metadata = metricData.metadata || {
+      resolution: "",
+      update: "",
+      limit: "",
+    };
+
+    const defaultMetricData = {
+      id: metricData.id,
+      name: metricData.name,
+      isMetricNameEditable: false,
+      isEditable: false,
+      isSavingChanges: false,
+      showWarning: false,
+      showUpdateMetricChanges: false,
+      hasOnSaveErrors: false,
+      chartTypeSelected: getChartTypeSelected(metricData.chartType),
+      chartsData: {
+        pie: {
+          datasets: metricData.chartData.datasets.map(getPieChartData),
+          labels,
+        },
+        area: {
+          datasets: metricData.chartData.datasets.map(getLineChartData(true)),
+          labels,
+        },
+        line: {
+          datasets: metricData.chartData.datasets.map(getLineChartData(false)),
+          labels,
+        },
+      },
+      metadata,
+      dispatchMsg,
+    };
+
+    return defaultMetricData;
+  };
+}
+
 function updateStateData(
   setState: React.Dispatch<React.SetStateAction<IState>>
 ) {
   return (msg: Msg, state: IState): void => {
-    // console.log("update state msg -> ", msg);
+    console.log("update state msg -> ", msg);
     let updatedState: IState = state;
     switch (msg.type) {
       case "IsLogged":
         updatedState = { ...state, isLogged: true };
         break;
-      case "DecodedUserData":
+      case "UpdateMetrics":
         updatedState = {
           ...state,
-          // metrics: msg.value,
+          metrics: msg.value,
         };
         break;
       case "ToggleEditable":
@@ -50,7 +154,7 @@ function updateStateData(
   };
 }
 
-function userDataDecoder(data: unknown): UserData {
+function userDataDecoder(data: unknown): UserDataDecoded {
   const chartPie = D.exactDecoder("pie");
   const chartLine = D.exactDecoder("line");
   const chartArea = D.exactDecoder("area");
@@ -61,33 +165,17 @@ function userDataDecoder(data: unknown): UserData {
     chartArea
   );
 
-  const PieChartDataSets = D.objectDecoder<PieChartDataSets>({
+  const ChartDataSetsDecoder = D.objectDecoder<MetricDataSet>({
     label: D.stringDecoder,
     data: D.arrayDecoder(D.numberDecoder),
-    backgroundColor: D.arrayDecoder(D.stringDecoder),
-    borderColor: D.arrayDecoder(D.stringDecoder),
-    borderWidth: D.numberDecoder,
   });
 
-  const LineChartDataSets = D.objectDecoder<LineChartDataSet>({
-    fill: D.boolDecoder,
-    label: D.stringDecoder,
-    data: D.arrayDecoder(D.numberDecoder),
-    backgroundColor: D.stringDecoder,
-    borderColor: D.stringDecoder,
-  });
-
-  const ChartDataSetsDecoder = D.oneOfDecoders<ChartDataSets[]>(
-    D.arrayDecoder(PieChartDataSets),
-    D.arrayDecoder(LineChartDataSets)
-  );
-
-  const chartDataDecoder = D.objectDecoder<ChartData>({
+  const chartDataDecoder = D.objectDecoder<MetricDataChart>({
     labels: D.oneOfDecoders(
       D.arrayDecoder(D.stringDecoder),
       D.undefinedDecoder
     ),
-    datasets: ChartDataSetsDecoder,
+    datasets: D.arrayDecoder(ChartDataSetsDecoder),
   });
 
   const metadataDecoder = D.objectDecoder<Metadata>({
@@ -100,7 +188,7 @@ function userDataDecoder(data: unknown): UserData {
     id: D.stringDecoder,
     name: D.stringDecoder,
     chartType: chartTypeDecoder,
-    chartsData: chartDataDecoder,
+    chartData: chartDataDecoder,
     metadata: D.oneOfDecoders(metadataDecoder, D.undefinedDecoder),
   });
 
@@ -118,7 +206,7 @@ function userDataDecoder(data: unknown): UserData {
 
       switch (metricsDecoder.type) {
         case "ERR":
-          console.error(
+          console.warn(
             `UserData.metrics-decoder -> ${metricsDecoder.type}`,
             metricsDecoder.message
           );
@@ -138,7 +226,7 @@ function userDataDecoder(data: unknown): UserData {
             limit: "",
             resolution: "",
           };
-          obj.chartsData.labels = obj.chartsData.labels || [];
+          obj.chartData.labels = obj.chartData.labels || [];
           return obj;
         })
         .flat();
@@ -151,10 +239,7 @@ function userDataDecoder(data: unknown): UserData {
     case "OK":
       return dataDecoder.value;
     case "ERR":
-      console.error(
-        `UserData-decoder ${dataDecoder.type}`,
-        dataDecoder.message
-      );
+      console.warn(`UserData-decoder ${dataDecoder.type}`, dataDecoder.message);
       return {
         id: 0,
         metrics: [],
@@ -173,6 +258,12 @@ function App() {
   });
 
   const updateState = updateStateData(setState);
+
+  const dispatchMsg = (msg: Msg) => {
+    updateState(msg, { ...state });
+    return msg;
+  };
+
   const { isLogged } = state;
 
   useEffect(() => {
@@ -182,12 +273,12 @@ function App() {
           const response = await axios.get("/data.json");
           const { data }: { data: unknown } = response;
 
-          console.log("decoded: ", userDataDecoder(data));
-
           updateState(
             {
-              type: "DecodedUserData",
-              value: [],
+              type: "UpdateMetrics",
+              value: userDataDecoder(data).metrics.map(
+                getDefaultMetricUi(dispatchMsg)
+              ),
             },
             { ...state }
           );
@@ -201,10 +292,7 @@ function App() {
 
   const props: IProps = {
     ...state,
-    dispatchMsg: (msg: Msg) => {
-      updateState(msg, { ...state });
-      return msg;
-    },
+    dispatchMsg,
   };
 
   return <MainContainer {...props} />;
