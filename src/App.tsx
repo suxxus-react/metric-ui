@@ -12,6 +12,17 @@ import {
   LineChartDataSet,
 } from "./metricfun.types";
 
+type MetricData = {
+  id: string;
+  name: string;
+  chartType: string;
+  chartsData: ChartData;
+};
+type UserData = {
+  id: number;
+  metrics?: unknown;
+};
+
 function updateStateData(
   setState: React.Dispatch<React.SetStateAction<IState>>
 ) {
@@ -42,17 +53,6 @@ function updateStateData(
     setState(updatedState);
   };
 }
-
-type MetricData = {
-  id: string;
-  name: string;
-  chartType: string;
-  chartsData: ChartData;
-};
-type UserData = {
-  id: number;
-  metrics?: unknown;
-};
 
 function userDataDecoder(data: unknown): UserData {
   const chartPie = D.exactDecoder("pie");
