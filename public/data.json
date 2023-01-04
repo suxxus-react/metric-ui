@@ -17,6 +17,7 @@
     {
       "id": "232882",
       "name": "Judas Priest",
+      "chartType": "area",
       "chartData": {
         "labels": ["jan", "feb", "mar", "apr", "jun"],
         "datasets": [
