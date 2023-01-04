@@ -36,10 +36,7 @@ function getChartTypeSelected(chartType: string): ChartTypeSelected {
   }
 }
 
-function getPieChartData({
-  label,
-  data,
-}: MetricDataSet): PieChartDataSets {
+function getPieChartData({ label, data }: MetricDataSet): PieChartDataSets {
   //
   const backgroundColor = [
     "rgba(255, 99, 132, 0.2)",
@@ -123,6 +120,15 @@ function getDefaultMetricUi(dispatchMsg: DispatchMsg) {
   };
 }
 
+// metricUi transform data Helpers
+//
+function updateMetricsUiOnToggleEditable(metricUi: MetricUi): MetricUi {
+  return {
+    ...metricUi,
+    isEditable: !metricUi.isEditable,
+  };
+}
+
 function updateStateData(
   setState: React.Dispatch<React.SetStateAction<IState>>
 ) {
@@ -140,7 +146,11 @@ function updateStateData(
         };
         break;
       case "ToggleEditable":
-        updatedState = { ...state, isEditable: !state.isEditable };
+        updatedState = {
+          ...state,
+          isEditable: !state.isEditable,
+          metrics: state.metrics.map(updateMetricsUiOnToggleEditable),
+        };
         break;
       case "None":
         updatedState = { ...state };
