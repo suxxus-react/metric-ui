@@ -1,8 +1,6 @@
-import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { IProps } from "../metricfun.types";
 import PageEditMetrics from "./Page-edit-metrics";
-import { MetricUi } from "../metricfun.types";
 import { metricsState, metricProps } from "./Fixtures";
 
 export default {
