@@ -51,7 +51,7 @@ type MetricData = {
 };
 type UserData = {
   id: number;
-  metrics?: MetricData[] | any;
+  metrics?: unknown;
 };
 
 function userDataDecoder(data: unknown): UserData {
@@ -116,7 +116,7 @@ function userDataDecoder(data: unknown): UserData {
       switch (metricsDecoder.type) {
         case "ERR":
           console.error(
-            `metricsDecoder -> ${metricsDecoder.type}`,
+            `UserData.metrics-decoder -> ${metricsDecoder.type}`,
             metricsDecoder.message
           );
           return D.valueDecoder({ id: 0, metrics: [] });
@@ -143,7 +143,10 @@ function userDataDecoder(data: unknown): UserData {
     case "OK":
       return dataDecoder.value;
     case "ERR":
-      console.warn(dataDecoder.type, dataDecoder.message);
+      console.error(
+        `UserData-decoder ${dataDecoder.type}`,
+        dataDecoder.message
+      );
       return {
         id: 0,
         metrics: [],
@@ -171,7 +174,7 @@ function App() {
           const response = await axios.get("/data.json");
           const { data }: { data: unknown } = response;
 
-          userDataDecoder(data);
+          console.log("decoded: ", userDataDecoder(data));
 
           updateState(
             {
