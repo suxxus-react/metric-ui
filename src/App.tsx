@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { nanoid } from "nanoid";
 import axios from "axios";
 import * as D from "json-decoder";
 import MainContainer from "./components/Page-app-container";
@@ -138,8 +139,7 @@ function updateMetricsUiOnCreateNewMetric(dispatchMsg: DispatchMsg): MetricUi {
   };
 
   return {
-    // id: uniqid().toString(),
-    id: "",
+    id: nanoid(),
     name: "",
     isMetricNameEditable: false,
     isEditable: true,
