@@ -79,7 +79,6 @@ function getLineChartData(fill: boolean) {
 
 function getDefaultMetricUi(dispatchMsg: DispatchMsg) {
   return (metricData: MetricData): MetricUi => {
-    //
     const labels = metricData.chartData.labels || [];
 
     const metadata = metricData.metadata || {
@@ -121,11 +120,41 @@ function getDefaultMetricUi(dispatchMsg: DispatchMsg) {
 }
 
 // metricUi transform data Helpers
-//
+// ===============================
 function updateMetricsUiOnToggleEditable(metricUi: MetricUi): MetricUi {
   return {
     ...metricUi,
     isEditable: !metricUi.isEditable,
+  };
+}
+
+function updateMetricsUiOnCreateNewMetric(dispatchMsg: DispatchMsg): MetricUi {
+  const datasets = { datasets: [], labels: [] };
+
+  const chartsData = {
+    pie: datasets,
+    area: datasets,
+    line: datasets,
+  };
+
+  return {
+    // id: uniqid().toString(),
+    id: "",
+    name: "",
+    isMetricNameEditable: false,
+    isEditable: true,
+    isSavingChanges: false,
+    showWarning: false,
+    showUpdateMetricChanges: false,
+    hasOnSaveErrors: false,
+    chartTypeSelected: "None",
+    chartsData,
+    metadata: {
+      resolution: "",
+      update: "",
+      limit: "",
+    },
+    dispatchMsg,
   };
 }
 
@@ -150,6 +179,15 @@ function updateStateData(
           ...state,
           isEditable: !state.isEditable,
           metrics: state.metrics.map(updateMetricsUiOnToggleEditable),
+        };
+        break;
+      case "CreateNewMetric":
+        updatedState = {
+          ...state,
+          metrics: [
+            updateMetricsUiOnCreateNewMetric(msg.value),
+            ...state.metrics,
+          ],
         };
         break;
       case "None":

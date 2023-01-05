@@ -63,6 +63,7 @@ type ToggleEditable = {
 
 type CreateNewMetric = {
   type: "CreateNewMetric";
+  value: DispatchMsg;
 };
 
 type None = {
