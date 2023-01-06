@@ -101,6 +101,7 @@ export type MetricDataChart = {
 };
 
 export type MetricData = {
+  // TODO review data type name,
   id: string;
   name: string;
   chartType: string;
@@ -109,6 +110,7 @@ export type MetricData = {
 };
 
 export type UserDataDecoded = {
+  //TODO review datatype name
   id: number;
   metrics: MetricData[];
 };
@@ -151,7 +153,7 @@ export type Metadata = {
   resolution: string;
 };
 //
-export type MetricUi = {
+export interface MetricUi {
   id: string;
   name: string;
   isMetricNameEditable: boolean;
@@ -163,8 +165,11 @@ export type MetricUi = {
   chartTypeSelected: ChartTypeSelected;
   chartsData: ChartsData;
   metadata: Metadata;
+}
+
+export interface MetricUiCtrls extends MetricUi {
   dispatchMsg: DispatchMsg;
-};
+}
 
 export interface IState {
   isDark: boolean;

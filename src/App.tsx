@@ -78,46 +78,43 @@ function getLineChartData(fill: boolean) {
   };
 }
 
-function getDefaultMetricUi(dispatchMsg: DispatchMsg) {
-  return (metricData: MetricData): MetricUi => {
-    const labels = metricData.chartData.labels || [];
+function getDefaultMetricUi(metricData: MetricData) {
+  const labels = metricData.chartData.labels || [];
 
-    const metadata = metricData.metadata || {
-      resolution: "",
-      update: "",
-      limit: "",
-    };
-
-    const defaultMetricData = {
-      id: metricData.id,
-      name: metricData.name,
-      isMetricNameEditable: false,
-      isEditable: false,
-      isSavingChanges: false,
-      showWarning: false,
-      showUpdateMetricChanges: false,
-      hasOnSaveErrors: false,
-      chartTypeSelected: getChartTypeSelected(metricData.chartType),
-      chartsData: {
-        pie: {
-          datasets: metricData.chartData.datasets.map(getPieChartData),
-          labels,
-        },
-        area: {
-          datasets: metricData.chartData.datasets.map(getLineChartData(true)),
-          labels,
-        },
-        line: {
-          datasets: metricData.chartData.datasets.map(getLineChartData(false)),
-          labels,
-        },
-      },
-      metadata,
-      dispatchMsg,
-    };
-
-    return defaultMetricData;
+  const metadata = metricData.metadata || {
+    resolution: "",
+    update: "",
+    limit: "",
   };
+
+  const defaultMetricData = {
+    id: metricData.id,
+    name: metricData.name,
+    isMetricNameEditable: false,
+    isEditable: false,
+    isSavingChanges: false,
+    showWarning: false,
+    showUpdateMetricChanges: false,
+    hasOnSaveErrors: false,
+    chartTypeSelected: getChartTypeSelected(metricData.chartType),
+    chartsData: {
+      pie: {
+        datasets: metricData.chartData.datasets.map(getPieChartData),
+        labels,
+      },
+      area: {
+        datasets: metricData.chartData.datasets.map(getLineChartData(true)),
+        labels,
+      },
+      line: {
+        datasets: metricData.chartData.datasets.map(getLineChartData(false)),
+        labels,
+      },
+    },
+    metadata,
+  };
+
+  return defaultMetricData;
 }
 
 // metricUi transform data Helpers
@@ -129,7 +126,8 @@ function updateMetricsUiOnToggleEditable(metricUi: MetricUi): MetricUi {
   };
 }
 
-function updateMetricsUiOnCreateNewMetric(dispatchMsg: DispatchMsg): MetricUi {
+// default metricUI data
+function updateMetricsUiOnCreateNewMetric(): MetricUi {
   const datasets = { datasets: [], labels: [] };
 
   const chartsData = {
@@ -154,7 +152,7 @@ function updateMetricsUiOnCreateNewMetric(dispatchMsg: DispatchMsg): MetricUi {
       update: "",
       limit: "",
     },
-    dispatchMsg,
+    // dispatchMsg,
   };
 }
 
@@ -163,6 +161,7 @@ function updateMetricUiList(
   metrics: MetricUi[],
   msg: Msg
 ): MetricUi[] {
+  console.log(JSON.stringify(metrics, null, 2));
   return metrics.map((metric) => {
     if (metric.id === id) {
       // console.log(metric);
@@ -291,6 +290,7 @@ function App() {
 
   useEffect(() => {
     let updatedState: IState = state;
+    console.log("msg ", msg);
     switch (msg.type) {
       case "IsLogged":
         updatedState = { ...state, isLogged: true };
@@ -311,14 +311,10 @@ function App() {
       case "CreateNewMetric":
         updatedState = {
           ...state,
-          metrics: [
-            updateMetricsUiOnCreateNewMetric(msg.value),
-            ...state.metrics,
-          ],
+          metrics: [updateMetricsUiOnCreateNewMetric(), ...state.metrics],
         };
         break;
       case "ToggleShowWarning":
-        console.log(updateMetricUiList(msg.id, state.metrics, msg));
         updatedState = {
           ...state,
           metrics: updateMetricUiList(msg.id, state.metrics, msg),
@@ -342,9 +338,7 @@ function App() {
 
           dispatchMsg({
             type: "UpdateMetrics",
-            value: userDataDecoder(data).metrics.map(
-              getDefaultMetricUi(dispatchMsg)
-            ),
+            value: userDataDecoder(data).metrics.map(getDefaultMetricUi),
           });
         } catch (err) {
           alert(err);

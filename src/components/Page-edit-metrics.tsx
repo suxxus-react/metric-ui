@@ -11,7 +11,13 @@ export default function PageEditMetrics(props: IProps): JSX.Element {
       <section className="h-full overflow-scroll">
         <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
           {metrics.map((mProps, index) => {
-            return <Metric key={`${index}_${props.id}`} {...mProps} />;
+            return (
+              <Metric
+                key={`${index}_${mProps.id}`}
+                {...mProps}
+                dispatchMsg={props.dispatchMsg}
+              />
+            );
           })}
         </div>
       </section>
