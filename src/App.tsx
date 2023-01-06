@@ -118,12 +118,6 @@ function getDefaultMetricUi(metricData: MetricData) {
 
 // metricUi transform data Helpers
 // ===============================
-function updateMetricsUiOnToggleEditable(metricUi: IMetricUi): IMetricUi {
-  return {
-    ...metricUi,
-    isEditable: !metricUi.isEditable,
-  };
-}
 
 // default metricUI data
 function updateMetricsUiOnCreateNewMetric(): IMetricUi {
@@ -154,24 +148,19 @@ function updateMetricsUiOnCreateNewMetric(): IMetricUi {
   };
 }
 
-function updateMetricUiList(
-  id: string,
-  metrics: IMetricUi[],
-  msg: Msg
-): IMetricUi[] {
-  console.log(JSON.stringify(metrics, null, 2));
-  return metrics.map((metric) => {
-    if (metric.id === id) {
-      // console.log(metric);
-      const copy = { ...metric };
-      switch (msg.type) {
-        case "ToggleShowWarning":
-          copy.showWarning = !copy.showWarning;
-          return copy;
-      }
+function updateMetricUiList(msg: Msg) {
+  return (metric: IMetricUi): IMetricUi => {
+    switch (msg.type) {
+      case "ToggleEditable":
+        return { ...metric, isEditable: !metric.isEditable };
+      case "ToggleShowWarning":
+        return metric.id === msg.id
+          ? { ...metric, showWarning: !metric.showWarning }
+          : metric;
+      default:
+        return metric;
     }
-    return metric;
-  });
+  };
 }
 
 function userDataDecoder(data: unknown): UserDataDecoded {
@@ -303,7 +292,7 @@ function App() {
         updatedState = {
           ...state,
           isEditable: !state.isEditable,
-          metrics: state.metrics.map(updateMetricsUiOnToggleEditable),
+          metrics: state.metrics.map(updateMetricUiList(msg)),
         };
         break;
       case "CreateNewMetric":
@@ -315,8 +304,9 @@ function App() {
       case "ToggleShowWarning":
         updatedState = {
           ...state,
-          metrics: updateMetricUiList(msg.id, state.metrics, msg),
+          metrics: state.metrics.map(updateMetricUiList(msg)),
         };
+        break;
       case "None":
         updatedState = { ...state };
         break;
@@ -324,6 +314,7 @@ function App() {
         updatedState = { ...state };
         break;
     }
+    // console.log("updatedState", updatedState);
     setState(updatedState);
   }, [msg]);
 
