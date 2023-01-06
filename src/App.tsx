@@ -158,48 +158,23 @@ function updateMetricsUiOnCreateNewMetric(dispatchMsg: DispatchMsg): MetricUi {
   };
 }
 
-function updateStateData(
-  setState: React.Dispatch<React.SetStateAction<IState>>
-) {
-  return (msg: Msg, state: IState): void => {
-    console.log("update state msg -> ", msg);
-    let updatedState: IState = state;
-    switch (msg.type) {
-      case "IsLogged":
-        updatedState = { ...state, isLogged: true };
-        break;
-      case "UpdateMetrics":
-        updatedState = {
-          ...state,
-          metrics: msg.value,
-        };
-        break;
-      case "ToggleEditable":
-        updatedState = {
-          ...state,
-          isEditable: !state.isEditable,
-          metrics: state.metrics.map(updateMetricsUiOnToggleEditable),
-        };
-        break;
-      case "CreateNewMetric":
-        updatedState = {
-          ...state,
-          metrics: [
-            updateMetricsUiOnCreateNewMetric(msg.value),
-            ...state.metrics,
-          ],
-        };
-        break;
-      case "None":
-        updatedState = { ...state };
-        break;
-      default:
-        updatedState = { ...state };
-        break;
+function updateMetricUiList(
+  id: string,
+  metrics: MetricUi[],
+  msg: Msg
+): MetricUi[] {
+  return metrics.map((metric) => {
+    if (metric.id === id) {
+      // console.log(metric);
+      const copy = { ...metric };
+      switch (msg.type) {
+        case "ToggleShowWarning":
+          copy.showWarning = !copy.showWarning;
+          return copy;
+      }
     }
-
-    setState(updatedState);
-  };
+    return metric;
+  });
 }
 
 function userDataDecoder(data: unknown): UserDataDecoded {
@@ -305,14 +280,58 @@ function App() {
     metrics: [],
   });
 
-  const updateState = updateStateData(setState);
+  const [msg, setMsg] = useState<Msg>({ type: "None" });
 
   const dispatchMsg = (msg: Msg) => {
-    updateState(msg, { ...state });
+    setMsg(msg);
     return msg;
   };
 
   const { isLogged } = state;
+
+  useEffect(() => {
+    let updatedState: IState = state;
+    switch (msg.type) {
+      case "IsLogged":
+        updatedState = { ...state, isLogged: true };
+        break;
+      case "UpdateMetrics":
+        updatedState = {
+          ...state,
+          metrics: msg.value,
+        };
+        break;
+      case "ToggleEditable":
+        updatedState = {
+          ...state,
+          isEditable: !state.isEditable,
+          metrics: state.metrics.map(updateMetricsUiOnToggleEditable),
+        };
+        break;
+      case "CreateNewMetric":
+        updatedState = {
+          ...state,
+          metrics: [
+            updateMetricsUiOnCreateNewMetric(msg.value),
+            ...state.metrics,
+          ],
+        };
+        break;
+      case "ToggleShowWarning":
+        console.log(updateMetricUiList(msg.id, state.metrics, msg));
+        updatedState = {
+          ...state,
+          metrics: updateMetricUiList(msg.id, state.metrics, msg),
+        };
+      case "None":
+        updatedState = { ...state };
+        break;
+      default:
+        updatedState = { ...state };
+        break;
+    }
+    setState(updatedState);
+  }, [msg]);
 
   useEffect(() => {
     if (isLogged) {
@@ -321,15 +340,12 @@ function App() {
           const response = await axios.get("/data.json");
           const { data }: { data: unknown } = response;
 
-          updateState(
-            {
-              type: "UpdateMetrics",
-              value: userDataDecoder(data).metrics.map(
-                getDefaultMetricUi(dispatchMsg)
-              ),
-            },
-            { ...state }
-          );
+          dispatchMsg({
+            type: "UpdateMetrics",
+            value: userDataDecoder(data).metrics.map(
+              getDefaultMetricUi(dispatchMsg)
+            ),
+          });
         } catch (err) {
           alert(err);
         }
