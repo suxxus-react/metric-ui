@@ -1,7 +1,7 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import Metric from "../components/Metric-editor";
-import { MetricUi } from "../metricfun.types";
+import { IMetricUi } from "../metricfun.types";
 import { metricProps } from "./Fixtures";
 
 export default {

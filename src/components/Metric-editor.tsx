@@ -1,5 +1,5 @@
 import {
-  MetricUiCtrls,
+  IMetricUiCtrls,
   DispatchMsg,
   ChartTypeSelected,
   ChartsData,
@@ -239,7 +239,7 @@ export default function Metric({
   chartsData,
   metadata,
   dispatchMsg,
-}: MetricUiCtrls): JSX.Element {
+}: IMetricUiCtrls): JSX.Element {
   //
   const eventHandler = eventHandlerHelper({ isSavingChanges });
 

@@ -12,11 +12,10 @@ import {
   PieChartDataSets,
   LineChartDataSet,
   MetricData,
-  MetricUi,
+  IMetricUi,
   Metadata,
   MetricDataChart,
   MetricDataSet,
-  DispatchMsg,
 } from "./metricfun.types";
 
 type UserData = {
@@ -119,7 +118,7 @@ function getDefaultMetricUi(metricData: MetricData) {
 
 // metricUi transform data Helpers
 // ===============================
-function updateMetricsUiOnToggleEditable(metricUi: MetricUi): MetricUi {
+function updateMetricsUiOnToggleEditable(metricUi: IMetricUi): IMetricUi {
   return {
     ...metricUi,
     isEditable: !metricUi.isEditable,
@@ -127,7 +126,7 @@ function updateMetricsUiOnToggleEditable(metricUi: MetricUi): MetricUi {
 }
 
 // default metricUI data
-function updateMetricsUiOnCreateNewMetric(): MetricUi {
+function updateMetricsUiOnCreateNewMetric(): IMetricUi {
   const datasets = { datasets: [], labels: [] };
 
   const chartsData = {
@@ -152,15 +151,14 @@ function updateMetricsUiOnCreateNewMetric(): MetricUi {
       update: "",
       limit: "",
     },
-    // dispatchMsg,
   };
 }
 
 function updateMetricUiList(
   id: string,
-  metrics: MetricUi[],
+  metrics: IMetricUi[],
   msg: Msg
-): MetricUi[] {
+): IMetricUi[] {
   console.log(JSON.stringify(metrics, null, 2));
   return metrics.map((metric) => {
     if (metric.id === id) {

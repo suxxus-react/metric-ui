@@ -1,4 +1,4 @@
-import { IState, ChartData, ChartsData, MetricUi } from "../metricfun.types";
+import { IState, ChartData, ChartsData, IMetricUi } from "../metricfun.types";
 
 const labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"];
 
@@ -70,7 +70,7 @@ export const chartsData: ChartsData = {
   line,
 };
 
-export const metricProps: Omit<MetricUi, "dispatchMsg"> = {
+export const metricProps: Omit<IMetricUi, "dispatchMsg"> = {
   id: "01",
   name: "zz top",
   isMetricNameEditable: false,

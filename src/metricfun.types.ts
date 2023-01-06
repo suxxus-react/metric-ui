@@ -54,7 +54,7 @@ type Logout = {
 
 type UpdateMetrics = {
   type: "UpdateMetrics";
-  value: MetricUi[];
+  value: IMetricUi[];
 };
 
 type ToggleEditable = {
@@ -153,7 +153,7 @@ export type Metadata = {
   resolution: string;
 };
 //
-export interface MetricUi {
+export interface IMetricUi {
   id: string;
   name: string;
   isMetricNameEditable: boolean;
@@ -167,7 +167,7 @@ export interface MetricUi {
   metadata: Metadata;
 }
 
-export interface MetricUiCtrls extends MetricUi {
+export interface IMetricUiCtrls extends IMetricUi {
   dispatchMsg: DispatchMsg;
 }
 
@@ -177,7 +177,7 @@ export interface IState {
   userName: string;
   id: number;
   isEditable: boolean;
-  metrics: MetricUi[];
+  metrics: IMetricUi[];
 }
 
 export interface IProps extends IState {
