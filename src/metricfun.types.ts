@@ -153,9 +153,15 @@ export type Metadata = {
   limit: string;
   resolution: string;
 };
+
+type MetricErrorTypes = {
+  nameLength: boolean;
+  noneChartSelected: boolean;
+};
 //
 export interface IMetricUi {
   id: string;
+  originalName: string;
   name: string;
   isMetricNameEditable: boolean;
   isEditable: boolean;
@@ -163,6 +169,8 @@ export interface IMetricUi {
   showWarning: boolean;
   showUpdateMetricChanges: boolean;
   hasOnSaveErrors: boolean;
+  errorTypes: MetricErrorTypes;
+  originalChartTypeSelected: ChartTypeSelected;
   chartTypeSelected: ChartTypeSelected;
   chartsData: ChartsData;
   metadata: Metadata;

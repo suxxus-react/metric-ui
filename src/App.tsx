@@ -77,7 +77,7 @@ function getLineChartData(fill: boolean) {
   };
 }
 
-function getDefaultMetricUi(metricData: MetricData) {
+function getDefaultMetricUi(metricData: MetricData): IMetricUi {
   const labels = metricData.chartData.labels || [];
 
   const metadata = metricData.metadata || {
@@ -86,8 +86,11 @@ function getDefaultMetricUi(metricData: MetricData) {
     limit: "",
   };
 
-  const defaultMetricData = {
+  const errorTypes = { nameLength: false, noneChartSelected: false };
+
+  const defaultMetricData: IMetricUi = {
     id: metricData.id,
+    originalName: metricData.name,
     name: metricData.name,
     isMetricNameEditable: false,
     isEditable: false,
@@ -95,6 +98,8 @@ function getDefaultMetricUi(metricData: MetricData) {
     showWarning: false,
     showUpdateMetricChanges: false,
     hasOnSaveErrors: false,
+    errorTypes,
+    originalChartTypeSelected: getChartTypeSelected(metricData.chartType),
     chartTypeSelected: getChartTypeSelected(metricData.chartType),
     chartsData: {
       pie: {
@@ -129,8 +134,11 @@ function updateMetricsUiOnCreateNewMetric(): IMetricUi {
     line: datasets,
   };
 
+  const errorTypes = { nameLength: false, noneChartSelected: false };
+
   return {
     id: nanoid(),
+    originalName: "",
     name: "",
     isMetricNameEditable: false,
     isEditable: true,
@@ -138,7 +146,9 @@ function updateMetricsUiOnCreateNewMetric(): IMetricUi {
     showWarning: false,
     showUpdateMetricChanges: false,
     hasOnSaveErrors: false,
+    originalChartTypeSelected: "None",
     chartTypeSelected: "None",
+    errorTypes,
     chartsData,
     metadata: {
       resolution: "",
@@ -167,9 +177,7 @@ function updateMetricUiList(msg: Msg) {
             }
           : metric;
       case "UpdateMetricName":
-        return metric.id === msg.id
-          ? { ...metric, name: `${msg.value}` }
-          : metric;
+        return metric.id === msg.id ? { ...metric, name: msg.value } : metric;
       case "SelectChartType":
         return metric.id === msg.id
           ? {
@@ -179,7 +187,41 @@ function updateMetricUiList(msg: Msg) {
             }
           : metric;
       case "SaveMetricChanges":
-        return metric;
+        if (!msg.value) {
+          // cancel changes
+          return metric.id === msg.id
+            ? {
+                ...metric,
+                name: metric.originalName,
+                chartTypeSelected: metric.originalChartTypeSelected,
+                isMetricNameEditable: false,
+                showUpdateMetricChanges: false,
+              }
+            : metric;
+        } else {
+          // do validation
+          let metricCopy = { ...metric };
+          if (metric.name.length < 3) {
+            const errorTypes = { ...metric.errorTypes, nameLength: true };
+            metricCopy = {
+              ...metricCopy,
+              hasOnSaveErrors: true,
+              errorTypes,
+            };
+          }
+          if (metric.chartTypeSelected === "None") {
+            const errorTypes = {
+              ...metric.errorTypes,
+              noneChartSelected: true,
+            };
+            metricCopy = {
+              ...metricCopy,
+              hasOnSaveErrors: true,
+              errorTypes,
+            };
+          }
+          return metricCopy;
+        }
       default:
         return metric;
     }
@@ -284,7 +326,7 @@ function App() {
     id: 0,
     isDark: false,
     isLogged: true,
-    userName: "",
+    userName: "Alice",
     isEditable: false,
     metrics: [],
   });

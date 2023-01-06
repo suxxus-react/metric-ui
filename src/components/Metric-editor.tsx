@@ -234,7 +234,7 @@ export default function Metric({
   isSavingChanges,
   showWarning,
   showUpdateMetricChanges,
-  hasOnSaveErrors,
+  errorTypes,
   chartTypeSelected,
   chartsData,
   metadata,
@@ -281,7 +281,7 @@ export default function Metric({
                     });
                   }}
                 />
-                {hasOnSaveErrors && <p>At least 3 characters</p>}
+                {errorTypes.nameLength && <p>At least 3 characters</p>}
               </>
             ) : (
               <>
