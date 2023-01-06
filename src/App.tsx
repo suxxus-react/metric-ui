@@ -157,6 +157,29 @@ function updateMetricUiList(msg: Msg) {
         return metric.id === msg.id
           ? { ...metric, showWarning: !metric.showWarning }
           : metric;
+      case "EditMetricName":
+        return metric.id === msg.id
+          ? {
+              ...metric,
+              isMetricNameEditable: !metric.isMetricNameEditable,
+              name: "",
+              showUpdateMetricChanges: true,
+            }
+          : metric;
+      case "UpdateMetricName":
+        return metric.id === msg.id
+          ? { ...metric, name: `${msg.value}` }
+          : metric;
+      case "SelectChartType":
+        return metric.id === msg.id
+          ? {
+              ...metric,
+              chartTypeSelected: msg.value,
+              showUpdateMetricChanges: true,
+            }
+          : metric;
+      case "SaveMetricChanges":
+        return metric;
       default:
         return metric;
     }
@@ -302,6 +325,10 @@ function App() {
         };
         break;
       case "ToggleShowWarning":
+      case "EditMetricName":
+      case "UpdateMetricName":
+      case "SelectChartType":
+      case "SaveMetricChanges":
         updatedState = {
           ...state,
           metrics: state.metrics.map(updateMetricUiList(msg)),

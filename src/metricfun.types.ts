@@ -39,6 +39,7 @@ type ToggleDarkMode = {
 };
 
 type SocialNetwork = "Github"; // | Facebook ...
+
 type LoginWithSocialNetwork = {
   type: "LoginWithSocialNetwork";
   value: SocialNetwork;
@@ -85,7 +86,7 @@ export type Msg =
   | EditMetricName
   | UpdateMetricName
   | SaveMetricChanges
-  | UpdateMetrics
+  | UpdateMetrics // TODO check this name (used when we get metrics data from Api)
   | None;
 
 // ========================
