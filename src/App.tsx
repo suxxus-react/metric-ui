@@ -86,7 +86,7 @@ function getDefaultMetricUi(metricData: MetricData): IMetricUi {
     limit: "",
   };
 
-  const errorTypes = { nameLength: false, noneChartSelected: false };
+  const errorTypes = { nameLength: false, noChartSelected: false };
 
   const defaultMetricData: IMetricUi = {
     id: metricData.id,
@@ -97,7 +97,6 @@ function getDefaultMetricUi(metricData: MetricData): IMetricUi {
     isSavingChanges: false,
     showWarning: false,
     showUpdateMetricChanges: false,
-    hasOnSaveErrors: false,
     errorTypes,
     originalChartTypeSelected: getChartTypeSelected(metricData.chartType),
     chartTypeSelected: getChartTypeSelected(metricData.chartType),
@@ -134,7 +133,7 @@ function updateMetricsUiOnCreateNewMetric(): IMetricUi {
     line: datasets,
   };
 
-  const errorTypes = { nameLength: false, noneChartSelected: false };
+  const errorTypes = { nameLength: false, noChartSelected: false };
 
   return {
     id: nanoid(),
@@ -145,7 +144,6 @@ function updateMetricsUiOnCreateNewMetric(): IMetricUi {
     isSavingChanges: false,
     showWarning: false,
     showUpdateMetricChanges: false,
-    hasOnSaveErrors: false,
     originalChartTypeSelected: "None",
     chartTypeSelected: "None",
     errorTypes,
@@ -199,29 +197,27 @@ function updateMetricUiList(msg: Msg) {
               }
             : metric;
         } else {
-          // do validation
-          let metricCopy = { ...metric };
+          // validation
           if (metric.name.length < 3) {
             const errorTypes = { ...metric.errorTypes, nameLength: true };
-            metricCopy = {
-              ...metricCopy,
-              hasOnSaveErrors: true,
+            metric = {
+              ...metric,
               errorTypes,
             };
           }
           if (metric.chartTypeSelected === "None") {
             const errorTypes = {
               ...metric.errorTypes,
-              noneChartSelected: true,
+              noChartSelected: true,
             };
-            metricCopy = {
-              ...metricCopy,
-              hasOnSaveErrors: true,
+            metric = {
+              ...metric,
               errorTypes,
             };
           }
-          return metricCopy;
+          return metric;
         }
+
       default:
         return metric;
     }

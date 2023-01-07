@@ -156,7 +156,7 @@ export type Metadata = {
 
 type MetricErrorTypes = {
   nameLength: boolean;
-  noneChartSelected: boolean;
+  noChartSelected: boolean;
 };
 //
 export interface IMetricUi {
@@ -168,7 +168,6 @@ export interface IMetricUi {
   isSavingChanges: boolean;
   showWarning: boolean;
   showUpdateMetricChanges: boolean;
-  hasOnSaveErrors: boolean;
   errorTypes: MetricErrorTypes;
   originalChartTypeSelected: ChartTypeSelected;
   chartTypeSelected: ChartTypeSelected;

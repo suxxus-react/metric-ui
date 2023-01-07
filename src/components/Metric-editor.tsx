@@ -323,6 +323,7 @@ export default function Metric({
         )}
         {/*end chart selector */}
         <MetricTypeDisplay {...{ chartTypeSelected, chartsData }} />
+        {errorTypes.noChartSelected && <p>choose a chart ooption</p>}
         {/* end display metric type */}
         {isEditable && showUpdateMetricChanges && (
           <div className="mt-2 flex justify-end">
