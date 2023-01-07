@@ -1,7 +1,5 @@
-import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import Metric from "../components/Metric-editor";
-import { IMetricUi } from "../metricfun.types";
 import { metricProps } from "./Fixtures";
 
 export default {
@@ -59,7 +57,6 @@ OnSaveErrors.args = {
   name: "",
   chartTypeSelected: "Pie",
   isMetricNameEditable: true,
-  hasOnSaveErrors: true,
 };
 
 export const WarnBeforeDelete = Template.bind({});
