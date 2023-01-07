@@ -43,6 +43,11 @@ type MetricChangesUpdatedOk = {
   id: string;
 };
 
+type MetricDeleted = {
+  type: "MetricDeleted";
+  id: string;
+};
+
 // -- ---
 
 type ToggleDarkMode = {
@@ -98,8 +103,9 @@ export type Msg =
   | UpdateMetricName
   | SaveMetricChanges
   | SubmitMetricChanges
-  | MetricChangesUpdatedOk
+  | MetricChangesUpdatedOk // TODO check this name better to use a boolean as value
   | UpdateMetrics // TODO check this name (used when we get metrics data from Api)
+  | MetricDeleted
   | None;
 
 // ========================

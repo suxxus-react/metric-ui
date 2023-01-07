@@ -18,6 +18,14 @@ import {
   MetricDataSet,
 } from "./metricfun.types";
 
+type MetricUpdatedData = {
+  id: string;
+  name: string;
+  chartType: ChartTypeSelected;
+};
+
+type MetricId = { id: string };
+
 type UserData = {
   id: number;
   metrics?: unknown;
@@ -236,6 +244,7 @@ function updateMetricUiList(
                   chartTypeSelected: metric.chartTypeSelected,
                 },
               });
+
               metric = {
                 ...metric,
                 isValid: false,
@@ -247,12 +256,14 @@ function updateMetricUiList(
           return metric;
         }
       case "SubmitMetricChanges":
+      case "DeleteMetric":
         return metric.id === msg.id
           ? {
               ...metric,
               isSavingChanges: true,
               isMetricNameEditable: false,
               showUpdateMetricChanges: false,
+              showWarning: false,
             }
           : metric;
       case "MetricChangesUpdatedOk":
@@ -264,6 +275,7 @@ function updateMetricUiList(
               isSavingChanges: false,
             }
           : metric;
+
       default:
         return metric;
     }
@@ -363,12 +375,6 @@ function userDataDecoder(data: unknown): UserDataDecoded {
   }
 }
 
-type MetricUpdatedData = {
-  id: string;
-  name: string;
-  chartType: ChartTypeSelected;
-};
-
 function App() {
   const [state, setState] = useState<IState>({
     id: 0,
@@ -380,11 +386,14 @@ function App() {
   });
 
   const [msg, setMsg] = useState<Msg>({ type: "None" });
+
   const [metricChanges, setMetricChanges] = useState<MetricUpdatedData>({
     id: "",
     name: "",
     chartType: "None",
   });
+
+  const [deleteMetric, setDeleteMetric] = useState<MetricId>({ id: "" });
 
   const dispatchMsg = (msg: Msg) => {
     setMsg(msg);
@@ -424,6 +433,7 @@ function App() {
       case "UpdateMetricName":
       case "SelectChartType":
       case "SaveMetricChanges":
+      case "MetricChangesUpdatedOk":
         updatedState = {
           ...state,
           metrics: state.metrics.map(updateMetricUiList(msg, setMsg)),
@@ -442,10 +452,18 @@ function App() {
         });
 
         break;
-      case "MetricChangesUpdatedOk":
+      case "DeleteMetric":
+        setDeleteMetric({ id: msg.id });
         updatedState = {
           ...state,
           metrics: state.metrics.map(updateMetricUiList(msg, setMsg)),
+        };
+        break;
+
+      case "MetricDeleted":
+        updatedState = {
+          ...state,
+          metrics: state.metrics.filter(({ id }) => id !== msg.id),
         };
         break;
       case "None":
@@ -483,6 +501,31 @@ function App() {
       updateMetric();
     }
   }, [metricChanges]);
+
+  useEffect(() => {
+    if (deleteMetric.id) {
+      async function deleteUserMetric() {
+        try {
+          const response = await axios.delete("http://dummyjson.com/http/200", {
+            data: { id: deleteMetric.id },
+          });
+
+          const { data }: { data: { message?: string } } = response;
+
+          if (data.message === "OK") {
+            setMsg({
+              type: "MetricDeleted",
+              id: deleteMetric.id,
+            });
+            setDeleteMetric({ id: "" });
+          }
+        } catch (err) {
+          console.error(err);
+        }
+      }
+      deleteUserMetric();
+    }
+  }, [deleteMetric]);
 
   useEffect(() => {
     if (isLogged) {
