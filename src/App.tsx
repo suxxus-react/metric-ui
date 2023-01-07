@@ -194,6 +194,7 @@ function updateMetricUiList(msg: Msg) {
                 chartTypeSelected: metric.originalChartTypeSelected,
                 isMetricNameEditable: false,
                 showUpdateMetricChanges: false,
+                errorTypes: { nameLength: false, noChartSelected: false },
               }
             : metric;
         } else {
