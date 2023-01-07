@@ -33,6 +33,7 @@ type MetricSelectType = {
 
 type MetricChartTypeSelected = {
   chartTypeSelected: ChartTypeSelected;
+  isNewMetric: boolean;
   chartsData: ChartsData;
 };
 
@@ -151,6 +152,7 @@ function MetricOptionsSelector({
 }
 
 function MetricTypeDisplay({
+  isNewMetric,
   chartTypeSelected,
   chartsData,
 }: MetricChartTypeSelected): JSX.Element {
@@ -212,15 +214,31 @@ function MetricTypeDisplay({
     <div className="metric-ui__show-chart">
       <ul className={classShowChart()}>
         <li>None</li>
-        <li>
-          <Pie options={options} data={pie} />
-        </li>
-        <li>
-          <Line options={options} data={line} />
-        </li>
-        <li>
-          <Line options={options} data={area} />
-        </li>
+        {isNewMetric ? (
+          <>
+            <li>
+              <i className="fa fa-pie-chart"></i>
+            </li>
+            <li>
+              <i className="fa fa-line-chart"></i>
+            </li>
+            <li>
+              <i className="fa fa-area-chart"></i>
+            </li>
+          </>
+        ) : (
+          <>
+            <li>
+              <Pie options={options} data={pie} />
+            </li>
+            <li>
+              <Line options={options} data={line} />
+            </li>
+            <li>
+              <Line options={options} data={area} />
+            </li>
+          </>
+        )}
       </ul>
     </div>
   );
@@ -230,6 +248,7 @@ export default function Metric({
   id,
   name,
   isEditable,
+  isNewMetric,
   isMetricNameEditable,
   isSavingChanges,
   showWarning,
@@ -322,7 +341,9 @@ export default function Metric({
           />
         )}
         {/*end chart selector */}
-        <MetricTypeDisplay {...{ chartTypeSelected, chartsData }} />
+        <MetricTypeDisplay
+          {...{ chartTypeSelected, chartsData, isNewMetric }}
+        />
         {errorTypes.noChartSelected && <p>choose a chart option</p>}
         {/* end display metric type */}
         {isEditable && showUpdateMetricChanges && (

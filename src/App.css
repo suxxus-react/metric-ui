@@ -103,6 +103,11 @@
     height: 14rem;
     overflow: hidden;
 
+    &--icon {
+      font-size: 8rem;
+      text-align: center;
+    }
+
     ul {
       position: absolute;
       height: inherit;
