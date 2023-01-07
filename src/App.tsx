@@ -453,11 +453,19 @@ function App() {
 
         break;
       case "DeleteMetric":
-        setDeleteMetric({ id: msg.id });
-        updatedState = {
-          ...state,
-          metrics: state.metrics.map(updateMetricUiList(msg, setMsg)),
-        };
+        const metricFromList: IMetricUi =
+          state.metrics.find(({ id }) => id === msg.id) ||
+          updateMetricsUiOnCreateNewMetric();
+
+        if (metricFromList.name) {
+          setDeleteMetric({ id: msg.id });
+          updatedState = {
+            ...state,
+            metrics: state.metrics.map(updateMetricUiList(msg, setMsg)),
+          };
+        } else {
+          setMsg({ type: "MetricDeleted", id: msg.id });
+        }
         break;
 
       case "MetricDeleted":
