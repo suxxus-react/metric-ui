@@ -97,6 +97,7 @@ function getDefaultMetricUi(metricData: MetricData): IMetricUi {
     isSavingChanges: false,
     showWarning: false,
     showUpdateMetricChanges: false,
+    isValid: true,
     errorTypes,
     originalChartTypeSelected: getChartTypeSelected(metricData.chartType),
     chartTypeSelected: getChartTypeSelected(metricData.chartType),
@@ -144,6 +145,7 @@ function updateMetricsUiOnCreateNewMetric(): IMetricUi {
     isSavingChanges: false,
     showWarning: false,
     showUpdateMetricChanges: false,
+    isValid: true,
     originalChartTypeSelected: "None",
     chartTypeSelected: "None",
     errorTypes,
@@ -156,7 +158,10 @@ function updateMetricsUiOnCreateNewMetric(): IMetricUi {
   };
 }
 
-function updateMetricUiList(msg: Msg) {
+function updateMetricUiList(
+  msg: Msg,
+  setMsg: React.Dispatch<React.SetStateAction<Msg>>
+) {
   return (metric: IMetricUi): IMetricUi => {
     switch (msg.type) {
       case "ToggleEditable":
@@ -199,13 +204,17 @@ function updateMetricUiList(msg: Msg) {
             : metric;
         } else {
           // validation
+          metric.isValid = true;
+
           if (metric.name.length < 3) {
             const errorTypes = { ...metric.errorTypes, nameLength: true };
             metric = {
               ...metric,
               errorTypes,
+              isValid: false,
             };
           }
+
           if (metric.chartTypeSelected === "None") {
             const errorTypes = {
               ...metric.errorTypes,
@@ -214,11 +223,45 @@ function updateMetricUiList(msg: Msg) {
             metric = {
               ...metric,
               errorTypes,
+              isValid: false,
             };
           }
+
+          if (metric.isValid) {
+            setMsg({
+              type: "SubmitMetricChanges",
+              id: metric.id,
+              value: {
+                name: metric.name,
+                chartTypeSelected: metric.chartTypeSelected,
+              },
+            });
+            metric = {
+              ...metric,
+              errorTypes: { nameLength: false, noChartSelected: false },
+            };
+          }
+
           return metric;
         }
-
+      case "SubmitMetricChanges":
+        return metric.id === msg.id
+          ? {
+              ...metric,
+              isSavingChanges: true,
+              isMetricNameEditable: false,
+              showUpdateMetricChanges: false,
+            }
+          : metric;
+      case "MetricChangesUpdatedOk":
+        return metric.id === msg.id
+          ? {
+              ...metric,
+              originalName: metric.name,
+              originalChartTypeSelected: metric.chartTypeSelected,
+              isSavingChanges: false,
+            }
+          : metric;
       default:
         return metric;
     }
@@ -318,6 +361,12 @@ function userDataDecoder(data: unknown): UserDataDecoded {
   }
 }
 
+type MetricUpdatedData = {
+  id: string;
+  name: string;
+  chartType: ChartTypeSelected;
+};
+
 function App() {
   const [state, setState] = useState<IState>({
     id: 0,
@@ -329,6 +378,11 @@ function App() {
   });
 
   const [msg, setMsg] = useState<Msg>({ type: "None" });
+  const [metricChanges, setMetricChanges] = useState<MetricUpdatedData>({
+    id: "",
+    name: "",
+    chartType: "None",
+  });
 
   const dispatchMsg = (msg: Msg) => {
     setMsg(msg);
@@ -354,7 +408,7 @@ function App() {
         updatedState = {
           ...state,
           isEditable: !state.isEditable,
-          metrics: state.metrics.map(updateMetricUiList(msg)),
+          metrics: state.metrics.map(updateMetricUiList(msg, setMsg)),
         };
         break;
       case "CreateNewMetric":
@@ -370,7 +424,26 @@ function App() {
       case "SaveMetricChanges":
         updatedState = {
           ...state,
-          metrics: state.metrics.map(updateMetricUiList(msg)),
+          metrics: state.metrics.map(updateMetricUiList(msg, setMsg)),
+        };
+        break;
+      case "SubmitMetricChanges":
+        updatedState = {
+          ...state,
+          metrics: state.metrics.map(updateMetricUiList(msg, setMsg)),
+        };
+
+        setMetricChanges({
+          id: msg.id,
+          name: msg.value.name,
+          chartType: msg.value.chartTypeSelected,
+        });
+        // useEffect save changes
+        break;
+      case "MetricChangesUpdatedOk":
+        updatedState = {
+          ...state,
+          metrics: state.metrics.map(updateMetricUiList(msg, setMsg)),
         };
         break;
       case "None":
@@ -380,9 +453,35 @@ function App() {
         updatedState = { ...state };
         break;
     }
-    // console.log("updatedState", updatedState);
+
     setState(updatedState);
   }, [msg]);
+
+  useEffect(() => {
+    if (metricChanges.id) {
+      async function updateMetric() {
+        try {
+          const response = await axios.put(
+            "https://dummyjson.com/http/200",
+            metricChanges
+          );
+
+          const { data }: { data: { message?: string } } = response;
+
+          if (data.message === "OK") {
+            console.log(data);
+            setMetricChanges({ id: "", name: "", chartType: "None" });
+            setMsg({ type: "MetricChangesUpdatedOk", id: metricChanges.id });
+          }
+        } catch (err) {
+          console.error(err);
+          //do some stuff
+        }
+      }
+
+      updateMetric();
+    }
+  }, [metricChanges]);
 
   useEffect(() => {
     if (isLogged) {
@@ -396,7 +495,7 @@ function App() {
             value: userDataDecoder(data).metrics.map(getDefaultMetricUi),
           });
         } catch (err) {
-          alert(err);
+          console.error(err);
         }
       }
       fetchMetricsData();

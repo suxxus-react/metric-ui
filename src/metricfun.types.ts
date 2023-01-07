@@ -32,6 +32,17 @@ type SaveMetricChanges = {
   value: boolean;
 };
 
+type SubmitMetricChanges = {
+  type: "SubmitMetricChanges";
+  id: string;
+  value: { name: string; chartTypeSelected: ChartTypeSelected };
+};
+
+type MetricChangesUpdatedOk = {
+  type: "MetricChangesUpdatedOk";
+  id: string;
+};
+
 // -- ---
 
 type ToggleDarkMode = {
@@ -86,6 +97,8 @@ export type Msg =
   | EditMetricName
   | UpdateMetricName
   | SaveMetricChanges
+  | SubmitMetricChanges
+  | MetricChangesUpdatedOk
   | UpdateMetrics // TODO check this name (used when we get metrics data from Api)
   | None;
 
@@ -168,6 +181,7 @@ export interface IMetricUi {
   isSavingChanges: boolean;
   showWarning: boolean;
   showUpdateMetricChanges: boolean;
+  isValid: boolean;
   errorTypes: MetricErrorTypes;
   originalChartTypeSelected: ChartTypeSelected;
   chartTypeSelected: ChartTypeSelected;
