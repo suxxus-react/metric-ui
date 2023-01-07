@@ -97,7 +97,7 @@ function getDefaultMetricUi(metricData: MetricData): IMetricUi {
     isSavingChanges: false,
     showWarning: false,
     showUpdateMetricChanges: false,
-    isValid: true,
+    isValid: false,
     errorTypes,
     originalChartTypeSelected: getChartTypeSelected(metricData.chartType),
     chartTypeSelected: getChartTypeSelected(metricData.chartType),
@@ -145,7 +145,7 @@ function updateMetricsUiOnCreateNewMetric(): IMetricUi {
     isSavingChanges: false,
     showWarning: false,
     showUpdateMetricChanges: false,
-    isValid: true,
+    isValid: false,
     originalChartTypeSelected: "None",
     chartTypeSelected: "None",
     errorTypes,
@@ -203,45 +203,47 @@ function updateMetricUiList(
               }
             : metric;
         } else {
-          // validation
-          metric.isValid = true;
+          if (metric.id === msg.id) {
+            metric.isValid = true;
+            // validate data
+            if (metric.name.length < 3) {
+              const errorTypes = { ...metric.errorTypes, nameLength: true };
+              metric = {
+                ...metric,
+                errorTypes,
+                isValid: false,
+              };
+            }
 
-          if (metric.name.length < 3) {
-            const errorTypes = { ...metric.errorTypes, nameLength: true };
-            metric = {
-              ...metric,
-              errorTypes,
-              isValid: false,
-            };
+            if (metric.chartTypeSelected === "None") {
+              const errorTypes = {
+                ...metric.errorTypes,
+                noChartSelected: true,
+              };
+              metric = {
+                ...metric,
+                errorTypes,
+                isValid: false,
+              };
+            }
+
+            if (metric.isValid) {
+              setMsg({
+                type: "SubmitMetricChanges",
+                id: metric.id,
+                value: {
+                  name: metric.name,
+                  chartTypeSelected: metric.chartTypeSelected,
+                },
+              });
+              metric = {
+                ...metric,
+                isValid: false,
+                errorTypes: { nameLength: false, noChartSelected: false },
+              };
+            }
           }
-
-          if (metric.chartTypeSelected === "None") {
-            const errorTypes = {
-              ...metric.errorTypes,
-              noChartSelected: true,
-            };
-            metric = {
-              ...metric,
-              errorTypes,
-              isValid: false,
-            };
-          }
-
-          if (metric.isValid) {
-            setMsg({
-              type: "SubmitMetricChanges",
-              id: metric.id,
-              value: {
-                name: metric.name,
-                chartTypeSelected: metric.chartTypeSelected,
-              },
-            });
-            metric = {
-              ...metric,
-              errorTypes: { nameLength: false, noChartSelected: false },
-            };
-          }
-
+          //
           return metric;
         }
       case "SubmitMetricChanges":
@@ -438,7 +440,7 @@ function App() {
           name: msg.value.name,
           chartType: msg.value.chartTypeSelected,
         });
-        // useEffect save changes
+
         break;
       case "MetricChangesUpdatedOk":
         updatedState = {
@@ -469,7 +471,6 @@ function App() {
           const { data }: { data: { message?: string } } = response;
 
           if (data.message === "OK") {
-            console.log(data);
             setMetricChanges({ id: "", name: "", chartType: "None" });
             setMsg({ type: "MetricChangesUpdatedOk", id: metricChanges.id });
           }
