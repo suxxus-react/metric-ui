@@ -182,6 +182,7 @@ export interface IMetricUi {
   id: string;
   originalName: string;
   name: string;
+  isNewMetric: boolean;
   isMetricNameEditable: boolean;
   isEditable: boolean;
   isSavingChanges: boolean;

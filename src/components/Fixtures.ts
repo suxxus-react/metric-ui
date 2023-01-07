@@ -74,6 +74,7 @@ export const metricProps: Omit<IMetricUi, "dispatchMsg"> = {
   id: "01",
   originalName: "zz top",
   name: "zz top",
+  isNewMetric: false,
   isMetricNameEditable: false,
   isEditable: true,
   isSavingChanges: false,

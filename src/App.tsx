@@ -100,6 +100,7 @@ function getDefaultMetricUi(metricData: MetricData): IMetricUi {
     id: metricData.id,
     originalName: metricData.name,
     name: metricData.name,
+    isNewMetric: false,
     isMetricNameEditable: false,
     isEditable: false,
     isSavingChanges: false,
@@ -148,6 +149,7 @@ function updateMetricsUiOnCreateNewMetric(): IMetricUi {
     id: nanoid(),
     originalName: "",
     name: "",
+    isNewMetric: true,
     isMetricNameEditable: false,
     isEditable: true,
     isSavingChanges: false,
@@ -271,6 +273,7 @@ function updateMetricUiList(
           ? {
               ...metric,
               originalName: metric.name,
+              isNewMetric: false,
               originalChartTypeSelected: metric.chartTypeSelected,
               isSavingChanges: false,
             }
@@ -457,14 +460,14 @@ function App() {
           state.metrics.find(({ id }) => id === msg.id) ||
           updateMetricsUiOnCreateNewMetric();
 
-        if (metricFromList.name) {
+        if (metricFromList.isNewMetric) {
+          setMsg({ type: "MetricDeleted", id: msg.id });
+        } else {
           setDeleteMetric({ id: msg.id });
           updatedState = {
             ...state,
             metrics: state.metrics.map(updateMetricUiList(msg, setMsg)),
           };
-        } else {
-          setMsg({ type: "MetricDeleted", id: msg.id });
         }
         break;
 
