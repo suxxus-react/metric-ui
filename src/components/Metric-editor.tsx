@@ -286,7 +286,7 @@ export default function Metric({
       <div className="p-4">
         <div className="flex justify-between">
           <div className="flex justify-between w-56">
-            {isMetricNameEditable ? (
+            {isEditable && isMetricNameEditable ? (
               <>
                 <input
                   value={name}

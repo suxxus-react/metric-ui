@@ -150,7 +150,7 @@ function updateMetricsUiOnCreateNewMetric(): IMetricUi {
     originalName: "",
     name: "",
     isNewMetric: true,
-    isMetricNameEditable: false,
+    isMetricNameEditable: true,
     isEditable: true,
     isSavingChanges: false,
     showWarning: false,
@@ -175,7 +175,13 @@ function updateMetricUiList(
   return (metric: IMetricUi): IMetricUi => {
     switch (msg.type) {
       case "ToggleEditable":
-        return { ...metric, isEditable: !metric.isEditable };
+        return {
+          ...metric,
+          isEditable: !metric.isEditable,
+          name: metric.originalName,
+          chartTypeSelected: metric.originalChartTypeSelected,
+          isMetricNameEditable: false,
+        };
       case "ToggleShowWarning":
         return metric.id === msg.id
           ? { ...metric, showWarning: !metric.showWarning }
