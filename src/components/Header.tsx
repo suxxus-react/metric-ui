@@ -6,6 +6,7 @@ export default function Header({ isDark, dispatchMsg }: IProps): JSX.Element {
     <header className="flex justify-between">
       <h1 className="metrics__logo">fun-metrics</h1>
       <button
+        className="button-default"
         onClick={() => {
           dispatchMsg({
             type: "ToggleDarkMode",

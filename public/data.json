@@ -4,6 +4,11 @@
     {
       "id": "2323",
       "name": "metric one",
+      "metadata": {
+        "resolution": "monthly...",
+        "update": "update ...",
+        "limit": "limit x..."
+      },
       "chartType": "pie",
       "chartData": {
         "datasets": [

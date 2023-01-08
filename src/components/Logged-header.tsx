@@ -41,14 +41,16 @@ export default function LoggedHeader({
         </div>
       </div>
       {isEditable && (
-        <button
-          className="md:w-40"
-          onClick={() => {
-            dispatchMsg({ type: "CreateNewMetric", value: dispatchMsg });
-          }}
-        >
-          new metric
-        </button>
+        <div className="md:flex md:justify-end">
+          <button
+            className="w-full sm:w-40"
+            onClick={() => {
+              dispatchMsg({ type: "CreateNewMetric", value: dispatchMsg });
+            }}
+          >
+            new metric
+          </button>
+        </div>
       )}
     </div>
   );

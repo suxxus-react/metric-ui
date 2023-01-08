@@ -7,18 +7,34 @@
   --dropdown-open-background: #f0f0f0;
   --dropdown-options-background: #f9f9f9;
   --dropdown-highlight: #353534;
+
+  --form-warning: #bd1313;
+
+  --metadata: #443939;
 }
 
-/* button { */
-/*   color: var(--button-color); */
-/*   background-color: var(--button-background); */
-/*   padding: 0.3rem 0.9rem; */
-/*   border-radius: 0.3rem; */
-/* } */
+button {
+  color: var(--button-color);
+  background-color: var(--button-background);
+  padding: 0.3rem 0.9rem;
+  border-radius: 0.3rem;
+}
+
+.button-default {
+  color: unset;
+  background-color: unset;
+  padding: unset;
+  border-radius: unset;
+}
 
 .form-check-input:checked {
   background-color: var(--button-background);
   border-color: var(--metric-ui-border);
+}
+
+.form-warning-errors {
+  color: var(--form-warning);
+  font-size: small;
 }
 
 .metrics {
@@ -83,6 +99,7 @@
   }
 
   &__show-saving-spinner {
+    /* TODO: review name, probably the spinner is not only used inside metric-ui */
     position: absolute;
     z-index: 10;
     background-color: red;
@@ -121,6 +138,7 @@
     &__icon {
       font-size: 10rem;
       text-align: center;
+      color: #634a6f;
     }
 
     &__default {
@@ -138,5 +156,9 @@
     &__area {
       top: -42rem;
     }
+  }
+
+  &__metadata {
+    color: var(--metadata);
   }
 }

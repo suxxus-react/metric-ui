@@ -52,34 +52,31 @@ const eventHandlerHelper =
 function MetricModal({ id, dispatchMsg }: MetricModal): JSX.Element {
   return (
     <section className="absolute z-10 h-full w-full">
-      <div className="absolute h-full w-full bg-indigo-500 opacity-50"></div>
-      <div className="content absolute p-5 mt-40 shadow">
+      <div className="metric-ui__show-saving-spinner"></div>
+      <div className="content absolute z-10 p-5 mt-40 shadow">
         <div className="flex justify-center  inline-block align-middle">
           <div className="block p-6 rounded-lg shadow-lg bg-white max-w-sm">
             <p className="text-gray-700 text-base mb-4">
               You are about to delete. Do you want to proceed?
             </p>
             <button
-              type="button"
+              className="mr-2"
               onClick={() => {
                 dispatchMsg({
                   type: "DeleteMetric",
                   id,
                 });
               }}
-              className="inline-block px-6 py-2.5 bg-zinc-400 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
             >
               Yes
             </button>
             <button
-              type="button"
               onClick={() => {
                 dispatchMsg({
                   type: "ToggleShowWarning",
                   id,
                 });
               }}
-              className="ml-5 inline-block px-6 py-2.5 bg-zinc-400 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
             >
               No
             </button>
@@ -99,6 +96,10 @@ function MetricOptionsSelector({
     ? "pointer-events-none"
     : "pointer-events-auto";
 
+  const Button = "button-default hover:bg-zinc-200 dark:hover:bg-zinc-500";
+
+  const ChartName = "mr-10";
+
   return (
     <details className="metric-ui__select-chart-option">
       <summary className={PointerEvents} role="button">
@@ -114,10 +115,10 @@ function MetricOptionsSelector({
                 value: "Pie",
               });
             }}
-            className="hover:bg-zinc-200 dark:hover:bg-zinc-500"
+            className={Button}
           >
             <i className="fa fa-pie-chart"></i>
-            <span>Pie</span>
+            <span className={ChartName}>Pie</span>
           </button>
         </li>
         <li>
@@ -129,10 +130,10 @@ function MetricOptionsSelector({
                 value: "Line",
               });
             }}
-            className="hover:bg-zinc-200 dark:hover:bg-zinc-500"
+            className={Button}
           >
             <i className="fa fa-line-chart"></i>
-            <span>Line</span>
+            <span className={ChartName}>Line</span>
           </button>
         </li>
         <li>
@@ -140,10 +141,10 @@ function MetricOptionsSelector({
             onClick={() => {
               dispatchMsg({ type: "SelectChartType", id, value: "Area" });
             }}
-            className="hover:bg-zinc-200 dark:hover:bg-zinc-500"
+            className={Button}
           >
             <i className="fa fa-area-chart"></i>
-            <span>Area</span>
+            <span className={ChartName}>Area</span>
           </button>
         </li>
       </ul>
@@ -217,7 +218,7 @@ function MetricTypeDisplay({
     <div className="metric-ui__show-chart">
       <ul className={`${classShowChart()} ${classShowChartIcon()}`}>
         <li>
-          <i className="fa fa-bar-chart text-zinc-700"></i>
+          <i className="fa fa-bar-chart text-zinc-300"></i>
         </li>
         {isNewMetric ? (
           <>
@@ -288,13 +289,21 @@ export default function Metric({
       )}
       <div className="p-4">
         <div className="flex justify-between">
-          <div className="flex justify-between w-56">
+          <div className="">
             {isEditable && isMetricNameEditable ? (
               <>
                 <input
                   value={name}
                   placeholder="metric name"
-                  className="w-40 mr-2"
+                  className="
+                    mt-1
+                    h-full
+                    w-full
+                    block
+                    rounded-md
+                    bg-gray-200
+                    border-transparent
+                    focus:border-gray-500 focus:bg-white focus:ring-0k "
                   onChange={(evt) => {
                     evt.preventDefault();
 
@@ -305,37 +314,40 @@ export default function Metric({
                     });
                   }}
                 />
-                {errorTypes.nameLength && <p>At least 3 characters</p>}
+                {errorTypes.nameLength && (
+                  <p className="form-warning-errors">At least 3 characters</p>
+                )}
               </>
             ) : (
               <>
                 <span className="mr-2">{name}</span>
-                <button
-                  onClick={() => {
-                    eventHandler(dispatchMsg)({
-                      type: "EditMetricName",
-                      id,
-                    });
-                  }}
-                >
-                  {isEditable && (
+                {isEditable && (
+                  <button
+                    className="button-default"
+                    onClick={() => {
+                      eventHandler(dispatchMsg)({
+                        type: "EditMetricName",
+                        id,
+                      });
+                    }}
+                  >
                     <i className="fa fa-pencil-square-o fa-lg"></i>
-                  )}
-                </button>
+                  </button>
+                )}
               </>
             )}
           </div>
           {isEditable && (
             <button
+              className="button-default"
               onClick={() => {
                 eventHandler(dispatchMsg)({
                   type: "ToggleShowWarning",
                   id,
                 });
               }}
-              className="font-extrabold"
             >
-              delete metric
+              <i className="fa fa-trash-o fa-2x"></i>
             </button>
           )}
         </div>
@@ -349,10 +361,12 @@ export default function Metric({
         <MetricTypeDisplay
           {...{ chartTypeSelected, chartsData, isNewMetric }}
         />
-        {errorTypes.noChartSelected && <p>choose a chart option</p>}
+        {errorTypes.noChartSelected && (
+          <p className="form-warning-errors">choose a chart option</p>
+        )}
         {/* end display metric type */}
         {isEditable && showUpdateMetricChanges && (
-          <div className="mt-2 flex justify-end">
+          <div className="mt-8 flex justify-end">
             {!isNewMetric && (
               <button
                 onClick={() => {
@@ -381,7 +395,7 @@ export default function Metric({
           </div>
         )}
         {/* end save button */}
-        <ul className="text-xs font-bold mt-5">
+        <ul className="metric-ui__metadata  text-xs font-bold mt-5 ">
           {Object.values(metadata).map((data, idx) => (
             <li key={`${idx}_${data}`}>{data}</li>
           ))}
