@@ -41,6 +41,7 @@ button {
 .form-warning-errors {
   color: var(--form-warning);
   font-size: small;
+  margin-top: 5px;
 }
 
 .metrics {

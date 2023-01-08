@@ -297,7 +297,7 @@ export default function Metric({
                   placeholder="metric name"
                   className="
                     mt-1
-                    h-full
+                    h-8
                     w-full
                     block
                     rounded-md
@@ -316,7 +316,9 @@ export default function Metric({
                   }}
                 />
                 {errorTypes.nameLength && (
-                  <p className="form-warning-errors">At least 3 characters</p>
+                  <p className="form-warning-errors dark:text-rose-500">
+                    At least 3 characters
+                  </p>
                 )}
               </>
             ) : (
@@ -363,7 +365,9 @@ export default function Metric({
           {...{ chartTypeSelected, chartsData, isNewMetric }}
         />
         {errorTypes.noChartSelected && (
-          <p className="form-warning-errors">choose a chart option</p>
+          <p className="form-warning-errors dark:text-rose-500">
+            choose a chart option
+          </p>
         )}
         {/* end display metric type */}
         {isEditable && showUpdateMetricChanges && (
