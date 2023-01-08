@@ -215,7 +215,7 @@ function MetricTypeDisplay({
   };
 
   return (
-    <div className="metric-ui__show-chart">
+    <div className="metric-ui__show-chart dark:border-gray-600">
       <ul className={`${classShowChart()} ${classShowChartIcon()}`}>
         <li>
           <i className="fa fa-bar-chart text-zinc-300"></i>
@@ -269,7 +269,7 @@ export default function Metric({
   const eventHandler = eventHandlerHelper({ isSavingChanges });
 
   return (
-    <div className="metric-ui">
+    <div className="metric-ui dark:border-gray-600">
       {isSavingChanges && (
         <ThreeCircles
           height="100"
@@ -289,7 +289,7 @@ export default function Metric({
       )}
       <div className="p-4">
         <div className="flex justify-between">
-          <div className="">
+          <div className="mb-2">
             {isEditable && isMetricNameEditable ? (
               <>
                 <input
@@ -303,6 +303,7 @@ export default function Metric({
                     rounded-md
                     bg-gray-200
                     border-transparent
+                    dark:text-black
                     focus:border-gray-500 focus:bg-white focus:ring-0k "
                   onChange={(evt) => {
                     evt.preventDefault();
@@ -395,7 +396,7 @@ export default function Metric({
           </div>
         )}
         {/* end save button */}
-        <ul className="metric-ui__metadata  text-xs font-bold mt-5 ">
+        <ul className="metric-ui__metadata text-xs font-bold mt-5 dark:text-white">
           {Object.values(metadata).map((data, idx) => (
             <li key={`${idx}_${data}`}>{data}</li>
           ))}

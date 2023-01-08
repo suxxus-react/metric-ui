@@ -1,7 +1,9 @@
 :root {
   --metric-ui-border: lightgray;
 
-  --button-background: #280528;
+  --violet: rgb(49 46 129);
+
+  --button-background: rgb(49 46 129);
   --button-color: white;
 
   --dropdown-open-background: #f0f0f0;
@@ -25,6 +27,10 @@ button {
   background-color: unset;
   padding: unset;
   border-radius: unset;
+}
+
+.text-violet {
+  color: var(--violet);
 }
 
 .form-check-input:checked {
@@ -70,7 +76,6 @@ button {
     height: 150px;
     margin-top: 2rem;
     border-top: 1px solid;
-    border-color: var(--metric-ui-border);
 
     summary {
       padding: 10px;

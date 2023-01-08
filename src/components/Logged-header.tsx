@@ -10,7 +10,7 @@ export default function LoggedHeader({
         <div>
           <div className="mb-4">
             <span className="mr-3">{userName}</span>
-            <i className="fa fa-user fa-2x"></i>
+            <i className="text-violet fa fa-user fa-2x dark:text-white"></i>
           </div>
           <button
             onClick={() => {
