@@ -103,11 +103,6 @@
     height: 14rem;
     overflow: hidden;
 
-    &--icon {
-      font-size: 8rem;
-      text-align: center;
-    }
-
     ul {
       position: absolute;
       height: inherit;
@@ -123,20 +118,25 @@
       }
     }
 
+    &__icon {
+      font-size: 10rem;
+      text-align: center;
+    }
+
     &__default {
       top: 0;
     }
 
     &__pie {
-      top: -14rem;
+      top: 0;
     }
 
     &__line {
-      top: -28rem;
+      top: -14rem;
     }
 
     &__area {
-      top: -42rem;
+      top: -28rem;
     }
   }
 }

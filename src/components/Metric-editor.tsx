@@ -183,6 +183,9 @@ function MetricTypeDisplay({
     }
   };
 
+  const classShowChartIcon = (): string =>
+    isNewMetric ? "metric-ui__show-chart__icon" : "";
+
   const getChartText = (): string => {
     const text = "Fun Charts ";
     switch (chartTypeSelected) {
@@ -212,8 +215,7 @@ function MetricTypeDisplay({
 
   return (
     <div className="metric-ui__show-chart">
-      <ul className={classShowChart()}>
-        <li>None</li>
+      <ul className={`${classShowChart()} ${classShowChartIcon()}`}>
         {isNewMetric ? (
           <>
             <li>
