@@ -154,7 +154,7 @@ function updateMetricsUiOnCreateNewMetric(): IMetricUi {
     isEditable: true,
     isSavingChanges: false,
     showWarning: false,
-    showUpdateMetricChanges: false,
+    showUpdateMetricChanges: true,
     isValid: false,
     originalChartTypeSelected: "None",
     chartTypeSelected: "None",
@@ -428,7 +428,9 @@ function App() {
         updatedState = {
           ...state,
           isEditable: !state.isEditable,
-          metrics: state.metrics.map(updateMetricUiList(msg, setMsg)),
+          metrics: state.metrics
+            .filter(({ isNewMetric }) => !isNewMetric)
+            .map(updateMetricUiList(msg, setMsg)),
         };
         break;
       case "CreateNewMetric":

@@ -350,18 +350,20 @@ export default function Metric({
         {/* end display metric type */}
         {isEditable && showUpdateMetricChanges && (
           <div className="mt-2 flex justify-end">
-            <button
-              onClick={() => {
-                dispatchMsg({
-                  type: "SaveMetricChanges",
-                  id,
-                  value: false,
-                });
-              }}
-              className="mr-4"
-            >
-              cancel
-            </button>
+            {!isNewMetric && (
+              <button
+                onClick={() => {
+                  dispatchMsg({
+                    type: "SaveMetricChanges",
+                    id,
+                    value: false,
+                  });
+                }}
+                className="mr-4"
+              >
+                cancel
+              </button>
+            )}
             <button
               onClick={() => {
                 dispatchMsg({
