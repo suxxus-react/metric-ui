@@ -128,15 +128,15 @@
     }
 
     &__pie {
-      top: 0;
-    }
-
-    &__line {
       top: -14rem;
     }
 
-    &__area {
+    &__line {
       top: -28rem;
+    }
+
+    &__area {
+      top: -42rem;
     }
   }
 }

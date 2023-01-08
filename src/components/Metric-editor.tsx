@@ -216,6 +216,9 @@ function MetricTypeDisplay({
   return (
     <div className="metric-ui__show-chart">
       <ul className={`${classShowChart()} ${classShowChartIcon()}`}>
+        <li>
+          <i className="fa fa-bar-chart text-zinc-700"></i>
+        </li>
         {isNewMetric ? (
           <>
             <li>
