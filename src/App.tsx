@@ -181,6 +181,8 @@ function updateMetricUiList(
           name: metric.originalName,
           chartTypeSelected: metric.originalChartTypeSelected,
           isMetricNameEditable: false,
+          showWarning: false,
+          showUpdateMetricChanges: false,
         };
       case "ToggleShowWarning":
         return metric.id === msg.id
