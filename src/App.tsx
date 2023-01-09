@@ -420,6 +420,9 @@ function App() {
       case "IsLogged":
         updatedState = { ...state, isLogged: true };
         break;
+      case "ToggleDarkMode":
+        updatedState = { ...state, isDark: !state.isDark };
+        break;
       case "UpdateMetrics":
         updatedState = {
           ...state,
@@ -497,6 +500,16 @@ function App() {
 
     setState(updatedState);
   }, [msg]);
+
+  useEffect(() => {
+    const { isDark } = state;
+
+    if (isDark) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, [state.isDark]);
 
   useEffect(() => {
     if (metricChanges.id) {
