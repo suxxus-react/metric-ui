@@ -10,46 +10,61 @@ type UserData = {
   id: number;
   metrics?: unknown;
 };
+const chartPie = D.exactDecoder("pie");
+const chartLine = D.exactDecoder("line");
+const chartArea = D.exactDecoder("area");
 
-export default function userDataDecoder(data: unknown): UserDataDecoded {
-  const chartPie = D.exactDecoder("pie");
+const chartTypeDecoder = D.oneOfDecoders<string>(
+  chartPie,
+  chartLine,
+  chartArea
+);
 
-  const chartLine = D.exactDecoder("line");
-  const chartArea = D.exactDecoder("area");
+const ChartDataSetsDecoder = D.objectDecoder<MetricDataSet>({
+  label: D.oneOfDecoders(D.stringDecoder, D.undefinedDecoder),
+  data: D.arrayDecoder(D.numberDecoder),
+});
 
-  const chartTypeDecoder = D.oneOfDecoders<string>(
-    chartPie,
-    chartLine,
-    chartArea
-  );
+const chartDataDecoder = D.objectDecoder<MetricDataChart>({
+  labels: D.oneOfDecoders(D.arrayDecoder(D.stringDecoder), D.undefinedDecoder),
+  datasets: D.arrayDecoder(ChartDataSetsDecoder),
+});
 
-  const ChartDataSetsDecoder = D.objectDecoder<MetricDataSet>({
-    label: D.stringDecoder,
-    data: D.arrayDecoder(D.numberDecoder),
-  });
+const metadataDecoder = D.objectDecoder<Metadata>({
+  update: D.stringDecoder,
+  limit: D.stringDecoder,
+  resolution: D.stringDecoder,
+});
 
-  const chartDataDecoder = D.objectDecoder<MetricDataChart>({
-    labels: D.oneOfDecoders(
-      D.arrayDecoder(D.stringDecoder),
-      D.undefinedDecoder
-    ),
-    datasets: D.arrayDecoder(ChartDataSetsDecoder),
-  });
+const userMetricsDecoder = D.objectDecoder<MetricData>({
+  id: D.stringDecoder,
+  name: D.stringDecoder,
+  chartType: chartTypeDecoder,
+  chartData: chartDataDecoder,
+  metadata: D.oneOfDecoders(metadataDecoder, D.undefinedDecoder),
+});
 
-  const metadataDecoder = D.objectDecoder<Metadata>({
-    update: D.stringDecoder,
-    limit: D.stringDecoder,
-    resolution: D.stringDecoder,
-  });
+export function newMetricDataDecoder(data: unknown): MetricData {
+  const dataDecoder = userMetricsDecoder.decode(data);
 
-  const userMetricsDecoder = D.objectDecoder<MetricData>({
-    id: D.stringDecoder,
-    name: D.stringDecoder,
-    chartType: chartTypeDecoder,
-    chartData: chartDataDecoder,
-    metadata: D.oneOfDecoders(metadataDecoder, D.undefinedDecoder),
-  });
+  switch (dataDecoder.type) {
+    case "OK":
+      return dataDecoder.value;
+    case "ERR":
+      console.warn(
+        `newMetricData-decoder ${dataDecoder.type}`,
+        dataDecoder.message
+      );
+      return {
+        id: "",
+        name: "",
+        chartType: "",
+        chartData: { datasets: [] },
+      };
+  }
+}
 
+export function userDataDecoder(data: unknown): UserDataDecoded {
   const dataDecoder = D.objectDecoder<UserData>({
     id: D.numberDecoder,
     metrics: D.oneOfDecoders(D.undefinedDecoder, D.anyDecoder),
@@ -75,6 +90,7 @@ export default function userDataDecoder(data: unknown): UserDataDecoded {
       }
     })
     .bind((result) => {
+      // TODO => this could be removed
       const resultCopy = JSON.parse(JSON.stringify(result));
 
       const metrics = resultCopy.metrics
