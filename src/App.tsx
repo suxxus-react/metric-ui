@@ -523,7 +523,7 @@ function App() {
           const { data }: { data: { message?: string } } = response;
 
           if (data.message === "OK") {
-            setMetricChanges({ id: "", name: "", chartType: "None" });
+            setMetricChanges({ id: "", name: "", chartType: "None" }); // reset
             setMsg({ type: "MetricChangesUpdatedOk", id: metricChanges.id });
           }
         } catch (err) {
@@ -547,10 +547,7 @@ function App() {
           const { data }: { data: { message?: string } } = response;
 
           if (data.message === "OK") {
-            setMsg({
-              type: "MetricDeleted",
-              id: deleteMetric.id,
-            });
+            setMsg({ type: "MetricDeleted", id: deleteMetric.id });
             setDeleteMetric({ id: "" });
           }
         } catch (err) {
