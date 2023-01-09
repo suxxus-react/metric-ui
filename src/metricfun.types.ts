@@ -38,9 +38,15 @@ type SubmitMetricChanges = {
   value: { name: string; chartTypeSelected: ChartTypeSelected };
 };
 
-type MetricChangesUpdatedOk = {
-  type: "MetricChangesUpdatedOk";
+type MetricUpdated = {
+  type: "MetricUpdated";
   id: string;
+};
+
+type NewMetricUpdated = {
+  type: "NewMetricUpdated";
+  id: string;
+  value: MetricData;
 };
 
 type MetricDeleted = {
@@ -103,15 +109,16 @@ export type Msg =
   | UpdateMetricName
   | SaveMetricChanges
   | SubmitMetricChanges
-  | MetricChangesUpdatedOk // TODO check this name better to use a boolean as value
+  | MetricUpdated
   | UpdateMetrics // TODO check this name (used when we get metrics data from Api)
+  | NewMetricUpdated
   | MetricDeleted
   | None;
 
 // ========================
 //
 export type MetricDataSet = {
-  label: string;
+  label?: string;
   data: number[];
 };
 
