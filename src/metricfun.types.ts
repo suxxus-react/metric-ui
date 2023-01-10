@@ -189,12 +189,13 @@ export type Metadata = {
 
 type MetricErrorTypes = {
   nameLength: boolean;
+  nameEquals: boolean;
   noChartSelected: boolean;
 };
 //
 export interface IMetricUi {
   id: string;
-  originalName: string;
+  originalName: string; // TODO naming ? previousNane
   name: string;
   isNewMetric: boolean;
   isMetricNameEditable: boolean;
