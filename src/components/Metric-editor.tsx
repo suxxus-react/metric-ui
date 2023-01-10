@@ -315,9 +315,13 @@ export default function Metric({
                     });
                   }}
                 />
-                {errorTypes.nameLength && (
+                {(errorTypes.nameLength || errorTypes.nameEquals) && (
                   <p className="form-warning-errors dark:text-rose-500">
-                    At least 3 characters
+                    {errorTypes.nameLength ? (
+                      <>Minimum of 3 characters</>
+                    ) : (
+                      <>Identical name</>
+                    )}
                   </p>
                 )}
               </>
