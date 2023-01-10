@@ -16,10 +16,6 @@ import {
 } from "./metricfun.types";
 
 type MetricUpdatedData = {
-  // TODO review name this type is used to update
-  // data from an existing Metric and also from
-  // a new created Metric
-  // we need to send it to the service
   id: string;
   name: string;
   chartType: ChartTypeSelected;
@@ -106,7 +102,7 @@ function getLineChartData(fill: boolean) {
   };
 }
 
-function getDefaultMetricUi(metricData: MetricData): IMetricUi {
+function updateMetricUiData(metricData: MetricData): IMetricUi {
   const labels = metricData.chartData.labels || [];
 
   const metadata = metricData.metadata || {
@@ -123,14 +119,14 @@ function getDefaultMetricUi(metricData: MetricData): IMetricUi {
 
   const defaultMetricData: IMetricUi = {
     id: metricData.id,
-    originalName: metricData.name,
+    previousName: metricData.name,
     name: metricData.name,
     isNewMetric: false,
     isMetricNameEditable: false,
     isEditable: false,
     isSavingChanges: false,
-    showWarning: false,
-    showUpdateMetricChanges: false,
+    requestMetricDeletion: false,
+    showMetricSaveCancelCtrls: false,
     isValid: false,
     errorTypes,
     originalChartTypeSelected: getChartTypeSelected(metricData.chartType),
@@ -159,8 +155,7 @@ function getDefaultMetricUi(metricData: MetricData): IMetricUi {
 // ===============================
 
 // default metricUI data
-function updateMetricsUiOnCreateNewMetric(): IMetricUi {
-  // TODO naming review
+function getDefaultMetricUiData(): IMetricUi {
   const datasets = { datasets: [], labels: [] };
 
   const chartsData = {
@@ -177,14 +172,14 @@ function updateMetricsUiOnCreateNewMetric(): IMetricUi {
 
   return {
     id: nanoid(),
-    originalName: "",
+    previousName: "",
     name: "",
     isNewMetric: true,
     isMetricNameEditable: true,
     isEditable: true,
     isSavingChanges: false,
-    showWarning: false,
-    showUpdateMetricChanges: true,
+    requestMetricDeletion: false,
+    showMetricSaveCancelCtrls: true,
     isValid: false,
     originalChartTypeSelected: "None",
     chartTypeSelected: "None",
@@ -198,8 +193,7 @@ function updateMetricsUiOnCreateNewMetric(): IMetricUi {
   };
 }
 
-function updateMetricUiList(
-  // TODO naming ? updateStateMetricList
+function updateStateMetricList(
   msg: Msg,
   setMsg: React.Dispatch<React.SetStateAction<Msg>>
 ) {
@@ -210,24 +204,23 @@ function updateMetricUiList(
         return {
           ...metric,
           isEditable: !metric.isEditable,
-          name: metric.originalName,
+          name: metric.previousName,
           chartTypeSelected: metric.originalChartTypeSelected,
           isMetricNameEditable: false,
-          showWarning: false,
-          showUpdateMetricChanges: false,
+          requestMetricDeletion: false,
+          showMetricSaveCancelCtrls: false,
         };
-      case "ToggleShowWarning":
-        //TODO probably RequestMetricDeletion
-        // prompt before delete the metric
+      case "RequestMetricDeletion":
+        // prompt to confirm metric deletion
         return metric.id === msg.id
-          ? { ...metric, showWarning: !metric.showWarning }
+          ? { ...metric, requestMetricDeletion: !metric.requestMetricDeletion }
           : metric;
       case "EditMetricName":
         return metric.id === msg.id
           ? {
               ...metric,
               isMetricNameEditable: !metric.isMetricNameEditable,
-              showUpdateMetricChanges: true,
+              showMetricSaveCancelCtrls: true,
             }
           : metric;
       case "UpdateMetricName":
@@ -237,7 +230,7 @@ function updateMetricUiList(
           ? {
               ...metric,
               chartTypeSelected: msg.value,
-              showUpdateMetricChanges: true,
+              showMetricSaveCancelCtrls: true,
             }
           : metric;
       case "SaveMetricChanges":
@@ -246,10 +239,10 @@ function updateMetricUiList(
           return metric.id === msg.id
             ? {
                 ...metric,
-                name: metric.originalName,
+                name: metric.previousName,
                 chartTypeSelected: metric.originalChartTypeSelected,
                 isMetricNameEditable: false,
-                showUpdateMetricChanges: false,
+                showMetricSaveCancelCtrls: false,
                 errorTypes: {
                   nameLength: false,
                   nameEquals: false,
@@ -263,7 +256,7 @@ function updateMetricUiList(
             const nameLengthErr = metric.name.length < 3;
             const nameEqualsErr =
               metric.isMetricNameEditable &&
-              metric.name === metric.originalName;
+              metric.name === metric.previousName;
             const noChartSelectedErr = metric.chartTypeSelected === "None";
 
             const isValid = [
@@ -314,8 +307,8 @@ function updateMetricUiList(
               ...metric,
               isSavingChanges: true,
               isMetricNameEditable: false,
-              showUpdateMetricChanges: false,
-              showWarning: false,
+              showMetricSaveCancelCtrls: false,
+              requestMetricDeletion: false,
             }
           : metric;
       case "MetricUpdated":
@@ -323,7 +316,7 @@ function updateMetricUiList(
         return metric.id === msg.id
           ? {
               ...metric,
-              originalName: metric.name,
+              previousName: metric.name,
               originalChartTypeSelected: metric.chartTypeSelected,
               isSavingChanges: false,
             }
@@ -333,7 +326,7 @@ function updateMetricUiList(
         return metric.id === msg.id
           ? {
               ...metric,
-              ...getDefaultMetricUi(msg.value),
+              ...updateMetricUiData(msg.value),
               isEditable: true,
             }
           : metric;
@@ -385,7 +378,7 @@ function App() {
       case "ToggleDarkMode":
         updatedState = { ...state, isDark: !state.isDark };
         break;
-      case "UpdateMetrics":
+      case "UpdateMetricList":
         // when we get the user metrics list
         // from Api
         updatedState = {
@@ -400,17 +393,17 @@ function App() {
           isEditable: !state.isEditable,
           metrics: state.metrics
             .filter(({ isNewMetric }) => !isNewMetric)
-            .map(updateMetricUiList(msg, setMsg)),
+            .map(updateStateMetricList(msg, setMsg)),
         };
         break;
       case "CreateNewMetric":
         // show a new metric box
         updatedState = {
           ...state,
-          metrics: [updateMetricsUiOnCreateNewMetric(), ...state.metrics],
+          metrics: [getDefaultMetricUiData(), ...state.metrics],
         };
         break;
-      case "ToggleShowWarning":
+      case "RequestMetricDeletion":
       case "EditMetricName":
       case "UpdateMetricName":
       case "SelectChartType":
@@ -422,7 +415,7 @@ function App() {
         // when a new metric was registered by the service
         updatedState = {
           ...state,
-          metrics: state.metrics.map(updateMetricUiList(msg, setMsg)),
+          metrics: state.metrics.map(updateStateMetricList(msg, setMsg)),
         };
         break;
       case "MetricDeleted":
@@ -442,7 +435,7 @@ function App() {
         // submit metric changes to the service
         updatedState = {
           ...state,
-          metrics: state.metrics.map(updateMetricUiList(msg, setMsg)),
+          metrics: state.metrics.map(updateStateMetricList(msg, setMsg)),
         };
 
         fn({
@@ -456,7 +449,7 @@ function App() {
         // when the user delete a metric
         const metricFromList: IMetricUi =
           state.metrics.find(({ id }) => id === msg.id) ||
-          updateMetricsUiOnCreateNewMetric();
+          getDefaultMetricUiData();
 
         if (metricFromList.isNewMetric) {
           // we do not need to comunicate this to the service
@@ -467,7 +460,7 @@ function App() {
           setDeleteMetric({ id: msg.id });
           updatedState = {
             ...state,
-            metrics: state.metrics.map(updateMetricUiList(msg, setMsg)),
+            metrics: state.metrics.map(updateStateMetricList(msg, setMsg)),
           };
         }
         break;
@@ -523,7 +516,7 @@ function App() {
           const response = await axios.post("/newMetric.json", postMetric);
           const { data }: { data: { status?: string } } = response;
 
-          // TODO remove mock data
+          // TODO remove mock data (when we have the Api service)
           const { name, id } = postMetric;
 
           setMsg({
@@ -575,8 +568,8 @@ function App() {
           const { data }: { data: unknown } = response;
 
           dispatchMsg({
-            type: "UpdateMetrics",
-            value: userDataDecoder(data).metrics.map(getDefaultMetricUi),
+            type: "UpdateMetricList",
+            value: userDataDecoder(data).metrics.map(updateMetricUiData),
           });
         } catch (err) {
           console.error(err);

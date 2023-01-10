@@ -2,8 +2,8 @@ type DeleteMetric = {
   type: "DeleteMetric";
   id: string;
 };
-type ShowWarning = {
-  type: "ToggleShowWarning";
+type RequestMetricDeletion = {
+  type: "RequestMetricDeletion";
   id: string;
 };
 
@@ -81,8 +81,8 @@ type Logout = {
   type: "Logout";
 };
 
-type UpdateMetrics = {
-  type: "UpdateMetrics";
+type UpdateMetricList = {
+  type: "UpdateMetricList";
   value: IMetricUi[];
 };
 
@@ -109,15 +109,15 @@ export type Msg =
   | ToggleEditable
   | CreateNewMetric
   | DeleteMetric
-  | ShowWarning
+  | RequestMetricDeletion
   | SelectChartType
   | EditMetricName
   | UpdateMetricName
   | SaveMetricChanges
   | UpdateMetricData
   | MetricUpdated
-  | UpdateMetrics // TODO check this name (used when we get metrics data from Api)
-  | MetricPost // used to post new metric data
+  | UpdateMetricList
+  | MetricPost
   | MetricDeleted
   | NewMetricUpdated
   | None;
@@ -195,14 +195,14 @@ type MetricErrorTypes = {
 //
 export interface IMetricUi {
   id: string;
-  originalName: string; // TODO naming ? previousNane
+  previousName: string;
   name: string;
   isNewMetric: boolean;
   isMetricNameEditable: boolean;
   isEditable: boolean;
   isSavingChanges: boolean;
-  showWarning: boolean;
-  showUpdateMetricChanges: boolean; // TODO naming showSaveMetricCtrls
+  requestMetricDeletion: boolean;
+  showMetricSaveCancelCtrls: boolean;
   isValid: boolean;
   errorTypes: MetricErrorTypes;
   originalChartTypeSelected: ChartTypeSelected;

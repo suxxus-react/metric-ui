@@ -72,14 +72,14 @@ export const chartsData: ChartsData = {
 
 export const metricProps: Omit<IMetricUi, "dispatchMsg"> = {
   id: "01",
-  originalName: "zz top",
+  previousName: "zz top",
   name: "zz top",
   isNewMetric: false,
   isMetricNameEditable: false,
   isEditable: true,
   isSavingChanges: false,
-  showWarning: false,
-  showUpdateMetricChanges: false,
+  requestMetricDeletion: false,
+  showMetricSaveCancelCtrls: false,
   isValid: false,
   errorTypes: { nameLength: false, noChartSelected: false },
   originalChartTypeSelected: "None",

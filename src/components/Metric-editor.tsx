@@ -52,7 +52,7 @@ const eventHandlerHelper =
 function MetricModal({ id, dispatchMsg }: MetricModal): JSX.Element {
   return (
     <section className="absolute z-10 h-full w-full">
-      <div className="metric-ui__show-saving-spinner"></div>
+      <div className="metric-ui__show-saving-metric-data-spinner"></div>
       <div className="content absolute z-10 p-5 mt-40 shadow">
         <div className="flex justify-center  inline-block align-middle">
           <div className="block p-6 rounded-lg shadow-lg bg-white max-w-sm">
@@ -73,7 +73,7 @@ function MetricModal({ id, dispatchMsg }: MetricModal): JSX.Element {
             <button
               onClick={() => {
                 dispatchMsg({
-                  type: "ToggleShowWarning",
+                  type: "RequestMetricDeletion",
                   id,
                 });
               }}
@@ -257,8 +257,8 @@ export default function Metric({
   isNewMetric,
   isMetricNameEditable,
   isSavingChanges,
-  showWarning,
-  showUpdateMetricChanges,
+  requestMetricDeletion,
+  showMetricSaveCancelCtrls,
   errorTypes,
   chartTypeSelected,
   chartsData,
@@ -276,7 +276,7 @@ export default function Metric({
           width="100"
           color="#4fa94d"
           wrapperStyle={{}}
-          wrapperClass="metric-ui__show-saving-spinner"
+          wrapperClass="metric-ui__show-saving-metric-data-spinner"
           visible={true}
           ariaLabel="three-circles-rotating"
           outerCircleColor=""
@@ -284,7 +284,7 @@ export default function Metric({
           middleCircleColor=""
         />
       )}
-      {showWarning && (
+      {requestMetricDeletion && (
         <MetricModal {...{ id, dispatchMsg: eventHandler(dispatchMsg) }} />
       )}
       <div className="p-4">
@@ -349,7 +349,7 @@ export default function Metric({
               className="button-default"
               onClick={() => {
                 eventHandler(dispatchMsg)({
-                  type: "ToggleShowWarning",
+                  type: "RequestMetricDeletion",
                   id,
                 });
               }}
@@ -374,7 +374,7 @@ export default function Metric({
           </p>
         )}
         {/* end display metric type */}
-        {isEditable && showUpdateMetricChanges && (
+        {isEditable && showMetricSaveCancelCtrls && (
           <div className="mt-8 flex justify-end">
             {!isNewMetric && (
               <button

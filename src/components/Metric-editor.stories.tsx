@@ -47,7 +47,7 @@ ShowNone.args = { ...metricProps };
 export const ShowSaveMetricControls = Template.bind({});
 ShowSaveMetricControls.args = {
   ...metricProps,
-  showUpdateMetricChanges: true,
+  showMetricSaveCancelCtrls: true,
   chartTypeSelected: "Pie",
 };
 
@@ -62,7 +62,7 @@ OnSaveErrors.args = {
 export const WarnBeforeDelete = Template.bind({});
 WarnBeforeDelete.args = {
   ...metricProps,
-  showWarning: true,
+  requestMetricDeletion: true,
   chartTypeSelected: "Pie",
 };
 

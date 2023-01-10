@@ -105,8 +105,7 @@ button {
     }
   }
 
-  &__show-saving-spinner {
-    /* TODO: review name, probably the spinner is not only used inside metric-ui */
+  &__show-saving-metric-data-spinner {
     position: absolute;
     z-index: 10;
     background-color: red;
