@@ -43,19 +43,15 @@
       },
       "chartType": "line",
       "chartData": {
-        "labels": ["jan", "feb", "mar", "apr", "jun"],
+        "labels": ["jan", "feb", "mar", "apr", "jun", "jul"],
         "datasets": [
           {
-            "label": "Dataset 1",
-            "data": [300, 120, 100, 300, 150, 90]
+            "label": "#d 2",
+            "data": [10, 20, 6, 11, 4, 20]
           },
           {
-            "label": "Dataset 2",
-            "data": [1, 19, 31, 5, 2, 30]
-          },
-          {
-            "label": "Dataset 3",
-            "data": [1, 24, 14, 10, 2, 2]
+            "label": "#d 3",
+            "data": [1, 5, 12, 4, 8, 2]
           }
         ]
       }
