@@ -188,7 +188,7 @@ function MetricTypeDisplay({
     isNewMetric ? "metric-ui__show-chart__icon" : "";
 
   const getChartText = (): string => {
-    const text = "Fun Charts ";
+    const text = "";
     switch (chartTypeSelected) {
       case "Pie":
         return `${text}"Pie"`;

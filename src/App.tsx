@@ -133,6 +133,7 @@ function getDefaultMetricUi(metricData: MetricData): IMetricUi {
 
 // default metricUI data
 function updateMetricsUiOnCreateNewMetric(): IMetricUi {
+  // TODO naming review
   const datasets = { datasets: [], labels: [] };
 
   const chartsData = {
@@ -167,6 +168,7 @@ function updateMetricsUiOnCreateNewMetric(): IMetricUi {
 }
 
 function updateMetricUiList(
+  // TODO naming ? updateStateMetricList
   msg: Msg,
   setMsg: React.Dispatch<React.SetStateAction<Msg>>
 ) {
@@ -333,8 +335,6 @@ function App() {
     setMsg(msg);
     return msg;
   };
-
-  const { isLogged } = state;
 
   useEffect(() => {
     let updatedState: IState = state;
@@ -529,7 +529,7 @@ function App() {
   }, [deleteMetric]);
 
   useEffect(() => {
-    if (isLogged) {
+    if (state.isLogged) {
       async function fetchMetricsData() {
         try {
           const response = await axios.get("/data.json");
@@ -545,7 +545,7 @@ function App() {
       }
       fetchMetricsData();
     }
-  }, [isLogged]);
+  }, [state.isLogged]);
 
   const props: IProps = {
     ...state,
