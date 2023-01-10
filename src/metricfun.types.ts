@@ -32,8 +32,8 @@ type SaveMetricChanges = {
   value: boolean;
 };
 
-type SubmitMetricChanges = {
-  type: "SubmitMetricChanges";
+type UpdateMetricData = {
+  type: "UpdateMetricData";
   id: string;
   value: { name: string; chartTypeSelected: ChartTypeSelected };
 };
@@ -52,6 +52,12 @@ type NewMetricUpdated = {
 type MetricDeleted = {
   type: "MetricDeleted";
   id: string;
+};
+
+type MetricPost = {
+  type: "PostMetric";
+  id: string;
+  value: { name: string; chartTypeSelected: ChartTypeSelected };
 };
 
 // -- ---
@@ -108,15 +114,16 @@ export type Msg =
   | EditMetricName
   | UpdateMetricName
   | SaveMetricChanges
-  | SubmitMetricChanges
+  | UpdateMetricData
   | MetricUpdated
   | UpdateMetrics // TODO check this name (used when we get metrics data from Api)
-  | NewMetricUpdated
+  | MetricPost // used to post new metric data
   | MetricDeleted
+  | NewMetricUpdated
   | None;
 
 // ========================
-//
+// from service
 export type MetricDataSet = {
   label?: string;
   data: number[];
@@ -194,7 +201,7 @@ export interface IMetricUi {
   isEditable: boolean;
   isSavingChanges: boolean;
   showWarning: boolean;
-  showUpdateMetricChanges: boolean;
+  showUpdateMetricChanges: boolean; // TODO naming showSaveMetricCtrls
   isValid: boolean;
   errorTypes: MetricErrorTypes;
   originalChartTypeSelected: ChartTypeSelected;
