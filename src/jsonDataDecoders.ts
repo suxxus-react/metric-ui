@@ -90,15 +90,17 @@ export function userDataDecoder(data: unknown): UserDataDecoded {
       }
     })
     .bind((result) => {
-      // TODO => this could be removed
-      const resultCopy = JSON.parse(JSON.stringify(result));
+      const resultMetrics: MetricData[] = Array.isArray(result.metrics)
+        ? result.metrics
+        : [];
 
-      const metrics = resultCopy.metrics
-        .map((obj: MetricData) => {
-          obj.metadata = obj.metadata || {
+      const metrics = resultMetrics
+        .map((obj) => {
+          obj.metadata = {
             update: "",
             limit: "",
             resolution: "",
+            ...obj.metadata,
           };
           obj.chartData.labels = obj.chartData.labels || [];
           return obj;
