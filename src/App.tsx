@@ -72,13 +72,26 @@ function getPieChartData({
 }
 
 function getLineChartData(fill: boolean) {
-  return ({ label = "", data }: MetricDataSet): LineChartDataSet => {
+  return (
+    { label = "", data }: MetricDataSet,
+    index: number
+  ): LineChartDataSet => {
+    const styles = [
+      {
+        borderColor: "rgb(53, 162, 235)",
+        backgroundColor: "rgba(53, 162, 235, 0.5)",
+      },
+      {
+        borderColor: "rgb(255, 99, 132)",
+        backgroundColor: "rgba(255, 99, 132, 0.5)",
+      },
+    ];
+
     return {
       fill,
       label,
       data,
-      borderColor: "rgb(53, 162, 235)",
-      backgroundColor: "rgba(53, 162, 235, 0.5)",
+      ...styles[index],
     };
   };
 }
@@ -92,7 +105,11 @@ function getDefaultMetricUi(metricData: MetricData): IMetricUi {
     limit: "",
   };
 
-  const errorTypes = { nameLength: false, noChartSelected: false };
+  const errorTypes = {
+    nameLength: false,
+    nameEquals: false,
+    noChartSelected: false,
+  };
 
   const defaultMetricData: IMetricUi = {
     id: metricData.id,
@@ -142,7 +159,11 @@ function updateMetricsUiOnCreateNewMetric(): IMetricUi {
     line: datasets,
   };
 
-  const errorTypes = { nameLength: false, noChartSelected: false };
+  const errorTypes = {
+    nameLength: false,
+    nameEquals: false,
+    noChartSelected: false,
+  };
 
   return {
     id: nanoid(),
@@ -219,33 +240,37 @@ function updateMetricUiList(
                 chartTypeSelected: metric.originalChartTypeSelected,
                 isMetricNameEditable: false,
                 showUpdateMetricChanges: false,
-                errorTypes: { nameLength: false, noChartSelected: false },
+                errorTypes: {
+                  nameLength: false,
+                  nameEquals: false,
+                  noChartSelected: false,
+                },
               }
             : metric;
         } else {
           // validate data
           if (metric.id === msg.id) {
-            metric.isValid = true;
-            if (metric.name.length < 3) {
-              const errorTypes = { ...metric.errorTypes, nameLength: true };
-              metric = {
-                ...metric,
-                errorTypes,
-                isValid: false,
-              };
-            }
+            const nameLengthErr = metric.name.length < 3;
+            const nameEqualsErr =
+              metric.isMetricNameEditable &&
+              metric.name === metric.originalName;
+            const noChartSelectedErr = metric.chartTypeSelected === "None";
 
-            if (metric.chartTypeSelected === "None") {
-              const errorTypes = {
-                ...metric.errorTypes,
-                noChartSelected: true,
-              };
-              metric = {
-                ...metric,
-                errorTypes,
-                isValid: false,
-              };
-            }
+            const isValid = [
+              nameLengthErr,
+              nameEqualsErr,
+              noChartSelectedErr,
+            ].every((err) => !err);
+
+            metric = {
+              ...metric,
+              isValid,
+              errorTypes: {
+                nameLength: nameLengthErr,
+                nameEquals: nameEqualsErr,
+                noChartSelected: noChartSelectedErr,
+              },
+            };
 
             if (metric.isValid) {
               setMsg({
@@ -260,7 +285,11 @@ function updateMetricUiList(
               metric = {
                 ...metric,
                 isValid: false,
-                errorTypes: { nameLength: false, noChartSelected: false },
+                errorTypes: {
+                  nameLength: false,
+                  nameEquals: false,
+                  noChartSelected: false,
+                },
               };
             }
           }
