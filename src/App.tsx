@@ -78,12 +78,19 @@ function getLineChartData(fill: boolean) {
   ): LineChartDataSet => {
     const styles = [
       {
+        // blue
         borderColor: "rgb(53, 162, 235)",
         backgroundColor: "rgba(53, 162, 235, 0.5)",
       },
       {
+        // red
         borderColor: "rgb(255, 99, 132)",
         backgroundColor: "rgba(255, 99, 132, 0.5)",
+      },
+      {
+        //green
+        borderColor: "rgb(28, 121, 28)",
+        backgroundColor: "rgb(28, 121, 28, 0.5)",
       },
     ];
 
@@ -91,7 +98,10 @@ function getLineChartData(fill: boolean) {
       fill,
       label,
       data,
-      ...styles[index],
+      ...(styles[index] || {
+        borderColor: "rgb(204, 204, 204)",
+        backgroundColor: "rgb(204, 204, 204, 0.5)",
+      }),
     };
   };
 }
