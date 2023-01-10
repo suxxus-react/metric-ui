@@ -246,25 +246,14 @@ function updateMetricUiList(
             }
 
             if (metric.isValid) {
-              if (metric.isNewMetric) {
-                setMsg({
-                  type: "PostMetric",
-                  id: metric.id,
-                  value: {
-                    name: metric.name,
-                    chartTypeSelected: metric.chartTypeSelected,
-                  },
-                });
-              } else {
-                setMsg({
-                  type: "UpdateMetricData",
-                  id: metric.id,
-                  value: {
-                    name: metric.name,
-                    chartTypeSelected: metric.chartTypeSelected,
-                  },
-                });
-              }
+              setMsg({
+                type: metric.isNewMetric ? "PostMetric" : "UpdateMetricData",
+                id: metric.id,
+                value: {
+                  name: metric.name,
+                  chartTypeSelected: metric.chartTypeSelected,
+                },
+              });
 
               metric = {
                 ...metric,
