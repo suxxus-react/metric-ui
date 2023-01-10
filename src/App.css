@@ -74,8 +74,9 @@ button {
   border-color: var(--metric-ui-border);
 
   &__select-chart-option {
-    height: 150px;
+    /* height: 15px; */
     margin-top: 2rem;
+    margin-bottom: 0.5rem;
     border-top: 1px solid;
 
     summary {
