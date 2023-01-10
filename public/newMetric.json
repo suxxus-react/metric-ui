@@ -1,0 +1,14 @@
+{
+  "id": "",
+  "name": "",
+  "chartType": "pie",
+  "chartData": {
+    "datasets": [{ "data": [10, 15, 17, 21, 32] }],
+    "labels": ["Jan", "Feb", "Mar"]
+  },
+  "metadata": {
+    "limit": "lorem ipsum",
+    "update": "235 lorem",
+    "resolution": "resolution x1 "
+  }
+}
