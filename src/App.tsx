@@ -88,7 +88,7 @@ function getLineChartData(fill: boolean) {
         backgroundColor: "rgba(255, 99, 132, 0.5)",
       },
       {
-        //green
+        // green
         borderColor: "rgb(28, 121, 28)",
         backgroundColor: "rgb(28, 121, 28, 0.5)",
       },
