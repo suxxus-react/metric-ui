@@ -135,7 +135,6 @@ export type MetricDataChart = {
 };
 
 export type MetricData = {
-  // TODO review data type name,
   id: string;
   name: string;
   chartType: string;
@@ -144,7 +143,6 @@ export type MetricData = {
 };
 
 export type UserDataDecoded = {
-  //TODO review datatype name
   id: number;
   metrics: MetricData[];
 };
