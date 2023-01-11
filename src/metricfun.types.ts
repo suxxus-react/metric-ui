@@ -55,7 +55,7 @@ type MetricDeleted = {
 };
 
 type MetricPost = {
-  type: "PostMetric";
+  type: "CreateMetric";
   id: string;
   value: { name: string; chartTypeSelected: ChartTypeSelected };
 };

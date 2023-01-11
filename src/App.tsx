@@ -104,7 +104,7 @@ function updateStateMetricList(
 
             if (metric.isValid) {
               setMsg({
-                type: metric.isNewMetric ? "PostMetric" : "UpdateMetricData",
+                type: metric.isNewMetric ? "CreateMetric" : "UpdateMetricData",
                 id: metric.id,
                 value: {
                   name: metric.name,
@@ -126,7 +126,7 @@ function updateStateMetricList(
           //
           return metric;
         }
-      case "PostMetric":
+      case "CreateMetric":
       case "UpdateMetricData":
       case "DeleteMetric":
         return metric.id === msg.id
@@ -182,7 +182,7 @@ function App() {
     chartType: "None",
   });
 
-  const [postMetric, setPostMetric] = useState<MetricUpdatedData>({
+  const [createMetric, setCreateMetric] = useState<MetricUpdatedData>({
     id: "",
     name: "",
     chartType: "None",
@@ -258,9 +258,9 @@ function App() {
 
       // with Api
       case "UpdateMetricData":
-      case "PostMetric":
+      case "CreateMetric":
         const fn =
-          msg.type === "UpdateMetricData" ? setUpdateMetricData : setPostMetric;
+          msg.type === "UpdateMetricData" ? setUpdateMetricData : setCreateMetric;
 
         // submit metric changes to the service
         updatedState = {
@@ -340,22 +340,22 @@ function App() {
   }, [updateMetricData]);
 
   useEffect(() => {
-    if (postMetric.id) {
+    if (createMetric.id) {
       async function saveMetric() {
         try {
-          const response = await axios.post("/newMetric.json", postMetric);
+          const response = await axios.post("/newMetric.json", createMetric);
           const { data }: { data: { status?: string } } = response;
 
           // TODO remove mock data (when we have the Api service)
-          const { name, id } = postMetric;
+          const { name, id } = createMetric;
 
           setMsg({
             type: "NewMetricUpdated",
-            id: postMetric.id,
+            id: createMetric.id,
             value: { ...newMetricDataDecoder(data), name, id },
           });
 
-          setPostMetric({ id: "", name: "", chartType: "None" }); // reset
+          setCreateMetric({ id: "", name: "", chartType: "None" }); // reset
         } catch (err: any) {
           console.error(err.message || "");
         }
@@ -363,7 +363,7 @@ function App() {
 
       saveMetric();
     }
-  }, [postMetric]);
+  }, [createMetric]);
 
   useEffect(() => {
     if (deleteMetric.id) {
