@@ -83,32 +83,18 @@ export function userDataDecoder(data: unknown): UserDataDecoded {
             `UserData.metrics-decoder -> ${metricsDecoder.type}`,
             metricsDecoder.message
           );
-          return D.valueDecoder({ id: 0, metrics: [] });
+          return D.valueDecoder({ id: result.id, metrics: [] });
 
         case "OK":
           return D.valueDecoder(result);
       }
     })
-    .bind((result) => {
-      const resultMetrics: MetricData[] = Array.isArray(result.metrics)
-        ? result.metrics
-        : [];
-
-      const metrics = resultMetrics
-        .map((obj) => {
-          obj.metadata = {
-            update: "",
-            limit: "",
-            resolution: "",
-            ...obj.metadata,
-          };
-          obj.chartData.labels = obj.chartData.labels || [];
-          return obj;
-        })
-        .flat();
-
-      return D.valueDecoder({ ...result, metrics });
-    })
+    .bind((result) =>
+      D.valueDecoder({
+        ...result,
+        metrics: Array.isArray(result.metrics) ? result.metrics : [],
+      })
+    )
     .decode(data);
 
   switch (dataDecoder.type) {
