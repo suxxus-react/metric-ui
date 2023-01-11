@@ -39,7 +39,6 @@ function updateStateMetricList(
           showMetricSaveCancelCtrls: false,
         };
       case "RequestMetricDeletion":
-        // prompt to confirm metric deletion
         return metric.id === msg.id
           ? { ...metric, requestMetricDeletion: !metric.requestMetricDeletion }
           : metric;
