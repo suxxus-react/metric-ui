@@ -370,7 +370,11 @@ function App() {
 
   useEffect(() => {
     let updatedState: IState = state;
-    console.log("msg ", msg);
+
+    if (import.meta.env.DEV) {
+      console.log("msg ", msg);
+    }
+
     switch (msg.type) {
       case "IsLogged":
         updatedState = { ...state, isLogged: true };
