@@ -203,7 +203,7 @@ export interface IMetricUi {
   showMetricSaveCancelCtrls: boolean;
   isValid: boolean;
   errorTypes: MetricErrorTypes;
-  originalChartTypeSelected: ChartTypeSelected;
+  previousChartTypeSelected: ChartTypeSelected;
   chartTypeSelected: ChartTypeSelected;
   chartsData: ChartsData;
   metadata: Metadata;

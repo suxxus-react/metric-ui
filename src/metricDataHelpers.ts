@@ -97,7 +97,7 @@ function getDefaultMetric(): IMetricUi {
     requestMetricDeletion: false,
     showMetricSaveCancelCtrls: false,
     isValid: false,
-    originalChartTypeSelected: "None",
+    previousChartTypeSelected: "None",
     chartTypeSelected: "None",
     errorTypes: {
       nameLength: false,
@@ -127,7 +127,7 @@ export function updateMetricUiData(metricData: MetricData): IMetricUi {
     id: metricData.id,
     previousName: metricData.name,
     name: metricData.name,
-    originalChartTypeSelected: getChartTypeSelected(metricData.chartType),
+    previousChartTypeSelected: getChartTypeSelected(metricData.chartType),
     chartTypeSelected: getChartTypeSelected(metricData.chartType),
     chartsData: {
       pie: {

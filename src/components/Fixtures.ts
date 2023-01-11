@@ -82,7 +82,7 @@ export const metricProps: Omit<IMetricUi, "dispatchMsg"> = {
   showMetricSaveCancelCtrls: false,
   isValid: false,
   errorTypes: { nameLength: false, noChartSelected: false },
-  originalChartTypeSelected: "None",
+  previousChartTypeSelected: "None",
   chartTypeSelected: "None",
   chartsData,
   metadata: {

@@ -33,7 +33,7 @@ function updateStateMetricList(
           ...metric,
           isEditable: !metric.isEditable,
           name: metric.previousName,
-          chartTypeSelected: metric.originalChartTypeSelected,
+          chartTypeSelected: metric.previousChartTypeSelected,
           isMetricNameEditable: false,
           requestMetricDeletion: false,
           showMetricSaveCancelCtrls: false,
@@ -68,7 +68,7 @@ function updateStateMetricList(
             ? {
                 ...metric,
                 name: metric.previousName,
-                chartTypeSelected: metric.originalChartTypeSelected,
+                chartTypeSelected: metric.previousChartTypeSelected,
                 isMetricNameEditable: false,
                 showMetricSaveCancelCtrls: false,
                 errorTypes: {
@@ -145,7 +145,7 @@ function updateStateMetricList(
           ? {
               ...metric,
               previousName: metric.name,
-              originalChartTypeSelected: metric.chartTypeSelected,
+              previousChartTypeSelected: metric.chartTypeSelected,
               isSavingChanges: false,
             }
           : metric;
