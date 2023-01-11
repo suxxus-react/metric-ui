@@ -90,8 +90,8 @@ type ToggleEditable = {
   type: "ToggleEditable";
 };
 
-type CreateNewMetric = {
-  type: "CreateNewMetric";
+type CreateNewMetricUi = {
+  type: "CreateNewMetricUi";
   value: DispatchMsg;
 };
 
@@ -107,7 +107,7 @@ export type Msg =
   | Logout
   | ToggleDarkMode
   | ToggleEditable
-  | CreateNewMetric
+  | CreateNewMetricUi
   | DeleteMetric
   | RequestMetricDeletion
   | SelectChartType

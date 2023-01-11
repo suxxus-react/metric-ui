@@ -226,7 +226,7 @@ function App() {
             .map(updateStateMetricList(msg, setMsg)),
         };
         break;
-      case "CreateNewMetric":
+      case "CreateNewMetricUi":
         // show a new metric box
         updatedState = {
           ...state,

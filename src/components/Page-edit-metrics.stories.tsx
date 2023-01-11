@@ -23,8 +23,8 @@ const Template: ComponentStory<typeof PageEditMetrics> = (args) => (
 export const WithOutMetricsData = Template.bind({});
 WithOutMetricsData.args = { ...props, isEditable: true };
 
-export const CreateNewMetric = Template.bind({});
-CreateNewMetric.args = {
+export const CreateNewMetricUi = Template.bind({});
+CreateNewMetricUi.args = {
   ...props,
   isEditable: true,
   metrics: [...Array(1)].fill({ ...metricProps }).map((metricProps) => ({
