@@ -57,6 +57,11 @@ OnSaveErrors.args = {
   name: "",
   chartTypeSelected: "Pie",
   isMetricNameEditable: true,
+  errorTypes: {
+    ...metricProps.errorTypes,
+    nameLength: true,
+    noChartSelected: true,
+  },
 };
 
 export const WarnBeforeDelete = Template.bind({});
