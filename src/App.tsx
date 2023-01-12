@@ -208,14 +208,14 @@ function App() {
         // TODO should be updated when real login is done
         // for now, just navigate to /welcome
         navigate("/welcome");
-        setMsg({ type: "IsLogged", userName: "Alice" });
+        setMsg({ type: "IsLogged", value: "Alice" });
         break;
       case "Logout":
         updatedState = { ...state, isLogged: false, userName: "" };
         navigate("/");
         break;
       case "IsLogged":
-        updatedState = { ...state, isLogged: true, userName: msg.userName };
+        updatedState = { ...state, isLogged: true, userName: msg.value };
         break;
       case "ToggleDarkMode":
         updatedState = { ...state, isDark: !state.isDark };
