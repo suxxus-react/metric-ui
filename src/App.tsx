@@ -28,7 +28,6 @@ function updateStateMetricList(
   return (metric: IMetricUi): IMetricUi => {
     switch (msg.type) {
       case "ToggleEditable":
-        // metric is disable to be edited
         return {
           ...metric,
           isEditable: !metric.isEditable,
@@ -62,7 +61,7 @@ function updateStateMetricList(
           : metric;
       case "SaveMetricChanges":
         if (!msg.value) {
-          // cancel changes
+          // cancel submit changes, reset values
           return metric.id === msg.id
             ? {
                 ...metric,
@@ -78,7 +77,7 @@ function updateStateMetricList(
               }
             : metric;
         } else {
-          // validate data
+          // validate data, before submit
           if (metric.id === msg.id) {
             const nameLengthErr = metric.name.length < 3;
             const nameEqualsErr =
@@ -126,6 +125,7 @@ function updateStateMetricList(
           //
           return metric;
         }
+      // -- with service
       case "CreateMetric":
       case "UpdateMetricData":
       case "DeleteMetric":
@@ -139,7 +139,6 @@ function updateStateMetricList(
             }
           : metric;
       case "MetricUpdated":
-        // the metric changes were updated by the service
         return metric.id === msg.id
           ? {
               ...metric,
@@ -149,7 +148,6 @@ function updateStateMetricList(
             }
           : metric;
       case "NewMetricUpdated":
-        // a new metric was updated by the service
         return metric.id === msg.id
           ? {
               ...metric,
@@ -217,7 +215,6 @@ function App() {
         };
         break;
       case "ToggleEditable":
-        // toggle metric editable status
         updatedState = {
           ...state,
           isEditable: !state.isEditable,
@@ -238,9 +235,9 @@ function App() {
       case "UpdateMetricName":
       case "SelectChartType":
       case "SaveMetricChanges":
-      // metric component dispatchs
+      // metric component messages dispatchs
       case "MetricUpdated":
-      //when we get the response from Api
+      // when we get the response from Service
       case "NewMetricUpdated":
         // when a new metric was registered by the service
         updatedState = {
@@ -256,11 +253,12 @@ function App() {
         };
         break;
 
-      // with Api
       case "UpdateMetricData":
       case "CreateMetric":
         const fn =
-          msg.type === "UpdateMetricData" ? setUpdateMetricData : setCreateMetric;
+          msg.type === "UpdateMetricData"
+            ? setUpdateMetricData
+            : setCreateMetric;
 
         // submit metric changes to the service
         updatedState = {
@@ -286,7 +284,6 @@ function App() {
           // so we juse delete it from the list
           setMsg({ type: "MetricDeleted", id: msg.id });
         } else {
-          // we need to use the service
           setDeleteMetric({ id: msg.id });
           updatedState = {
             ...state,
@@ -295,7 +292,6 @@ function App() {
         }
         break;
       case "None":
-        // return the state whith out any modification
         updatedState = { ...state };
         break;
     }
