@@ -75,6 +75,7 @@ type LoginWithSocialNetwork = {
 
 type Logged = {
   type: "IsLogged";
+  userName: string;
 };
 
 type Logout = {

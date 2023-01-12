@@ -169,8 +169,8 @@ function App() {
   const [state, setState] = useState<IState>({
     id: 0,
     isDark: false,
-    isLogged: true,
-    userName: "Alice",
+    isLogged: false,
+    userName: "",
     isEditable: false,
     metrics: [],
   });
@@ -208,9 +208,14 @@ function App() {
         // TODO should be updated when real login is done
         // for now, just navigate to /welcome
         navigate("/welcome");
+        setMsg({ type: "IsLogged", userName: "Alice" });
+        break;
+      case "Logout":
+        updatedState = { ...state, isLogged: false, userName: "" };
+        navigate("/");
         break;
       case "IsLogged":
-        updatedState = { ...state, isLogged: true };
+        updatedState = { ...state, isLogged: true, userName: msg.userName };
         break;
       case "ToggleDarkMode":
         updatedState = { ...state, isDark: !state.isDark };
