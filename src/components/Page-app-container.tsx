@@ -21,6 +21,7 @@ export default function MainContainer(props: IProps): JSX.Element {
       <Header {...props} />
       <div className={InnerConatainer}>
         <Routes>
+          <Route path="/" element={<LoginWithAccountWrapper {...props} />} />
           <Route path="welcome" element={<PageEditMetrics {...props} />} />
         </Routes>
       </div>
@@ -28,5 +29,3 @@ export default function MainContainer(props: IProps): JSX.Element {
     </div>
   );
 }
-
-// <Route path="/" element={<LoginWithAccountWrapper {...props} />} />

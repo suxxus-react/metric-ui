@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import MainContainer from "./components/Page-app-container";
 import { userDataDecoder, newMetricDataDecoder } from "./jsonDataDecoders";
@@ -163,6 +164,8 @@ function updateStateMetricList(
 }
 
 function App() {
+  const navigate = useNavigate();
+
   const [state, setState] = useState<IState>({
     id: 0,
     isDark: false,
@@ -195,11 +198,17 @@ function App() {
 
   useEffect(() => {
     let updatedState: IState = state;
+
     if (import.meta.env.DEV) {
       console.log("msg ", msg);
     }
 
     switch (msg.type) {
+      case "LoginWithSocialNetwork":
+        // TODO should be updated when real login is done
+        // for now, just navigate to /welcome
+        navigate("/welcome");
+        break;
       case "IsLogged":
         updatedState = { ...state, isLogged: true };
         break;
