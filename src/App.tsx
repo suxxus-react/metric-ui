@@ -211,7 +211,14 @@ function App() {
         setMsg({ type: "IsLogged", value: "Alice" });
         break;
       case "Logout":
-        updatedState = { ...state, isLogged: false, userName: "" };
+        updatedState = {
+          ...state,
+          isLogged: false,
+          userName: "",
+          id: 0,
+          isEditable: false,
+          metrics: [],
+        };
         navigate("/");
         break;
       case "IsLogged":
