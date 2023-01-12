@@ -40,11 +40,6 @@
     {
       "id": "0234",
       "name": "firulga done",
-      "metadata": {
-        "resolution": "daily",
-        "update": "update ...",
-        "limit": "limit x 10"
-      },
       "chartType": "line",
       "chartData": {
         "labels": ["jan", "feb", "mar", "apr", "jun", "jul"],
