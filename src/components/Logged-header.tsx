@@ -47,7 +47,9 @@ export default function LoggedHeader({
           <button
             className="w-full sm:w-40"
             onClick={() => {
-              dispatchMsg({ type: "CreateNewMetricUi", value: dispatchMsg });
+              dispatchMsg({
+                type: "CreateNewMetricUi",
+              });
             }}
           >
             new metric
