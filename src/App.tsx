@@ -399,8 +399,8 @@ function App() {
             });
             setDeleteMetric({ id: "" });
           }
-        } catch (err) {
-          console.error(err);
+        } catch (err: any) {
+          console.error(err.message);
         }
       }
       deleteUserMetric();
@@ -418,8 +418,8 @@ function App() {
             type: "UpdateMetricList",
             value: userDataDecoder(data).metrics.map(updateMetricUiData),
           });
-        } catch (err) {
-          console.error(err);
+        } catch (err: any) {
+          console.error(err.message);
         }
       }
       fetchMetricsData();
