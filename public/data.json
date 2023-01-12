@@ -22,6 +22,10 @@
     {
       "id": "232882",
       "name": "Judas Priest",
+      "metadata": {
+        "update": "162 updates",
+        "resolution": "monthly resolution"
+      },
       "chartType": "area",
       "chartData": {
         "labels": ["jan", "feb", "mar", "apr", "jun"],
@@ -36,11 +40,6 @@
     {
       "id": "0234",
       "name": "firulga done",
-      "metadata": {
-        "resolution": "daily",
-        "update": "update ...",
-        "limit": "limit x 10"
-      },
       "chartType": "line",
       "chartData": {
         "labels": ["jan", "feb", "mar", "apr", "jun", "jul"],
