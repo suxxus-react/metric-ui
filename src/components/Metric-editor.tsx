@@ -265,7 +265,6 @@ export default function Metric({
   metadata,
   dispatchMsg,
 }: IMetricUiCtrls): JSX.Element {
-  //
   const eventHandler = eventHandlerHelper({ isSavingChanges });
 
   return (
@@ -295,6 +294,9 @@ export default function Metric({
                 <input
                   value={name}
                   placeholder="metric name"
+                  ref={(e) => {
+                    if (e) e.focus();
+                  }}
                   className="
                     mt-1
                     h-8
