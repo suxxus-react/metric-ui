@@ -180,9 +180,9 @@ export type ChartsData = {
 };
 
 export type Metadata = {
-  update: string;
-  limit: string;
-  resolution: string;
+  update?: string;
+  limit?: string;
+  resolution?: string;
 };
 
 type MetricErrorTypes = {

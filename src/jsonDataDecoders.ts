@@ -31,9 +31,9 @@ const chartDataDecoder = D.objectDecoder<MetricDataChart>({
 });
 
 const metadataDecoder = D.objectDecoder<Metadata>({
-  update: D.stringDecoder,
-  limit: D.stringDecoder,
-  resolution: D.stringDecoder,
+  update: D.oneOfDecoders(D.stringDecoder, D.undefinedDecoder),
+  limit: D.oneOfDecoders(D.stringDecoder, D.undefinedDecoder),
+  resolution: D.oneOfDecoders(D.stringDecoder, D.undefinedDecoder),
 });
 
 const userMetricsDecoder = D.objectDecoder<MetricData>({
