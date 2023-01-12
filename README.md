@@ -111,3 +111,7 @@ docker container
 The `package.json` file comes with the following scripts
 
 * `dev` to start development.
+
+## TODO:
+* Real Github login
+* Add Cypress Tests
