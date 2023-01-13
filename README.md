@@ -99,7 +99,7 @@ exit edit mode        user account
 ## Clone the repo & install:
 
 ```
-git clone "git@github.com:suxxus-react/metric-ui.git"
+git clone "https://github.com/suxxus/metric-ui.git"
 
 cd  ./metric-ui
 npm install
