@@ -424,6 +424,8 @@ function App() {
         }
       }
       fetchMetricsData();
+    } else {
+      dispatchMsg({ type: "Logout" });
     }
   }, [state.isLogged]);
 
