@@ -54,7 +54,7 @@ type MetricDeleted = {
   id: string;
 };
 
-type MetricPost = {
+type CreateMetric = {
   type: "CreateMetric";
   id: string;
   value: { name: string; chartTypeSelected: ChartTypeSelected };
@@ -117,7 +117,7 @@ export type Msg =
   | UpdateMetricData
   | MetricUpdated
   | UpdateMetricList
-  | MetricPost
+  | CreateMetric
   | MetricDeleted
   | NewMetricUpdated
   | None;
