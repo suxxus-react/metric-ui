@@ -200,7 +200,7 @@ function App() {
     let updatedState: IState = state;
 
     if (import.meta.env.DEV) {
-      console.log("msg ", msg);
+      console.info("msg ", msg);
     }
 
     switch (msg.type) {
