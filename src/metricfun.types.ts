@@ -32,8 +32,8 @@ type SaveMetricChanges = {
   value: boolean;
 };
 
-type UpdateMetricData = {
-  type: "UpdateMetricData";
+type UpdateMetric = {
+  type: "UpdateMetric";
   id: string;
   value: { name: string; chartTypeSelected: ChartTypeSelected };
 };
@@ -114,7 +114,7 @@ export type Msg =
   | EditMetricName
   | UpdateMetricName
   | SaveMetricChanges
-  | UpdateMetricData
+  | UpdateMetric
   | MetricUpdated
   | UpdateMetricList
   | CreateMetric

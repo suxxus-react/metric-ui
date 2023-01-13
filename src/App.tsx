@@ -104,7 +104,7 @@ function updateStateMetricList(
 
             if (metric.isValid) {
               setMsg({
-                type: metric.isNewMetric ? "CreateMetric" : "UpdateMetricData",
+                type: metric.isNewMetric ? "CreateMetric" : "UpdateMetric",
                 id: metric.id,
                 value: {
                   name: metric.name,
@@ -128,7 +128,7 @@ function updateStateMetricList(
         }
       // -- with service
       case "CreateMetric":
-      case "UpdateMetricData":
+      case "UpdateMetric":
       case "DeleteMetric":
         return metric.id === msg.id
           ? {
@@ -271,12 +271,10 @@ function App() {
         };
         break;
 
-      case "UpdateMetricData":
+      case "UpdateMetric":
       case "CreateMetric":
         const fn =
-          msg.type === "UpdateMetricData"
-            ? setUpdateMetricData
-            : setCreateMetric;
+          msg.type === "UpdateMetric" ? setUpdateMetricData : setCreateMetric;
 
         // submit metric changes to the service
         updatedState = {
@@ -425,7 +423,6 @@ function App() {
       }
       fetchMetricsData();
     } else {
-      // TODO should be change when real login exists.
       dispatchMsg({ type: "Logout" });
     }
   }, [state.isLogged]);
