@@ -229,7 +229,7 @@ function App() {
         break;
       case "UpdateMetricList":
         // when we get the user metrics list
-        // from Api
+        // from Service
         updatedState = {
           ...state,
           metrics: msg.value,
@@ -299,7 +299,7 @@ function App() {
 
         if (metricFromList.isNewMetric) {
           // we do not need to comunicate this to the service
-          // so we juse delete it from the list
+          // so we just delete it from the metrics list
           setMsg({ type: "MetricDeleted", id: msg.id });
         } else {
           setDeleteMetric({ id: msg.id });
@@ -425,6 +425,7 @@ function App() {
       }
       fetchMetricsData();
     } else {
+      // TODO should be change when real login exists.
       dispatchMsg({ type: "Logout" });
     }
   }, [state.isLogged]);
