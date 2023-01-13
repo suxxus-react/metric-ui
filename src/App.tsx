@@ -256,11 +256,8 @@ function App() {
       case "UpdateMetricName":
       case "SelectChartType":
       case "SaveMetricChanges":
-      // metric component messages dispatchs
       case "MetricUpdated":
-      // when we get the response from Service
       case "NewMetricUpdated":
-        // when a new metric was registered by the service
         updatedState = {
           ...state,
           metrics: state.metrics.map(updateStateMetricList(msg, setMsg)),
