@@ -3,9 +3,7 @@ export default function Footer(): JSX.Element {
     <footer className="metrics__footer text-center lg:text-left">
       <div className="text-sm text-center p-4">
         © 2021 Copyright:
-        <a className="ml-2 font-semibold" href="#">
-          Fun Metrics
-        </a>
+        <span className="ml-2 font-semibold">Fun Metrics</span>
       </div>
     </footer>
   );
