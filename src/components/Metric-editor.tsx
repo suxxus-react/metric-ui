@@ -49,7 +49,7 @@ const eventHandlerHelper =
 
 // component
 // =========
-function MetricModal({ id, dispatchMsg }: MetricModal): JSX.Element {
+function MetricPopup({ id, dispatchMsg }: MetricModal): JSX.Element {
   return (
     <section className="absolute z-10 h-full w-full">
       <div className="metric-ui__show-saving-metric-data-spinner"></div>
@@ -284,7 +284,7 @@ export default function Metric({
         />
       )}
       {requestMetricDeletion && (
-        <MetricModal {...{ id, dispatchMsg: eventHandler(dispatchMsg) }} />
+        <MetricPopup {...{ id, dispatchMsg: eventHandler(dispatchMsg) }} />
       )}
       <div className="p-4">
         <div className="flex justify-between">
