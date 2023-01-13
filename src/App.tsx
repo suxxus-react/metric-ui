@@ -345,6 +345,7 @@ function App() {
           }
 
           setUpdateMetricData({ id: "", name: "", chartType: "None" }); // reset
+          /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
         } catch (err: any) {
           console.error(err.message || "");
         }
@@ -370,6 +371,7 @@ function App() {
           });
 
           setCreateMetric({ id: "", name: "", chartType: "None" }); // reset
+          /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
         } catch (err: any) {
           console.error(err.message || "");
         }
@@ -396,6 +398,7 @@ function App() {
             });
             setDeleteMetric({ id: "" });
           }
+          /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
         } catch (err: any) {
           console.error(err.message);
         }
@@ -415,6 +418,7 @@ function App() {
             type: "UpdateMetricList",
             value: userDataDecoder(data).metrics.map(updateMetricUiData),
           });
+          /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
         } catch (err: any) {
           console.error(err.message);
         }
