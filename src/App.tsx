@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import MainContainer from "./components/Page-app-container";
@@ -166,6 +166,8 @@ function updateStateMetricList(
 function App() {
   const navigate = useNavigate();
 
+  // const metricRef = useRef();
+
   const [state, setState] = useState<IState>({
     id: 0,
     isDark: false,
@@ -313,7 +315,7 @@ function App() {
     }
 
     setState(updatedState);
-  }, [msg]);
+  }, [msg, navigate, state]);
 
   useEffect(() => {
     const { isDark } = state;

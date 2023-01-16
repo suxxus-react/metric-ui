@@ -1,5 +1,5 @@
 {
-  "extends": ["react-app"],
+  "extends": ["react-app", "plugin:react-hooks/recommended"],
   "rules": {
     "react-hooks/exhaustive-deps": "off",
     "no-console": [
@@ -8,6 +8,8 @@
         "allow": ["info", "warn", "error"]
       }
     ],
-    "@typescript-eslint/no-explicit-any": "error"
+    "@typescript-eslint/no-explicit-any": "error",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn"
   }
 }
