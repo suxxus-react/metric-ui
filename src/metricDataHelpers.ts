@@ -158,3 +158,32 @@ export function getDefaultMetricUiData(): IMetricUi {
     showMetricSaveCancelCtrls: true,
   };
 }
+
+export function validateMetricUserInputs(metric: IMetricUi): IMetricUi {
+  //
+  const nameLengthErr = metric.name.length < 3;
+  const nameEqualsErr =
+    metric.isMetricNameEditable && metric.name === metric.previousName;
+  const noChartSelectedErr = metric.chartTypeSelected === "None";
+
+  const isValid = [nameLengthErr, nameEqualsErr, noChartSelectedErr].every(
+    (err) => !err
+  );
+
+  if (isValid) {
+    return {
+      ...metric,
+      isValid: true,
+    }; // reset metric values
+  }
+
+  return {
+    ...metric,
+    isValid,
+    errorTypes: {
+      nameLength: nameLengthErr,
+      nameEquals: nameEqualsErr,
+      noChartSelected: noChartSelectedErr,
+    },
+  }; // should display metric errors
+}

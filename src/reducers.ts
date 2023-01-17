@@ -2,6 +2,7 @@ import { IState, IMetricUi, Msg } from "./metricfun.types";
 import {
   updateMetricUiData,
   getDefaultMetricUiData,
+  validateMetricUserInputs,
 } from "./metricDataHelpers";
 
 export function metricsReducer(msg: Msg) {
@@ -56,10 +57,7 @@ export function metricsReducer(msg: Msg) {
             }
           : metric;
       case "ShowMetricUiErrors":
-        if (metric.id === msg.id) {
-          return msg.value;
-        }
-        return metric;
+        return metric.id === msg.id ? msg.value : metric;
       // -- with service
       case "CreateMetric":
       case "UpdateMetric":
@@ -105,46 +103,12 @@ export function metricsReducer(msg: Msg) {
   };
 }
 
-function validateMetricUserInputs(metric: IMetricUi): IMetricUi {
-  //
-  const nameLengthErr = metric.name.length < 3;
-  const nameEqualsErr =
-    metric.isMetricNameEditable && metric.name === metric.previousName;
-  const noChartSelectedErr = metric.chartTypeSelected === "None";
-
-  const isValid = [nameLengthErr, nameEqualsErr, noChartSelectedErr].every(
-    (err) => !err
-  );
-
-  if (isValid) {
-    return {
-      ...metric,
-      isValid: true,
-      // errorTypes: {
-      //   nameLength: false,
-      //   nameEquals: false,
-      //   noChartSelected: false,
-      // },
-    }; // reset metric values
-  }
-
-  return {
-    ...metric,
-    isValid,
-    errorTypes: {
-      nameLength: nameLengthErr,
-      nameEquals: nameEqualsErr,
-      noChartSelected: noChartSelectedErr,
-    },
-  }; // should display metric errors
-}
-
 export function stateReducer(state: IState, msg: Msg): IState {
   console.info("reducer - msg ", msg);
   switch (msg.type) {
     case "LoginWithSocialNetwork":
       // TODO should be updated when real login is done
-      // for now, just navigate to /welcome
+      // for now, just set the state with a fake user
       return { ...state, isLogged: true, userName: "Alice" };
     case "Logout":
       return {
@@ -156,6 +120,7 @@ export function stateReducer(state: IState, msg: Msg): IState {
         metrics: [],
       };
     // case "IsLogged":
+    // TODO review if it is needed
     //   return { ...state, isLogged: true, userName: msg.value };
     case "ToggleDarkMode":
       return { ...state, isDark: !state.isDark };
@@ -188,6 +153,16 @@ export function stateReducer(state: IState, msg: Msg): IState {
     case "NewMetricUpdated":
       return {
         ...state,
+        updateMetricChanges: {
+          name: "",
+          id: "",
+          chartType: "None",
+        },
+        saveNewMetricChanges: {
+          name: "",
+          id: "",
+          chartType: "None",
+        },
         metrics: state.metrics.map(metricsReducer(msg)),
       };
     case "SaveMetricChanges":
@@ -206,30 +181,41 @@ export function stateReducer(state: IState, msg: Msg): IState {
 
         if (metric.isValid) {
           // use Api service to update metric changes
-          return {
-            ...state,
-            metrics: state.metrics.map(
-              metricsReducer({ type: "UpdateMetric", id: metric.id })
-            ),
-            updateMetricChanges: {
-              id: metric.id,
-              name: metric.name,
-              chartType: metric.chartTypeSelected,
-            },
-          };
-        } else {
-          // show metric errors
-          return {
-            ...state,
-            metrics: state.metrics.map(
-              metricsReducer({
-                type: "ShowMetricUiErrors",
-                id: metric.id,
-                value: metric,
-              })
-            ),
-          };
+          return metric.isNewMetric
+            ? {
+                ...state,
+                metrics: state.metrics.map(
+                  metricsReducer({ type: "UpdateMetric", id: metric.id })
+                ),
+                saveNewMetricChanges: {
+                  id: metric.id,
+                  name: metric.name,
+                  chartType: metric.chartTypeSelected,
+                },
+              }
+            : {
+                ...state,
+                metrics: state.metrics.map(
+                  metricsReducer({ type: "UpdateMetric", id: metric.id })
+                ),
+                updateMetricChanges: {
+                  id: metric.id,
+                  name: metric.name,
+                  chartType: metric.chartTypeSelected,
+                },
+              };
         }
+        // show metric errors
+        return {
+          ...state,
+          metrics: state.metrics.map(
+            metricsReducer({
+              type: "ShowMetricUiErrors",
+              id: metric.id,
+              value: metric,
+            })
+          ),
+        };
       }
     case "MetricDeleted":
       // remove metric from the list
@@ -237,23 +223,12 @@ export function stateReducer(state: IState, msg: Msg): IState {
         ...state,
         metrics: state.metrics.filter(({ id }) => id !== msg.id),
       };
-    // case "UpdateMetric":
     case "CreateMetric":
-      // const fn =
-      //   msg.type === "UpdateMetric" ? setUpdateMetricData : setCreateMetric;
-
       // submit metric changes to the service
       return {
         ...state,
         metrics: state.metrics.map(metricsReducer(msg)),
       };
-
-    // fn({
-    //   id: msg.id,
-    //   name: msg.value.name,
-    //   chartType: msg.value.chartTypeSelected,
-    // });
-
     case "DeleteMetric":
       // when the user delete a metric
       const metricFromList: IMetricUi =
@@ -268,7 +243,6 @@ export function stateReducer(state: IState, msg: Msg): IState {
           metrics: state.metrics.filter(({ id }) => id !== msg.id),
         };
       } else {
-        // setDeleteMetric({ id: msg.id });
         // we need DELETE using the Api
         return {
           ...state,

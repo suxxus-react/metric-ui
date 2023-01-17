@@ -103,7 +103,7 @@ type None = {
   type: "None";
 };
 
-export type DispatchMsg = (msg: Msg) => Msg;
+export type DispatchMsg = (msg: Msg) => void;
 
 export type Msg =
   | LoginWithSocialNetwork
@@ -232,6 +232,7 @@ export interface IState {
   id: number;
   isEditable: boolean;
   updateMetricChanges: MetricUpdatedData;
+  saveNewMetricChanges: MetricUpdatedData;
   deleteMetric: MetricId;
   metrics: IMetricUi[];
 }
