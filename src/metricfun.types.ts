@@ -35,7 +35,6 @@ type SaveMetricChanges = {
 type UpdateMetric = {
   type: "UpdateMetric";
   id: string;
-  value: { name: string; chartTypeSelected: ChartTypeSelected };
 };
 
 type MetricUpdated = {
@@ -60,6 +59,11 @@ type CreateMetric = {
   value: { name: string; chartTypeSelected: ChartTypeSelected };
 };
 
+type ShowMetricUiErrors = {
+  type: "ShowMetricUiErrors";
+  id: string;
+  value: IMetricUi;
+};
 // -- ---
 
 type ToggleDarkMode = {
@@ -108,6 +112,7 @@ export type Msg =
   | ToggleDarkMode
   | ToggleEditable
   | CreateNewMetricUi
+  | ShowMetricUiErrors
   | DeleteMetric
   | RequestMetricDeletion
   | SelectChartType
@@ -190,6 +195,13 @@ type MetricErrorTypes = {
   nameEquals: boolean;
   noChartSelected: boolean;
 };
+
+type MetricUpdatedData = {
+  id: string;
+  name: string;
+  chartType: ChartTypeSelected;
+};
+export type MetricId = { id: string };
 //
 export interface IMetricUi {
   id: string;
@@ -219,6 +231,8 @@ export interface IState {
   userName: string;
   id: number;
   isEditable: boolean;
+  updateMetricChanges: MetricUpdatedData;
+  deleteMetric: MetricId;
   metrics: IMetricUi[];
 }
 
