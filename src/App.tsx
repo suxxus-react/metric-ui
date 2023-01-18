@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import MainContainer from "./components/Page-app-container";
 import { userDataDecoder, newMetricDataDecoder } from "./jsonDataDecoders";
-import { IState, Msg, IProps } from "./metricfun.types";
+import { IState, IProps } from "./metricfun.types";
 import { updateMetricUiData } from "./metricDataHelpers";
 import { stateReducer } from "./reducers";
 
@@ -29,7 +29,6 @@ const INITIAL_STATE: IState = {
 
 function App() {
   const [state, dispatch] = useReducer(stateReducer, INITIAL_STATE);
-
   const navigate = useNavigate();
 
   useEffect(() => {

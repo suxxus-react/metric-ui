@@ -294,9 +294,6 @@ export default function Metric({
                 <input
                   value={name}
                   placeholder="metric name"
-                  ref={(e) => {
-                    if (e) e.focus();
-                  }}
                   className="
                     mt-1
                     h-8
