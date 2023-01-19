@@ -1,5 +1,6 @@
 import * as D from "json-decoder";
 import {
+  Status,
   UserDataDecoded,
   MetricData,
   Metadata,
@@ -10,6 +11,12 @@ type UserData = {
   id: number;
   metrics?: unknown;
 };
+
+type DeleteMetric = {
+  status: Status;
+  message?: string;
+};
+
 const chartPie = D.exactDecoder("pie");
 const chartLine = D.exactDecoder("line");
 const chartArea = D.exactDecoder("area");
@@ -44,6 +51,18 @@ const userMetricsDecoder = D.objectDecoder<MetricData>({
   metadata: D.oneOfDecoders(metadataDecoder, D.undefinedDecoder),
 });
 
+const oK = D.exactDecoder(Status.Ok);
+const conflict = D.exactDecoder(Status.Conflict);
+const badRequest = D.exactDecoder(Status.BadRequest);
+const created = D.exactDecoder(Status.Created);
+
+const statusDecoder = D.oneOfDecoders<Status>(
+  oK,
+  conflict,
+  badRequest,
+  created
+);
+
 export function newMetricDataDecoder(data: unknown): MetricData {
   const dataDecoder = userMetricsDecoder.decode(data);
 
@@ -61,6 +80,24 @@ export function newMetricDataDecoder(data: unknown): MetricData {
         chartType: "",
         chartData: { datasets: [] },
       };
+  }
+}
+
+export function deleteMetricDecoder(data: unknown): DeleteMetric {
+  //
+  const dataDecoder = D.objectDecoder({
+    status: statusDecoder,
+    message: D.oneOfDecoders(D.stringDecoder, D.undefinedDecoder),
+  }).decode(data);
+
+  switch (dataDecoder.type) {
+    case "ERR":
+      console.warn(
+        `DeleteData-decoder -> ${dataDecoder.type}, ${dataDecoder.message}`
+      );
+      return { status: Status.nothing };
+    case "OK":
+      return dataDecoder.value;
   }
 }
 
