@@ -15,6 +15,16 @@ type UpdateApi = {
   updateData: unknown;
   updateErr: string;
 };
+
+type CreateApi = {
+  createData: unknown;
+  createErr: string;
+};
+
+type UpdateDataApi = { url: string; body: unknown };
+
+type CreateDataApi = { url: string; body: unknown };
+
 export function useGetApi(): [GetApi, (a: string) => void] {
   //
   const [url, setUrl] = useState<string>("");
@@ -22,7 +32,7 @@ export function useGetApi(): [GetApi, (a: string) => void] {
   const [error, setError] = useState<string>("");
 
   useEffect(() => {
-    async function fetchData() {
+    async function fetch() {
       try {
         const resp = await axios.get(url);
         setData(resp.data);
@@ -33,7 +43,7 @@ export function useGetApi(): [GetApi, (a: string) => void] {
     }
 
     if (url) {
-      fetchData();
+      fetch();
     }
   }, [url]);
 
@@ -47,7 +57,7 @@ export function useDeleteApi(): [DeleteApi, (a: string) => void] {
   const [deleteErr, setDeleteErr] = useState<string>("");
 
   useEffect(() => {
-    async function deleteData() {
+    async function fetch() {
       try {
         const resp = await axios.delete(url);
         setDeleteData(resp.data);
@@ -58,28 +68,25 @@ export function useDeleteApi(): [DeleteApi, (a: string) => void] {
     }
 
     if (url) {
-      deleteData();
+      fetch();
     }
   }, [url]);
 
   return [{ deleteData, deleteErr }, setUrl];
 }
 
-export function useUpdateApi(): [
-  UpdateApi,
-  (body: unknown) => void,
-  (a: string) => void
-] {
-  //
-  const [url, setUrl] = useState<string>("");
-  const [updateBody, setUpdateBody] = useState<unknown>({});
+export function useUpdateApi(): [UpdateApi, (a: UpdateDataApi) => void] {
+  const [{ url, body }, setUrl] = useState<UpdateDataApi>({
+    url: "",
+    body: "",
+  });
   const [updateData, setUpdateData] = useState<unknown>();
   const [updateErr, setUpdateErr] = useState("");
 
   useEffect(() => {
-    async function updateData() {
+    async function fetch() {
       try {
-        const resp = await axios.put(url, updateBody);
+        const resp = await axios.put(url, body);
         setUpdateData(resp.data);
         /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
       } catch (err: any) {
@@ -88,9 +95,37 @@ export function useUpdateApi(): [
     }
 
     if (url) {
-      updateData();
+      fetch();
     }
-  }, [url, updateBody]);
+  }, [url, body]);
 
-  return [{ updateData, updateErr }, setUpdateBody, setUrl];
+  return [{ updateData, updateErr }, setUrl];
+}
+
+export function usePostApi(): [CreateApi, (a: CreateDataApi) => void] {
+  const [{ url, body }, setUrl] = useState<CreateDataApi>({
+    url: "",
+    body: "",
+  });
+
+  const [createData, setCreateData] = useState<unknown>();
+  const [createErr, setCreateErr] = useState("");
+
+  useEffect(() => {
+    async function fetch() {
+      try {
+        const resp = await axios.post(url, body);
+        setCreateData(resp.data);
+        /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+      } catch (err: any) {
+        setCreateErr("something wrong, unable to perform POST operation");
+      }
+    }
+
+    if (url) {
+      fetch();
+    }
+  }, [url, body]);
+
+  return [{ createData, createErr }, setUrl];
 }

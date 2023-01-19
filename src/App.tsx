@@ -1,6 +1,5 @@
 import { useEffect, useReducer } from "react";
 // import { useNavigate } from "react-router-dom";
-// import axios from "axios";
 import MainContainer from "./components/Page-app-container";
 import {
   userDataDecoder,
@@ -8,40 +7,21 @@ import {
   newMetricDataDecoder,
 } from "./jsonDataDecoders";
 
-import { useGetApi, useDeleteApi, useUpdateApi } from "./apiCall";
+import { useGetApi, useDeleteApi, useUpdateApi, usePostApi } from "./apiCall";
 
-import { IState, IProps, Status } from "./metricfun.types";
+import { IProps, Status } from "./metricfun.types";
 import { updateMetricUiData } from "./metricDataHelpers";
-import { stateReducer } from "./reducers";
+import { stateReducer, INITIAL_STATE } from "./reducers";
 
-const INITIAL_STATE: IState = {
-  id: 0,
-  isDark: false,
-  isLogged: true,
-  userName: "",
-  isEditable: false,
-  deleteMetric: { id: "" },
-  updateMetricChanges: {
-    id: "",
-    name: "",
-    chartType: "None",
-  },
-  saveNewMetricChanges: {
-    id: "",
-    name: "",
-    chartType: "None",
-  },
-  metrics: [],
-};
+// const navigate = useNavigate();
 
 function App() {
   const [state, dispatch] = useReducer(stateReducer, INITIAL_STATE);
 
   const [{ data, error }, doFetch] = useGetApi();
   const [{ deleteData, deleteErr }, doDelete] = useDeleteApi();
-  const [{ updateData, updateErr }, updateBody, doPut] = useUpdateApi();
-
-  // const navigate = useNavigate();
+  const [{ updateData, updateErr }, doPut] = useUpdateApi();
+  const [{ createData, createErr }, doPost] = usePostApi();
 
   useEffect(() => {
     if (state.isDark) {
@@ -89,83 +69,80 @@ function App() {
       }
     }
   }, [state.deleteMetric.id, deleteErr, deleteData, doDelete]);
-  //
+
   useEffect(() => {
     if (state.updateMetricChanges.id) {
-      if (updateError) {
+      //
+      if (updateErr) {
         console.error(updateErr);
       }
 
       if (updateData) {
-        // const decoded =
+        // TODO we for now we decode using delteMetricDecoder
+        // since we are using a fake HTTP request and we eil get always 200
+        const decoded = deleteMetricDecoder(updateData);
+        if (decoded.status === Status.Ok) {
+          dispatch({ type: "MetricUpdated", id: state.updateMetricChanges.id });
+        } else {
+          console.warn(decoded.status);
+        }
+      } else {
+        doPut({
+          url: "http://dummyjson.com/http/200",
+          body: {
+            name: state.updateMetricChanges.name,
+            id: state.updateMetricChanges.id,
+            chartType: state.updateMetricChanges.chartType,
+          },
+        });
       }
-      // async function updateMetric() {
-      //   try {
-      //     const response = await axios.put("https://dummyjson.com/http/200", {
-      //       name: state.updateMetricChanges.name,
-      //       id: state.updateMetricChanges.id,
-      //       chartType: state.updateMetricChanges.chartType,
-      //     });
-      //
-      //     const { data }: { data: { status?: string } } = response;
-      //
-      //     if (data.status === "200") {
-      //       dispatch({
-      //         type: "MetricUpdated",
-      //         id: state.updateMetricChanges.id,
-      //       });
-      //     } else {
-      //       console.warn("no matches", data);
-      //     }
-      //
-      //     /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-      //   } catch (err: any) {
-      //     console.error(err.message || "");
-      //   }
-      // }
-      //
-      // updateMetric();
     }
   }, [
+    doPut,
+    updateData,
+    updateErr,
     state.updateMetricChanges.id,
     state.updateMetricChanges.chartType,
     state.updateMetricChanges.name,
   ]);
   //
-  // useEffect(() => {
-  //   if (state.saveNewMetricChanges.id) {
-  //     async function saveMetric() {
-  //       try {
-  //         const response = await axios.post("/newMetric.json", {
-  //           name: state.saveNewMetricChanges.name,
-  //           id: state.saveNewMetricChanges.id,
-  //           chartType: state.saveNewMetricChanges.chartType,
-  //         });
-  //         const { data }: { data: { status?: string } } = response;
-  //
-  //         dispatch({
-  //           type: "NewMetricUpdated",
-  //           id: state.saveNewMetricChanges.id,
-  //           value: {
-  //             ...newMetricDataDecoder(data),
-  //             name: state.saveNewMetricChanges.name,
-  //             id: state.saveNewMetricChanges.id,
-  //           },
-  //         });
-  //
-  //         /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-  //       } catch (err: any) {
-  //         console.error(err.message || "");
-  //       }
-  //     }
-  //
-  //     saveMetric();
-  //   }
-  // }, [
-  //   state.saveNewMetricChanges.id,
-  //   state.saveNewMetricChanges.name,
-  //   state.saveNewMetricChanges.chartType,
-  // ]);
+  useEffect(() => {
+    if (state.saveNewMetricChanges.id) {
+      //
+      if (createErr) {
+        console.error(createErr);
+      }
+
+      if (createData) {
+        const decoded = newMetricDataDecoder(createData);
+        dispatch({
+          type: "NewMetricUpdated",
+          id: state.saveNewMetricChanges.id,
+          value: {
+            ...decoded,
+            name: state.saveNewMetricChanges.name,
+            id: state.saveNewMetricChanges.id,
+          },
+        });
+      } else {
+        doPost({
+          url: "/newMetric.json",
+          body: {
+            name: state.saveNewMetricChanges.name,
+            id: state.saveNewMetricChanges.id,
+            chartType: state.saveNewMetricChanges.chartType,
+          },
+        });
+      }
+    }
+  }, [
+    createData,
+    createErr,
+    doPost,
+    state.saveNewMetricChanges.id,
+    state.saveNewMetricChanges.name,
+    state.saveNewMetricChanges.chartType,
+  ]);
 
   const props: IProps = {
     ...state,
