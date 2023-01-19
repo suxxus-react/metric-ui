@@ -5,6 +5,26 @@ import {
   validateMetricUserInputs,
 } from "./metricDataHelpers";
 
+export const INITIAL_STATE: IState = {
+  id: 0,
+  isDark: false,
+  isLogged: true,
+  userName: "",
+  isEditable: false,
+  deleteMetric: { id: "" },
+  updateMetricChanges: {
+    id: "",
+    name: "",
+    chartType: "None",
+  },
+  saveNewMetricChanges: {
+    id: "",
+    name: "",
+    chartType: "None",
+  },
+  metrics: [],
+};
+
 export function metricsReducer(msg: Msg) {
   return (metric: IMetricUi): IMetricUi => {
     switch (msg.type) {
