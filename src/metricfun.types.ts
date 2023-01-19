@@ -129,6 +129,14 @@ export type Msg =
 
 // ========================
 // from service
+export enum Status {
+  nothing = "",
+  Ok = "200",
+  Conflict = "409",
+  Created = "201",
+  BadRequest = "400",
+}
+
 export type MetricDataSet = {
   label?: string;
   data: number[];
