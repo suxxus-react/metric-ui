@@ -7,7 +7,7 @@ import {
   newMetricDataDecoder,
 } from "./jsonDataDecoders";
 
-import { IProps, Status } from "./metricfun.types";
+import { Status } from "./metricfun.types";
 import { updateMetricUiData } from "./metricDataHelpers";
 import { stateReducer, INITIAL_STATE } from "./reducers";
 
@@ -20,11 +20,11 @@ function App() {
 
   useEffect(() => {
     if (state.navigateTo.url) {
-      navigate(state.navigateTo.url);
       dispatch({
         type: "NavigeteTo",
         value: { url: "" },
       });
+      navigate(state.navigateTo.url);
     }
   }, [state.navigateTo.url, navigate]);
 
@@ -48,6 +48,11 @@ function App() {
           type: "NavigeteTo",
           value: { url: "welcome" },
         });
+      });
+    } else {
+      dispatch({
+        type: "NavigeteTo",
+        value: { url: "/" },
       });
     }
   }, [state.isLogged]);
@@ -121,12 +126,7 @@ function App() {
     state.saveNewMetricChanges.chartType,
   ]);
 
-  const props: IProps = {
-    ...state,
-    dispatchMsg: dispatch,
-  };
-
-  return <MainContainer {...props} />;
+  return <MainContainer {...state} dispatchMsg={dispatch} />;
 }
 
 export default App;
