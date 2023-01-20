@@ -203,30 +203,21 @@ export function stateReducer(state: IState, msg: Msg): IState {
         );
 
         if (metric.isValid) {
+          const property = metric.isNewMetric
+            ? "saveNewMetricChanges"
+            : "updateMetricChanges";
           // use Api service to update metric changes
-          return metric.isNewMetric
-            ? {
-                ...state,
-                metrics: state.metrics.map(
-                  metricsReducer({ type: "UpdateMetric", id: metric.id })
-                ),
-                saveNewMetricChanges: {
-                  id: metric.id,
-                  name: metric.name,
-                  chartType: metric.chartTypeSelected,
-                },
-              }
-            : {
-                ...state,
-                metrics: state.metrics.map(
-                  metricsReducer({ type: "UpdateMetric", id: metric.id })
-                ),
-                updateMetricChanges: {
-                  id: metric.id,
-                  name: metric.name,
-                  chartType: metric.chartTypeSelected,
-                },
-              };
+          return {
+            ...state,
+            metrics: state.metrics.map(
+              metricsReducer({ type: "UpdateMetric", id: metric.id })
+            ),
+            [property]: {
+              id: metric.id,
+              name: metric.name,
+              chartType: metric.chartTypeSelected,
+            },
+          };
         }
         // show metric errors
         return {
