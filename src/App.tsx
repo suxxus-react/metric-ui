@@ -19,6 +19,16 @@ function App() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    if (state.navigateTo.url) {
+      navigate(state.navigateTo.url);
+      dispatch({
+        type: "NavigeteTo",
+        value: { url: "" },
+      });
+    }
+  }, [state.navigateTo.url, navigate]);
+
+  useEffect(() => {
     if (state.isDark) {
       document.documentElement.classList.add("dark");
     } else {
@@ -41,16 +51,6 @@ function App() {
       });
     }
   }, [state.isLogged]);
-
-  useEffect(() => {
-    if (state.navigateTo.url) {
-      navigate(state.navigateTo.url);
-      dispatch({
-        type: "NavigeteTo",
-        value: { url: "" },
-      });
-    }
-  }, [state.navigateTo.url, navigate]);
 
   useEffect(() => {
     if (state.deleteMetric.id) {
