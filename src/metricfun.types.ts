@@ -99,6 +99,15 @@ type CreateNewMetricUi = {
   type: "CreateNewMetricUi";
 };
 
+type PathUrl = {
+  url: string;
+};
+
+type NavigeteTo = {
+  type: "NavigeteTo";
+  value: PathUrl;
+};
+
 type None = {
   type: "None";
 };
@@ -125,6 +134,7 @@ export type Msg =
   | CreateMetric
   | MetricDeleted
   | NewMetricUpdated
+  | NavigeteTo
   | None;
 
 // ========================
@@ -209,8 +219,9 @@ type MetricUpdatedData = {
   name: string;
   chartType: ChartTypeSelected;
 };
+
 export type MetricId = { id: string };
-//
+
 export interface IMetricUi {
   id: string;
   previousName: string;
@@ -243,6 +254,7 @@ export interface IState {
   saveNewMetricChanges: MetricUpdatedData;
   deleteMetric: MetricId;
   metrics: IMetricUi[];
+  navigateTo: PathUrl;
 }
 
 export interface IProps extends IState {

@@ -8,7 +8,7 @@ import {
 export const INITIAL_STATE: IState = {
   id: 0,
   isDark: false,
-  isLogged: true,
+  isLogged: false,
   userName: "",
   isEditable: false,
   deleteMetric: { id: "" },
@@ -22,6 +22,7 @@ export const INITIAL_STATE: IState = {
     name: "",
     chartType: "None",
   },
+  navigateTo: { url: "" },
   metrics: [],
 };
 
@@ -129,7 +130,9 @@ export function stateReducer(state: IState, msg: Msg): IState {
     case "LoginWithSocialNetwork":
       // TODO should be updated when real login is done
       // for now, just set the state with a fake user
-      return { ...state, isLogged: true, userName: "Alice" };
+      return { ...state, id: 120034, isLogged: true, userName: "Alice" };
+    case "NavigeteTo":
+      return { ...state, navigateTo: msg.value };
     case "Logout":
       return {
         ...state,

@@ -1,5 +1,5 @@
 import { useEffect, useReducer } from "react";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import MainContainer from "./components/Page-app-container";
 import {
   userDataDecoder,
@@ -7,21 +7,16 @@ import {
   newMetricDataDecoder,
 } from "./jsonDataDecoders";
 
-import { useGetApi, useDeleteApi, useUpdateApi, usePostApi } from "./apiCall";
-
 import { IProps, Status } from "./metricfun.types";
 import { updateMetricUiData } from "./metricDataHelpers";
 import { stateReducer, INITIAL_STATE } from "./reducers";
 
-// const navigate = useNavigate();
+import * as api from "./apiCall";
 
 function App() {
   const [state, dispatch] = useReducer(stateReducer, INITIAL_STATE);
 
-  const [{ data, error }, doFetch] = useGetApi();
-  const [{ deleteData, deleteErr }, doDelete] = useDeleteApi();
-  const [{ updateData, updateErr }, doPut] = useUpdateApi();
-  const [{ createData, createErr }, doPost] = usePostApi();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (state.isDark) {
@@ -33,112 +28,94 @@ function App() {
 
   useEffect(() => {
     if (state.isLogged) {
-      if (error) {
-        console.error(error);
-      }
-
-      if (data) {
+      api.doGet("/data.json").then((d: unknown) => {
         dispatch({
           type: "UpdateMetricList",
-          value: userDataDecoder(data).metrics.map(updateMetricUiData),
+          value: userDataDecoder(d).metrics.map(updateMetricUiData),
         });
-      } else {
-        doFetch("/data.json");
-      }
+
+        dispatch({
+          type: "NavigeteTo",
+          value: { url: "welcome" },
+        });
+      });
     }
-  }, [state.isLogged, data, error, doFetch]);
+  }, [state.isLogged]);
+
+  useEffect(() => {
+    if (state.navigateTo.url) {
+      navigate(state.navigateTo.url);
+      dispatch({
+        type: "NavigeteTo",
+        value: { url: "" },
+      });
+    }
+  }, [state.navigateTo.url, navigate]);
 
   useEffect(() => {
     if (state.deleteMetric.id) {
-      if (deleteErr) {
-        console.error(deleteErr);
-      }
-
-      if (deleteData) {
-        const decoded = deleteMetricDecoder(deleteData);
+      api.doDelete("http://dummyjson.com/http/200").then((d: unknown) => {
+        const decoded = deleteMetricDecoder(d);
         if (decoded.status === Status.Ok) {
           dispatch({
             type: "MetricDeleted",
             id: state.deleteMetric.id,
           });
-        } else {
-          console.warn(decoded.status);
         }
-      } else {
-        doDelete("http://dummyjson.com/http/200");
-      }
+      });
     }
-  }, [state.deleteMetric.id, deleteErr, deleteData, doDelete]);
+  }, [state.deleteMetric.id]);
 
   useEffect(() => {
     if (state.updateMetricChanges.id) {
-      //
-      if (updateErr) {
-        console.error(updateErr);
-      }
-
-      if (updateData) {
-        // TODO we for now we decode using delteMetricDecoder
-        // since we are using a fake HTTP request and we eil get always 200
-        const decoded = deleteMetricDecoder(updateData);
-        if (decoded.status === Status.Ok) {
-          dispatch({ type: "MetricUpdated", id: state.updateMetricChanges.id });
-        } else {
-          console.warn(decoded.status);
-        }
-      } else {
-        doPut({
-          url: "http://dummyjson.com/http/200",
-          body: {
-            name: state.updateMetricChanges.name,
-            id: state.updateMetricChanges.id,
-            chartType: state.updateMetricChanges.chartType,
-          },
+      api
+        .doPut("http://dummyjson.com/http/200", {
+          name: state.updateMetricChanges.name,
+          id: state.updateMetricChanges.id,
+          chartType: state.updateMetricChanges.chartType,
+        })
+        .then((d: unknown) => {
+          // TODO we for now we decode using delteMetricDecoder
+          // since we are using a fake HTTP request and we eil get always 200
+          const decoded = deleteMetricDecoder(d);
+          if (decoded.status === Status.Ok) {
+            dispatch({
+              type: "MetricUpdated",
+              id: state.updateMetricChanges.id,
+            });
+          } else {
+            console.warn(decoded.status);
+          }
         });
-      }
     }
   }, [
-    doPut,
-    updateData,
-    updateErr,
     state.updateMetricChanges.id,
     state.updateMetricChanges.chartType,
     state.updateMetricChanges.name,
   ]);
-  //
+
   useEffect(() => {
     if (state.saveNewMetricChanges.id) {
-      //
-      if (createErr) {
-        console.error(createErr);
-      }
-
-      if (createData) {
-        const decoded = newMetricDataDecoder(createData);
-        dispatch({
-          type: "NewMetricUpdated",
+      api
+        .doPost("/newMetric.json", {
+          name: state.saveNewMetricChanges.name,
           id: state.saveNewMetricChanges.id,
-          value: {
-            ...decoded,
-            name: state.saveNewMetricChanges.name,
+          chartType: state.saveNewMetricChanges.chartType,
+        })
+        .then((d: unknown) => {
+          const decoded = newMetricDataDecoder(d);
+          dispatch({
+            type: "NewMetricUpdated",
             id: state.saveNewMetricChanges.id,
-          },
+            value: {
+              ...decoded,
+              name: state.saveNewMetricChanges.name,
+              id: state.saveNewMetricChanges.id,
+            },
+          });
         });
-      } else {
-        doPost({
-          url: "/newMetric.json",
-          body: {
-            name: state.saveNewMetricChanges.name,
-            id: state.saveNewMetricChanges.id,
-            chartType: state.saveNewMetricChanges.chartType,
-          },
-        });
-      }
     }
   }, [
-    createData,
-    createErr,
-    doPost,
     state.saveNewMetricChanges.id,
     state.saveNewMetricChanges.name,
     state.saveNewMetricChanges.chartType,
