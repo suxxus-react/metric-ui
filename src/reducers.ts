@@ -5,26 +5,28 @@ import {
   validateMetricUserInputs,
 } from "./metricDataHelpers";
 
-export const INITIAL_STATE: IState = {
-  id: 0,
-  isDark: false,
-  isLogged: false,
-  userName: "",
-  isEditable: false,
-  deleteMetric: { id: "" },
-  updateMetricChanges: {
-    id: "",
-    name: "",
-    chartType: "None",
-  },
-  saveNewMetricChanges: {
-    id: "",
-    name: "",
-    chartType: "None",
-  },
-  navigateTo: { url: "" },
-  metrics: [],
-};
+export function getInitialState(): IState {
+  return {
+    id: 0,
+    isDark: false,
+    isLogged: false,
+    userName: "",
+    isEditable: false,
+    deleteMetric: { id: "" },
+    updateMetricChanges: {
+      id: "",
+      name: "",
+      chartType: "None",
+    },
+    saveNewMetricChanges: {
+      id: "",
+      name: "",
+      chartType: "None",
+    },
+    navigateTo: { url: "" },
+    metrics: [],
+  };
+}
 
 export function metricsReducer(msg: Msg) {
   return (metric: IMetricUi): IMetricUi => {
@@ -115,10 +117,9 @@ export function metricsReducer(msg: Msg) {
               isEditable: true,
             }
           : metric;
-
-      default:
-        return metric;
       case "None":
+        return metric;
+      default:
         return metric;
     }
   };
@@ -135,16 +136,8 @@ export function stateReducer(state: IState, msg: Msg): IState {
       return { ...state, navigateTo: msg.value };
     case "Logout":
       return {
-        ...state,
-        isLogged: false,
-        userName: "",
-        id: 0,
-        isEditable: false,
-        metrics: [],
+        ...getInitialState(),
       };
-    // case "IsLogged":
-    // TODO review if it is needed
-    //   return { ...state, isLogged: true, userName: msg.value };
     case "ToggleDarkMode":
       return { ...state, isDark: !state.isDark };
     case "UpdateMetricList":

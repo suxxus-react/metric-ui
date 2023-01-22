@@ -9,12 +9,12 @@ import {
 
 import { Status } from "./metricfun.types";
 import { updateMetricUiData } from "./metricDataHelpers";
-import { stateReducer, INITIAL_STATE } from "./reducers";
+import { stateReducer, getInitialState } from "./reducers";
 
 import * as api from "./apiCall";
 
 function App() {
-  const [state, dispatch] = useReducer(stateReducer, INITIAL_STATE);
+  const [state, dispatch] = useReducer(stateReducer, getInitialState());
 
   const navigate = useNavigate();
 
