@@ -5,8 +5,8 @@ async function doGet(url: string) {
     const resp = await axios.get(url);
     return resp.data;
     /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-  } catch (e: any) {
-    console.error(e);
+  } catch (err: any) {
+    console.error(`unable to preform GET operation -> ${err.message}`);
   }
 }
 
@@ -15,8 +15,8 @@ async function doDelete(url: string) {
     const resp = await axios.delete(url);
     return resp.data;
     /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-  } catch (e: any) {
-    console.warn("something wrong, unable to perform DELETE operation");
+  } catch (err: any) {
+    console.error(`Unable to perform DELETE operation -> ${err.message}`);
   }
 }
 
@@ -26,7 +26,7 @@ async function doPut(url: string, body: unknown) {
     return resp.data;
     /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
   } catch (err: any) {
-    console.warn("something wrong, unable to perform PUT operation");
+    console.error(`Unable to perform PUT operation -> ${err.message}`);
   }
 }
 
@@ -36,7 +36,7 @@ async function doPost(url: string, body: unknown) {
     return resp.data;
     /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
   } catch (err: any) {
-    console.warn("something wrong, unable to perform POST operation");
+    console.error(`Unable to perform POST operation -> ${err.message}`);
   }
 }
 
