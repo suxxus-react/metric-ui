@@ -126,7 +126,9 @@ export function metricsReducer(msg: Msg) {
 }
 
 export function stateReducer(state: IState, msg: Msg): IState {
-  console.info("reducer - msg ", msg);
+  if (import.meta.env.DEV) {
+    console.info("reducer - msg ", msg);
+  }
   switch (msg.type) {
     case "LoginWithSocialNetwork":
       // TODO should be updated when real login is done
