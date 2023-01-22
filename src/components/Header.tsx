@@ -4,7 +4,7 @@ export default function Header({ isDark, dispatchMsg }: IProps): JSX.Element {
   const moon = <i className="fa fa-moon-o"></i>;
   return (
     <header className="flex justify-between">
-      <h1 className="metrics__logo">fun-metrics</h1>
+      <div className="metric-fun-rgb bg-no-repeat w-24 h-20"></div>
       <button
         className="button-default"
         onClick={() => {
