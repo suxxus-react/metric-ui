@@ -1,0 +1,59 @@
+{
+  "id": 120034,
+  "metrics": [
+    {
+      "id": "2323",
+      "name": "metric one",
+      "metadata": {
+        "resolution": "monthly resolution",
+        "update": "update",
+        "limit": "limit x 34"
+      },
+      "chartType": "pie",
+      "chartData": {
+        "labels": ["n1", "n2", "n3"],
+        "datasets": [
+          {
+            "data": [12, 19, 3, 5, 2, 56]
+          }
+        ]
+      }
+    },
+    {
+      "id": "232882",
+      "name": "Judas Priest",
+      "metadata": {
+        "update": "162 updates",
+        "resolution": "monthly resolution"
+      },
+      "chartType": "area",
+      "chartData": {
+        "labels": ["jan", "feb", "mar", "apr", "jun"],
+        "datasets": [
+          {
+            "label": "# of Votes",
+            "data": [12, 19, 3, 5, 2, 3]
+          }
+        ]
+      }
+    },
+    {
+      "id": "0234",
+      "name": "firulga done",
+      "chartType": "line",
+      "chartData": {
+        "labels": ["jan", "feb", "mar", "apr", "jun", "jul"],
+        "datasets": [
+          {
+            "label": "#d 2",
+            "data": [10, 20, 6, 11, 4, 20]
+          },
+          {
+            "label": "#d 3",
+            "data": [1, 5, 12, 4, 8, 2]
+          }
+        ]
+      }
+    }
+  ]
+}
