@@ -8,7 +8,7 @@ export default function PageEditMetrics(props: IProps): JSX.Element {
       <section className="my-5">
         <LoggedHeader {...props} />
       </section>
-      <section className="h-full overflow-scroll pb-40">
+      <section className="h-full overflow-scroll pb-52">
         <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
           {metrics.map((mProps, index) => {
             return (
