@@ -471,7 +471,18 @@ export default function Metric({
           </div>
         )}
         {/* end save button */}
-        <ul className="metric-ui__metadata text-xs font-bold mt-5 dark:text-white">
+        <ul
+          className="
+        metric-ui__metadata text-xs 
+        font-bold mt-5 
+        opacity-40
+        hover:opacity-100 
+        hover:cursor-pointer 
+        transition duration-300
+        ease-out
+        hover:ease-in
+        dark:text-white"
+        >
           {Object.values(metadata).map((data, idx) => (
             <li key={`${idx}_${data}`}>{data}</li>
           ))}
