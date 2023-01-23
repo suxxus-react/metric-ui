@@ -131,7 +131,7 @@ function MetricOptionsSelector({
     if (detailsRef.current && isSavingChanges) {
       detailsRef.current.open = false;
     }
-  });
+  }, [detailsRef, isSavingChanges]);
 
   return (
     <details ref={detailsRef} className="metric-ui__select-chart-option">
@@ -303,7 +303,8 @@ function InputEditableName({
     if (inputRef.current) {
       inputRef.current.focus();
     }
-  });
+  }, [inputRef]);
+
   return (
     <>
       <input
