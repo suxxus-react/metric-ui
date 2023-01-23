@@ -474,10 +474,10 @@ export default function Metric({
         <ul
           className="
         metric-ui__metadata text-xs 
-        font-bold mt-5 
+        font-bold mt-5
         opacity-40
-        hover:opacity-100 
-        hover:cursor-pointer 
+        hover:opacity-100
+        hover:cursor-default
         transition duration-300
         ease-out
         hover:ease-in
