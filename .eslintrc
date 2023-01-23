@@ -47,5 +47,10 @@
         "singleQuote": false
       }
     ]
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
   }
 }
