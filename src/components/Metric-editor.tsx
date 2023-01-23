@@ -1,3 +1,4 @@
+import { useLayoutEffect, useRef } from "react";
 import {
   IMetricUiCtrls,
   DispatchMsg,
@@ -40,16 +41,32 @@ type MetricChartTypeSelected = {
 // helpers
 // =======
 //
-type EventHandlerHelperProps = { isSavingChanges: boolean };
+type EventHandlerHelperProps = {
+  isSavingChanges: boolean;
+  requestMetricDeletion: boolean;
+};
 
 const eventHandlerHelper =
-  ({ isSavingChanges }: EventHandlerHelperProps) =>
-  (fn: DispatchMsg): DispatchMsg =>
-    isSavingChanges ? () => ({ type: "None" }) : fn;
+  ({ isSavingChanges, requestMetricDeletion }: EventHandlerHelperProps) =>
+  (fn: DispatchMsg): DispatchMsg => {
+    const useProvidedFn = [isSavingChanges, requestMetricDeletion].every(
+      (isTrue) => !isTrue
+    );
+    return useProvidedFn ? fn : () => ({ type: "None" });
+  };
 
 // component
 // =========
 function MetricPopup({ id, dispatchMsg }: MetricModal): JSX.Element {
+  const deleteMetricCtrs = useRef<HTMLButtonElement>(null);
+  useLayoutEffect(() => {
+    //
+    if (deleteMetricCtrs.current) {
+      deleteMetricCtrs.current.contentEditable = "True";
+      deleteMetricCtrs.current.focus();
+      deleteMetricCtrs.current.contentEditable = "False";
+    }
+  }, [deleteMetricCtrs]);
   return (
     <section className="absolute z-10 h-full w-full">
       <div className="metric-ui__show-saving-metric-data-spinner"></div>
@@ -61,16 +78,7 @@ function MetricPopup({ id, dispatchMsg }: MetricModal): JSX.Element {
             </p>
             <button
               className="mr-2"
-              onClick={() => {
-                dispatchMsg({
-                  type: "DeleteMetric",
-                  id,
-                });
-              }}
-            >
-              Yes
-            </button>
-            <button
+              ref={deleteMetricCtrs}
               onClick={() => {
                 dispatchMsg({
                   type: "RequestMetricDeletion",
@@ -79,6 +87,16 @@ function MetricPopup({ id, dispatchMsg }: MetricModal): JSX.Element {
               }}
             >
               No
+            </button>
+            <button
+              onClick={() => {
+                dispatchMsg({
+                  type: "DeleteMetric",
+                  id,
+                });
+              }}
+            >
+              Yes
             </button>
           </div>
         </div>
@@ -273,7 +291,10 @@ export default function Metric({
   metadata,
   dispatchMsg,
 }: IMetricUiCtrls): JSX.Element {
-  const eventHandler = eventHandlerHelper({ isSavingChanges });
+  const eventHandler = eventHandlerHelper({
+    isSavingChanges,
+    requestMetricDeletion,
+  });
 
   return (
     <div className="metric-ui dark:border-gray-600">
@@ -291,9 +312,7 @@ export default function Metric({
           middleCircleColor=""
         />
       )}
-      {requestMetricDeletion && (
-        <MetricPopup {...{ id, dispatchMsg: eventHandler(dispatchMsg) }} />
-      )}
+      {requestMetricDeletion && <MetricPopup {...{ id, dispatchMsg }} />}
       <div className="p-4">
         <div className="flex justify-between">
           <div className="mb-2">
