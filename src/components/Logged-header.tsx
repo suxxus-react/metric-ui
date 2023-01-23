@@ -36,9 +36,7 @@ export default function LoggedHeader({
                 });
               }}
             />
-            <label className="form-check-label inline-block">
-              edit Metrics
-            </label>
+            <span className="form-check-label inline-block">edit Metrics</span>
           </div>
         </div>
       </div>

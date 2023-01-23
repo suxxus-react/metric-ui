@@ -184,8 +184,7 @@ export function stateReducer(state: IState, msg: Msg): IState {
         metrics: state.metrics.map(metricsReducer(msg)),
       };
     case "SaveMetricChanges":
-      const cancelled = !msg.value;
-      if (cancelled) {
+      if (!msg.value) {
         return {
           ...state,
           metrics: state.metrics.map(metricsReducer(msg)),
@@ -239,26 +238,28 @@ export function stateReducer(state: IState, msg: Msg): IState {
         metrics: state.metrics.map(metricsReducer(msg)),
       };
     case "DeleteMetric":
-      // when the user delete a metric
-      const metricFromList: IMetricUi =
-        state.metrics.find(({ id }) => id === msg.id) ||
-        getDefaultMetricUiData();
+      return (() => {
+        // when the user delete a metric
+        const metricFromList: IMetricUi =
+          state.metrics.find(({ id }) => id === msg.id) ||
+          getDefaultMetricUiData();
 
-      if (metricFromList.isNewMetric) {
-        // we do not need to comunicate this to the service
-        // so we just delete it from the metrics list
-        return {
-          ...state,
-          metrics: state.metrics.filter(({ id }) => id !== msg.id),
-        };
-      } else {
-        // we need DELETE using the Api
-        return {
-          ...state,
-          deleteMetric: { id: msg.id },
-          metrics: state.metrics.map(metricsReducer(msg)),
-        };
-      }
+        if (metricFromList.isNewMetric) {
+          // we do not need to comunicate this to the service
+          // so we just delete it from the metrics list
+          return {
+            ...state,
+            metrics: state.metrics.filter(({ id }) => id !== msg.id),
+          };
+        } else {
+          // we need DELETE using the Api
+          return {
+            ...state,
+            deleteMetric: { id: msg.id },
+            metrics: state.metrics.map(metricsReducer(msg)),
+          };
+        }
+      })();
     case "None":
       return state;
   }
