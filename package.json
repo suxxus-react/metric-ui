@@ -8,6 +8,7 @@
     "preview": "vite preview",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
+    "tsc":"npx tsc --noEmit",
     "lint": "npx eslint src",
     "prettier": "npx prettier src --check",
     "prepare": "husky install"

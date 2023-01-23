@@ -98,5 +98,9 @@ export const metricsState: IState = {
   isLogged: false,
   userName: "",
   isEditable: false,
+  updateMetricChanges: { id: "", name: "", chartType: "None" },
+  saveNewMetricChanges: { id: "", name: "", chartType: "None" },
+  deleteMetric: { id: "" },
+  navigateTo: { url: "" },
   metrics: [],
 };
