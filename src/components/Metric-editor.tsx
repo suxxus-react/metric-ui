@@ -89,7 +89,7 @@ function MetricPopup({ id, dispatchMsg }: MetricModal): JSX.Element {
               ref={deleteMetricCtrs}
               onClick={() => {
                 dispatchMsg({
-                  type: "RequestMetricDeletion",
+                  type: "ToggleRequestMetricDeletion",
                   id,
                 });
               }}
@@ -416,7 +416,7 @@ export default function Metric({
               className="button-default"
               onClick={() => {
                 eventHandler(dispatchMsg)({
-                  type: "RequestMetricDeletion",
+                  type: "ToggleRequestMetricDeletion",
                   id,
                 });
               }}

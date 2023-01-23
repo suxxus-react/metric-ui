@@ -2,8 +2,8 @@ type DeleteMetric = {
   type: "DeleteMetric";
   id: string;
 };
-type RequestMetricDeletion = {
-  type: "RequestMetricDeletion";
+type ToggleRequestMetricDeletion = {
+  type: "ToggleRequestMetricDeletion";
   id: string;
 };
 
@@ -123,7 +123,7 @@ export type Msg =
   | CreateNewMetricUi
   | ShowMetricUiErrors
   | DeleteMetric
-  | RequestMetricDeletion
+  | ToggleRequestMetricDeletion
   | SelectChartType
   | EditMetricName
   | UpdateMetricName
