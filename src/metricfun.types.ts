@@ -208,7 +208,7 @@ export type Metadata = {
   resolution?: string;
 };
 
-type MetricErrorTypes = {
+export type MetricErrorTypes = {
   nameLength: boolean;
   nameEquals: boolean;
   noChartSelected: boolean;

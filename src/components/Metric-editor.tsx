@@ -4,6 +4,7 @@ import {
   DispatchMsg,
   ChartTypeSelected,
   ChartsData,
+  MetricErrorTypes,
 } from "../metricfun.types";
 import {
   Chart as ChartJS,
@@ -36,6 +37,13 @@ type MetricChartTypeSelected = {
   chartTypeSelected: ChartTypeSelected;
   isNewMetric: boolean;
   chartsData: ChartsData;
+};
+
+type EditMetricName = {
+  name: string;
+  id: string;
+  dispatchMsg: DispatchMsg;
+  errorTypes: MetricErrorTypes;
 };
 
 // helpers
@@ -276,6 +284,58 @@ function MetricTypeDisplay({
   );
 }
 
+function InputEditableName({
+  name,
+  id,
+  dispatchMsg,
+  errorTypes,
+}: EditMetricName): JSX.Element {
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useLayoutEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  });
+  return (
+    <>
+      <input
+        value={name}
+        ref={inputRef}
+        placeholder="metric name"
+        className="
+                    mt-1
+                    h-8
+                    w-full
+                    block
+                    rounded-md
+                    bg-gray-200
+                    border-transparent
+                    dark:text-black
+                    focus:border-gray-500 focus:bg-white focus:ring-0k "
+        onChange={(evt) => {
+          evt.preventDefault();
+
+          dispatchMsg({
+            type: "UpdateMetricName",
+            id,
+            value: evt.target?.value || "",
+          });
+        }}
+      />
+      {(errorTypes.nameLength || errorTypes.nameEquals) && (
+        <p className="form-warning-errors dark:text-rose-500">
+          {errorTypes.nameLength ? (
+            <>Minimum of 3 characters</>
+          ) : (
+            <>Identical name</>
+          )}
+        </p>
+      )}
+    </>
+  );
+}
+
 export default function Metric({
   id,
   name,
@@ -317,40 +377,14 @@ export default function Metric({
         <div className="flex justify-between">
           <div className="mb-2">
             {isEditable && isMetricNameEditable ? (
-              <>
-                <input
-                  value={name}
-                  placeholder="metric name"
-                  className="
-                    mt-1
-                    h-8
-                    w-full
-                    block
-                    rounded-md
-                    bg-gray-200
-                    border-transparent
-                    dark:text-black
-                    focus:border-gray-500 focus:bg-white focus:ring-0k "
-                  onChange={(evt) => {
-                    evt.preventDefault();
-
-                    eventHandler(dispatchMsg)({
-                      type: "UpdateMetricName",
-                      id,
-                      value: evt.target?.value || "",
-                    });
-                  }}
-                />
-                {(errorTypes.nameLength || errorTypes.nameEquals) && (
-                  <p className="form-warning-errors dark:text-rose-500">
-                    {errorTypes.nameLength ? (
-                      <>Minimum of 3 characters</>
-                    ) : (
-                      <>Identical name</>
-                    )}
-                  </p>
-                )}
-              </>
+              <InputEditableName
+                {...{
+                  name,
+                  id,
+                  errorTypes,
+                  dispatchMsg: eventHandler(dispatchMsg),
+                }}
+              />
             ) : (
               <>
                 <span className="mr-2">{name}</span>
