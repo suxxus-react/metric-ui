@@ -125,9 +125,16 @@ function MetricOptionsSelector({
   const Button = "button-default hover:bg-zinc-200 dark:hover:bg-zinc-500";
 
   const ChartName = "mr-10";
+  const detailsRef = useRef<HTMLDetailsElement>(null);
+
+  useLayoutEffect(() => {
+    if (detailsRef.current && isSavingChanges) {
+      detailsRef.current.open = false;
+    }
+  });
 
   return (
-    <details className="metric-ui__select-chart-option">
+    <details ref={detailsRef} className="metric-ui__select-chart-option">
       <summary className={PointerEvents} role="button">
         <p>Select Chart Type</p>
       </summary>
