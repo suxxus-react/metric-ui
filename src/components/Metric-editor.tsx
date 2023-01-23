@@ -78,7 +78,7 @@ function MetricPopup({ id, dispatchMsg }: MetricModal): JSX.Element {
   return (
     <section className="absolute z-10 h-full w-full">
       <div className="metric-ui__show-saving-metric-data-spinner"></div>
-      <div className="content absolute z-10 p-5 mt-40 shadow">
+      <div className="content absolute z-10 p-5 mt-40 w-full shadow">
         <div className="flex justify-center  inline-block align-middle">
           <div className="block p-6 rounded-lg shadow-lg bg-white max-w-sm">
             <p className="text-gray-700 text-base mb-4">
