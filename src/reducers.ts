@@ -41,7 +41,7 @@ export function metricsReducer(msg: Msg) {
           requestMetricDeletion: false,
           showMetricSaveCancelCtrls: false,
         };
-      case "RequestMetricDeletion":
+      case "ToggleRequestMetricDeletion":
         return metric.id === msg.id
           ? { ...metric, requestMetricDeletion: !metric.requestMetricDeletion }
           : metric;
@@ -163,7 +163,7 @@ export function stateReducer(state: IState, msg: Msg): IState {
         ...state,
         metrics: [getDefaultMetricUiData(), ...state.metrics],
       };
-    case "RequestMetricDeletion":
+    case "ToggleRequestMetricDeletion":
     case "EditMetricName":
     case "UpdateMetricName":
     case "SelectChartType":

@@ -127,6 +127,7 @@ The `package.json` file comes with the following scripts
 
 - `dev` to start development.
 - `storybook` to start storybook
+- `lint` to run ESLint
 
 ## TODO:
 

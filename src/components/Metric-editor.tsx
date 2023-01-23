@@ -1,8 +1,10 @@
+import { useLayoutEffect, useRef } from "react";
 import {
   IMetricUiCtrls,
   DispatchMsg,
   ChartTypeSelected,
   ChartsData,
+  MetricErrorTypes,
 } from "../metricfun.types";
 import {
   Chart as ChartJS,
@@ -37,23 +39,46 @@ type MetricChartTypeSelected = {
   chartsData: ChartsData;
 };
 
+type EditMetricName = {
+  name: string;
+  id: string;
+  dispatchMsg: DispatchMsg;
+  errorTypes: MetricErrorTypes;
+};
+
 // helpers
 // =======
 //
-type EventHandlerHelperProps = { isSavingChanges: boolean };
+type EventHandlerHelperProps = {
+  isSavingChanges: boolean;
+  requestMetricDeletion: boolean;
+};
 
 const eventHandlerHelper =
-  ({ isSavingChanges }: EventHandlerHelperProps) =>
-  (fn: DispatchMsg): DispatchMsg =>
-    isSavingChanges ? () => ({ type: "None" }) : fn;
+  ({ isSavingChanges, requestMetricDeletion }: EventHandlerHelperProps) =>
+  (fn: DispatchMsg): DispatchMsg => {
+    const useProvidedFn = [isSavingChanges, requestMetricDeletion].every(
+      (isTrue) => !isTrue
+    );
+    return useProvidedFn ? fn : () => ({ type: "None" });
+  };
 
 // component
 // =========
 function MetricPopup({ id, dispatchMsg }: MetricModal): JSX.Element {
+  const deleteMetricCtrs = useRef<HTMLButtonElement>(null);
+  useLayoutEffect(() => {
+    //
+    if (deleteMetricCtrs.current) {
+      deleteMetricCtrs.current.contentEditable = "True";
+      deleteMetricCtrs.current.focus();
+      deleteMetricCtrs.current.contentEditable = "False";
+    }
+  }, [deleteMetricCtrs]);
   return (
     <section className="absolute z-10 h-full w-full">
       <div className="metric-ui__show-saving-metric-data-spinner"></div>
-      <div className="content absolute z-10 p-5 mt-40 shadow">
+      <div className="content absolute z-10 p-5 mt-40 w-full shadow">
         <div className="flex justify-center  inline-block align-middle">
           <div className="block p-6 rounded-lg shadow-lg bg-white max-w-sm">
             <p className="text-gray-700 text-base mb-4">
@@ -61,6 +86,17 @@ function MetricPopup({ id, dispatchMsg }: MetricModal): JSX.Element {
             </p>
             <button
               className="mr-2"
+              ref={deleteMetricCtrs}
+              onClick={() => {
+                dispatchMsg({
+                  type: "ToggleRequestMetricDeletion",
+                  id,
+                });
+              }}
+            >
+              No
+            </button>
+            <button
               onClick={() => {
                 dispatchMsg({
                   type: "DeleteMetric",
@@ -69,16 +105,6 @@ function MetricPopup({ id, dispatchMsg }: MetricModal): JSX.Element {
               }}
             >
               Yes
-            </button>
-            <button
-              onClick={() => {
-                dispatchMsg({
-                  type: "RequestMetricDeletion",
-                  id,
-                });
-              }}
-            >
-              No
             </button>
           </div>
         </div>
@@ -99,9 +125,16 @@ function MetricOptionsSelector({
   const Button = "button-default hover:bg-zinc-200 dark:hover:bg-zinc-500";
 
   const ChartName = "mr-10";
+  const detailsRef = useRef<HTMLDetailsElement>(null);
+
+  useLayoutEffect(() => {
+    if (detailsRef.current && isSavingChanges) {
+      detailsRef.current.open = false;
+    }
+  });
 
   return (
-    <details className="metric-ui__select-chart-option">
+    <details ref={detailsRef} className="metric-ui__select-chart-option">
       <summary className={PointerEvents} role="button">
         <p>Select Chart Type</p>
       </summary>
@@ -258,6 +291,58 @@ function MetricTypeDisplay({
   );
 }
 
+function InputEditableName({
+  name,
+  id,
+  dispatchMsg,
+  errorTypes,
+}: EditMetricName): JSX.Element {
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useLayoutEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  });
+  return (
+    <>
+      <input
+        value={name}
+        ref={inputRef}
+        placeholder="metric name"
+        className="
+                    mt-1
+                    h-8
+                    w-full
+                    block
+                    rounded-md
+                    bg-gray-200
+                    border-transparent
+                    dark:text-black
+                    focus:border-gray-500 focus:bg-white focus:ring-0k "
+        onChange={(evt) => {
+          evt.preventDefault();
+
+          dispatchMsg({
+            type: "UpdateMetricName",
+            id,
+            value: evt.target?.value || "",
+          });
+        }}
+      />
+      {(errorTypes.nameLength || errorTypes.nameEquals) && (
+        <p className="form-warning-errors dark:text-rose-500">
+          {errorTypes.nameLength ? (
+            <>Minimum of 3 characters</>
+          ) : (
+            <>Identical name</>
+          )}
+        </p>
+      )}
+    </>
+  );
+}
+
 export default function Metric({
   id,
   name,
@@ -273,7 +358,10 @@ export default function Metric({
   metadata,
   dispatchMsg,
 }: IMetricUiCtrls): JSX.Element {
-  const eventHandler = eventHandlerHelper({ isSavingChanges });
+  const eventHandler = eventHandlerHelper({
+    isSavingChanges,
+    requestMetricDeletion,
+  });
 
   return (
     <div className="metric-ui dark:border-gray-600">
@@ -291,47 +379,19 @@ export default function Metric({
           middleCircleColor=""
         />
       )}
-      {requestMetricDeletion && (
-        <MetricPopup {...{ id, dispatchMsg: eventHandler(dispatchMsg) }} />
-      )}
+      {requestMetricDeletion && <MetricPopup {...{ id, dispatchMsg }} />}
       <div className="p-4">
         <div className="flex justify-between">
           <div className="mb-2">
             {isEditable && isMetricNameEditable ? (
-              <>
-                <input
-                  value={name}
-                  placeholder="metric name"
-                  className="
-                    mt-1
-                    h-8
-                    w-full
-                    block
-                    rounded-md
-                    bg-gray-200
-                    border-transparent
-                    dark:text-black
-                    focus:border-gray-500 focus:bg-white focus:ring-0k "
-                  onChange={(evt) => {
-                    evt.preventDefault();
-
-                    eventHandler(dispatchMsg)({
-                      type: "UpdateMetricName",
-                      id,
-                      value: evt.target?.value || "",
-                    });
-                  }}
-                />
-                {(errorTypes.nameLength || errorTypes.nameEquals) && (
-                  <p className="form-warning-errors dark:text-rose-500">
-                    {errorTypes.nameLength ? (
-                      <>Minimum of 3 characters</>
-                    ) : (
-                      <>Identical name</>
-                    )}
-                  </p>
-                )}
-              </>
+              <InputEditableName
+                {...{
+                  name,
+                  id,
+                  errorTypes,
+                  dispatchMsg: eventHandler(dispatchMsg),
+                }}
+              />
             ) : (
               <>
                 <span className="mr-2">{name}</span>
@@ -356,7 +416,7 @@ export default function Metric({
               className="button-default"
               onClick={() => {
                 eventHandler(dispatchMsg)({
-                  type: "RequestMetricDeletion",
+                  type: "ToggleRequestMetricDeletion",
                   id,
                 });
               }}
@@ -411,7 +471,18 @@ export default function Metric({
           </div>
         )}
         {/* end save button */}
-        <ul className="metric-ui__metadata text-xs font-bold mt-5 dark:text-white">
+        <ul
+          className="
+        metric-ui__metadata text-xs 
+        font-bold mt-5
+        opacity-40
+        hover:opacity-100
+        hover:cursor-default
+        transition duration-300
+        ease-out
+        hover:ease-in
+        dark:text-white"
+        >
           {Object.values(metadata).map((data, idx) => (
             <li key={`${idx}_${data}`}>{data}</li>
           ))}
