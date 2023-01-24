@@ -124,7 +124,7 @@ function MetricOptionsSelector({
 
   const Button = "button-default hover:bg-zinc-200 dark:hover:bg-zinc-500";
 
-  const ChartName = "mr-10";
+  const ChartNameClass = "mr-10";
   const detailsRef = useRef<HTMLDetailsElement>(null);
 
   useLayoutEffect(() => {
@@ -151,7 +151,7 @@ function MetricOptionsSelector({
             className={Button}
           >
             <i className="fa fa-pie-chart"></i>
-            <span className={ChartName}>Pie</span>
+            <span className={ChartNameClass}>Pie</span>
           </button>
         </li>
         <li>
@@ -166,7 +166,7 @@ function MetricOptionsSelector({
             className={Button}
           >
             <i className="fa fa-line-chart"></i>
-            <span className={ChartName}>Line</span>
+            <span className={ChartNameClass}>Line</span>
           </button>
         </li>
         <li>
@@ -177,7 +177,7 @@ function MetricOptionsSelector({
             className={Button}
           >
             <i className="fa fa-area-chart"></i>
-            <span className={ChartName}>Area</span>
+            <span className={ChartNameClass}>Area</span>
           </button>
         </li>
       </ul>
