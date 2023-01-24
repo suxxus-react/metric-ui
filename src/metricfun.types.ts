@@ -212,6 +212,7 @@ export type MetricErrorTypes = {
   nameLength: boolean;
   nameEquals: boolean;
   noChartSelected: boolean;
+  chartsTypeEquals: boolean;
 };
 
 type MetricUpdatedData = {

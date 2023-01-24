@@ -436,9 +436,11 @@ export default function Metric({
         <MetricTypeDisplay
           {...{ chartTypeSelected, chartsData, isNewMetric }}
         />
-        {errorTypes.noChartSelected && (
+        {(errorTypes.noChartSelected || errorTypes.chartsTypeEquals) && (
           <p className="form-warning-errors dark:text-rose-500">
-            choose a chart option
+            {errorTypes.noChartSelected
+              ? "seletc a chart type"
+              : "chart is already selected"}
           </p>
         )}
         {/* end display metric type */}

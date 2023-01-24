@@ -103,6 +103,7 @@ function getDefaultMetric(): IMetricUi {
       nameLength: false,
       nameEquals: false,
       noChartSelected: false,
+      chartsTypeEquals: false,
     },
     chartsData: {
       pie: { datasets: [], labels: [] },
@@ -161,19 +162,24 @@ export function getDefaultMetricUiData(): IMetricUi {
 
 export function validateMetricUserInputs(metric: IMetricUi): IMetricUi {
   //
-  const nameLengthErr = metric.name.length < 3;
-  const nameEqualsErr =
+  const nameLength = metric.name.length < 3;
+  const nameEquals =
     metric.isMetricNameEditable && metric.name === metric.previousName;
-  const noChartSelectedErr = metric.chartTypeSelected === "None";
+  const noChartSelected = metric.chartTypeSelected === "None";
+  const chartsTypeEquals =
+    metric.chartTypeSelected === metric.previousChartTypeSelected;
 
-  const isValid = [nameLengthErr, nameEqualsErr, noChartSelectedErr].every(
-    (err) => !err
-  );
+  const isValid = [
+    nameLength,
+    nameEquals,
+    noChartSelected,
+    chartsTypeEquals,
+  ].every((err) => !err);
 
   if (isValid) {
     return {
       ...metric,
-      isValid: true,
+      isValid,
     }; // reset metric values
   }
 
@@ -181,9 +187,10 @@ export function validateMetricUserInputs(metric: IMetricUi): IMetricUi {
     ...metric,
     isValid,
     errorTypes: {
-      nameLength: nameLengthErr,
-      nameEquals: nameEqualsErr,
-      noChartSelected: noChartSelectedErr,
+      nameLength,
+      nameEquals,
+      noChartSelected,
+      chartsTypeEquals,
     },
   }; // should display metric errors
 }

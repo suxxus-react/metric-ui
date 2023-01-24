@@ -76,6 +76,7 @@ export function metricsReducer(msg: Msg) {
                 nameLength: false,
                 nameEquals: false,
                 noChartSelected: false,
+                chartsTypeEquals: false,
               },
             }
           : metric;
@@ -106,6 +107,7 @@ export function metricsReducer(msg: Msg) {
                 nameLength: false,
                 nameEquals: false,
                 noChartSelected: false,
+                chartsTypeEquals: false,
               },
             }
           : metric;
