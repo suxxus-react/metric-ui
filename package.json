@@ -12,7 +12,8 @@
     "tsc:watch": "npx tsc --watch",
     "lint": "npx eslint src",
     "prettier": "npx prettier src --check",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "postinstall": "husky install"
   },
   "dependencies": {
     "axios": "^1.2.2",
