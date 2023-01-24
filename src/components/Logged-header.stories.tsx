@@ -1,4 +1,3 @@
-import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import LoggedHeader from "../components/Logged-header";
 import { metricsState } from "./Fixtures";
