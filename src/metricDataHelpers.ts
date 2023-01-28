@@ -167,6 +167,7 @@ export function validateMetricUserInputs(metric: IMetricUi): IMetricUi {
     metric.isMetricNameEditable && metric.name === metric.previousName;
   const noChartSelected = metric.chartTypeSelected === "None";
   const chartsTypeEquals =
+    !metric.isMetricNameEditable &&
     metric.chartTypeSelected === metric.previousChartTypeSelected;
 
   const isValid = [
