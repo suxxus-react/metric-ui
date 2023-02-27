@@ -44,3 +44,11 @@ The `package.json` file comes with the following scripts
 ## TODO:
 
 - Add Cypress Tests
+
+## Resources:
+
+[Storybook](https://storybook.js.org/)
+Storybook is a frontend workshop for building UI components and pages in isolation.
+
+[iTunes Search API](https://performance-partners.apple.com/search-api)
+To search for content within the iTunes Store 
